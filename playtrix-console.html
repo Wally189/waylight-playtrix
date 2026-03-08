@@ -1,184 +1,730 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Playtrix Console</title>
-
-  <!-- Main Playtrix styles -->
-    <link rel="stylesheet" href="assets/css/wl-core.css" />
-  <link rel="stylesheet" href="assets/css/site-theme.css" />
-  <link rel="stylesheet" href="Assets/Styles/playtrix.css" />
-  <link rel="icon" href="assets/img/irish-cross.svg" type="image/svg+xml" />
-  <link rel="apple-touch-icon" href="assets/img/irish-cross.svg" />
-  <link rel="stylesheet" href="assets/liturgy/liturgy-accent.css">
-  <script defer src="assets/liturgy/liturgy-accent.js"></script>
+  <title>Waylight-Playtrix | Waylight Business Console</title>
+  <link rel="icon" href="Assets/img/irish-cross.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="Assets/css/playtrix-kanban.css" />
+  <style>
+    :root {
+      --wa-sky:#dfeef8;
+      --wa-mist:#eef5fb;
+      --wa-sea:#8fb7df;
+      --wa-atlantic:#2d5fa8;
+      --wa-deep:#1f3f73;
+      --wa-cliff:#5f7ea6;
+      --wa-white:#f9fbfd;
+      --wa-grass:#9cb8a0;
+      --wa-sand:#e9e0cf;
+      --line:rgba(45,95,168,.18);
+      --panel:rgba(249,251,253,.88);
+      --shadow:0 24px 56px rgba(31,63,115,.14);
+    }
+    * { box-sizing:border-box; }
+    body {
+      margin:0;
+      min-height:100vh;
+      color:var(--wa-deep);
+      font-family:"Trebuchet MS","Gill Sans",Calibri,sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(143,183,223,.24), transparent 24%),
+        radial-gradient(circle at top right, rgba(45,95,168,.16), transparent 24%),
+        linear-gradient(180deg, var(--wa-mist), var(--wa-sky) 58%, var(--wa-white));
+    }
+    .topbar {
+      position:sticky;
+      top:0;
+      z-index:10;
+      padding:1rem 1.2rem;
+      background:rgba(249,251,253,.84);
+      backdrop-filter:blur(16px);
+      border-bottom:1px solid rgba(45,95,168,.1);
+    }
+    .wrap { width:min(1440px, calc(100% - 2rem)); margin:0 auto; }
+    .brand { display:flex; justify-content:space-between; gap:1rem; align-items:flex-start; flex-wrap:wrap; }
+    .eyebrow { margin:0; font-size:.78rem; letter-spacing:.2em; text-transform:uppercase; color:var(--wa-cliff); font-weight:800; }
+    h1,h2,h3,.metric strong { font-family:Georgia,"Times New Roman",serif; }
+    h1 { margin:.2rem 0; font-size:clamp(2rem,5vw,3.4rem); text-transform:uppercase; letter-spacing:.04em; color:var(--wa-atlantic); }
+    .sub { margin:0; max-width:56rem; color:var(--wa-cliff); line-height:1.55; }
+    .stamp { display:flex; gap:.75rem; flex-wrap:wrap; }
+    .pill {
+      display:inline-flex; align-items:center; gap:.5rem; padding:.72rem .92rem; border-radius:999px;
+      background:rgba(255,255,255,.8); border:1px solid rgba(45,95,168,.12); box-shadow:0 10px 22px rgba(31,63,115,.08); font-weight:700;
+    }
+    .dot { width:.72rem; height:.72rem; border-radius:50%; background:var(--wa-atlantic); box-shadow:0 0 0 6px rgba(45,95,168,.12); }
+    nav { display:flex; gap:.6rem; flex-wrap:wrap; margin-top:1rem; }
+    .nav-btn {
+      display:inline-flex; align-items:center; justify-content:center; text-decoration:none;
+      border:1px solid rgba(45,95,168,.14); background:rgba(255,255,255,.78); color:var(--wa-deep);
+      padding:.8rem .95rem; border-radius:16px; font-weight:800; cursor:pointer;
+    }
+    .nav-btn.active,.nav-btn:hover { background:linear-gradient(135deg, var(--wa-deep), var(--wa-atlantic)); color:#fff; }
+    main.wrap { padding:1.4rem 0 3rem; }
+    .page { display:none; animation:fade .2s ease; }
+    .page.active { display:block; }
+    @keyframes fade { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+    .grid,.hero,.cols2,.cols3,.funnel,.kanban { display:grid; gap:1rem; }
+    .hero { grid-template-columns:1.35fr .95fr; }
+    .cols2 { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .cols3 { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .funnel { grid-template-columns:repeat(4,minmax(0,1fr)); }
+    .kanban { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .card {
+      background:var(--panel); border:1px solid var(--line); border-radius:26px; padding:1.2rem; box-shadow:var(--shadow); position:relative; overflow:hidden;
+    }
+    .hero-card {
+      min-height:350px; color:#fff;
+      background:linear-gradient(145deg, rgba(31,63,115,.98), rgba(45,95,168,.94));
+    }
+    .hero-card::after {
+      content:""; position:absolute; inset:auto -10% -12% -10%; height:42%;
+      background:linear-gradient(180deg, rgba(143,183,223,.24), rgba(156,184,160,.2));
+      clip-path:polygon(0 55%, 15% 46%, 31% 58%, 47% 42%, 62% 57%, 80% 44%, 100% 55%, 100% 100%, 0 100%);
+    }
+    .hero-card > * { position:relative; z-index:1; }
+    .hero-card h2 { margin:.3rem 0 .8rem; font-size:clamp(2rem,4vw,3rem); max-width:13ch; line-height:.98; }
+    .hero-card p { max-width:44rem; line-height:1.65; color:rgba(245,248,252,.92); }
+    .metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.75rem; margin-top:1rem; }
+    .metric { padding:.9rem; border-radius:18px; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.16); }
+    .metric span { display:block; font-size:.76rem; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.72); font-weight:700; }
+    .metric strong { display:block; margin-top:.35rem; font-size:1.08rem; color:#fff; }
+    h2.section { margin:0 0 .3rem; font-size:1.55rem; color:var(--wa-atlantic); }
+    p.muted { margin:.25rem 0 0; color:var(--wa-cliff); line-height:1.6; }
+    .mini,.line,.task,.deal,.col,.resource-bank { border:1px solid var(--line); border-radius:18px; background:rgba(255,255,255,.78); }
+    .mini,.line,.task,.deal,.resource-bank { padding:.9rem .95rem; }
+    .col { padding:1rem; border-radius:22px; }
+    .line,.task { display:flex; gap:.7rem; align-items:flex-start; }
+    .bullet { width:.72rem; height:.72rem; margin-top:.42rem; border-radius:50%; background:linear-gradient(180deg, var(--wa-sea), var(--wa-atlantic)); box-shadow:0 0 0 6px rgba(143,183,223,.14); flex:0 0 auto; }
+    .task input { margin-top:.14rem; accent-color:var(--wa-atlantic); transform:scale(1.14); }
+    .tags { display:flex; gap:.5rem; flex-wrap:wrap; }
+    .tag { padding:.42rem .68rem; border-radius:999px; font-size:.8rem; font-weight:800; }
+    .sea { background:rgba(143,183,223,.18); color:var(--wa-atlantic); }
+    .mist { background:rgba(95,126,166,.12); color:var(--wa-deep); }
+    .grass { background:rgba(156,184,160,.18); color:#4e6c52; }
+    .sand { background:rgba(233,224,207,.6); color:#7d6846; }
+    .progress { margin-top:.9rem; }
+    .progress-row { display:flex; justify-content:space-between; gap:1rem; font-size:.92rem; font-weight:700; color:var(--wa-deep); }
+    .bar { height:.68rem; background:rgba(45,95,168,.08); border-radius:999px; overflow:hidden; margin-top:.45rem; }
+    .fill { height:100%; width:0; background:linear-gradient(90deg, var(--wa-sea), var(--wa-atlantic)); }
+    .col h4 { margin:0 0 .7rem; font-size:.8rem; letter-spacing:.14em; text-transform:uppercase; color:var(--wa-cliff); }
+    .deal { margin-bottom:.7rem; box-shadow:0 8px 18px rgba(31,63,115,.06); }
+    .deal strong { display:block; margin-bottom:.25rem; }
+    .deal span, td { color:var(--wa-cliff); line-height:1.45; font-size:.9rem; }
+    .resource-bank h3 { margin:0 0 .7rem; font-size:1rem; color:var(--wa-deep); }
+    .resource-bank label { display:block; font-size:.82rem; font-weight:700; color:var(--wa-cliff); margin-top:.65rem; }
+    .resource-bank input { width:100%; margin-top:.3rem; border:1px solid rgba(45,95,168,.18); border-radius:12px; padding:.7rem .8rem; font:inherit; background:#fff; color:var(--wa-deep); }
+    textarea { width:100%; min-height:180px; resize:vertical; border:1px solid rgba(45,95,168,.16); border-radius:18px; padding:.95rem 1rem; background:rgba(255,255,255,.92); color:var(--wa-deep); font:inherit; }
+    table { width:100%; border-collapse:collapse; }
+    th,td { padding:.8rem .7rem; text-align:left; border-bottom:1px solid rgba(45,95,168,.08); vertical-align:top; }
+    th { font-size:.76rem; letter-spacing:.14em; text-transform:uppercase; color:var(--wa-cliff); }
+    .site-footer { margin-top:1.4rem; }
+    .footer-inner { display:grid; grid-template-columns:auto 1fr auto; gap:1rem; align-items:end; background:rgba(249,251,253,.84); border:1px solid rgba(45,95,168,.14); border-radius:24px; padding:1rem 1.1rem; box-shadow:var(--shadow); }
+    .footer-nav { display:flex; gap:.55rem; flex-wrap:wrap; }
+    .footer-btn { display:inline-flex; align-items:center; justify-content:center; padding:.7rem .9rem; border-radius:14px; text-decoration:none; font-weight:800; color:var(--wa-deep); background:rgba(255,255,255,.8); border:1px solid rgba(45,95,168,.14); }
+    .footer-tagline { margin:0; color:var(--wa-cliff); font-size:.92rem; text-align:center; }
+    .waylight-legal-block { text-align:right; }
+    .footer-meta,.waylight-legal-links,.waylight-legal-location,.waylight-legal-copyright { margin:.15rem 0; color:var(--wa-cliff); font-size:.86rem; }
+    .waylight-legal-links a,.waylight-legal-copyright a { color:var(--wa-deep); text-decoration:none; }
+    .waylight-legal-links a:hover,.waylight-legal-copyright a:hover { text-decoration:underline; }
+    @media (max-width:1200px) { .hero,.cols2,.cols3,.funnel,.kanban,.footer-inner { grid-template-columns:1fr; } .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } .waylight-legal-block { text-align:left; } }
+    @media (max-width:720px) { .wrap { width:min(100% - 1rem, 1440px); } .metrics { grid-template-columns:1fr; } .nav-btn,.footer-btn { width:100%; } }
+  </style>
 </head>
-
-<body class="playtrix-shell">
-
-  <!-- ===================================================== -->
-  <!-- PLAYTRIX CONSOLE SHELL                               -->
-  <!-- ===================================================== -->
-  <div class="pt-shell">
-
-    <!-- Top bar -->
-    <header class="pt-shell-header">
-      <div class="pt-shell-title-block">
-        <h1 class="pt-shell-title">Playtrix Console</h1>
-        <p class="pt-shell-subtitle">
-          Personal · Work · Civic · Creative · Systems
-        </p>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <div class="brand">
+        <div>
+          <p class="eyebrow">Waylight-Playtrix</p>
+          <h1>Waylight Business Console</h1>
+          <p class="sub">A fuller internal console for sales, governance, finance, sustainability, learning, SOPs, and client documents.</p>
+        </div>
+        <div class="stamp">
+          <div class="pill"><span class="dot"></span><span id="statusText">Waylight local mode</span></div>
+          <div class="pill" id="todayStamp">Loading date...</div>
+        </div>
       </div>
-
-      <div class="pt-shell-status">
-        <span class="pt-status-pill">v1.0 · Playtrix Mate</span>
-      </div>
-    </header>
-
-    <!-- Main console area -->
-    <main class="pt-shell-main">
-
-      <!-- Grid of draggable cards -->
-      <section id="pt-card-grid" class="pt-card-grid" aria-label="Playtrix panels">
-
-        <!-- PERSONAL -->
-        <article class="pt-card" draggable="true" data-storage-key="pt-personal">
-          <h2 class="pt-card-title">Personal</h2>
-          <p class="pt-card-text">
-            Life admin, health, home, prayer, routines.
-          </p>
-          <button class="pt-card-open" type="button">
-            Open Personal
-          </button>
-        </article>
-
-        <!-- WORK -->
-        <article class="pt-card" draggable="true" data-storage-key="pt-work">
-          <h2 class="pt-card-title">Work</h2>
-          <p class="pt-card-text">
-            NHS, Digital, Private.
-          </p>
-          <button class="pt-card-open" type="button">
-            Open Work
-          </button>
-        </article>
-
-        <!-- CIVIC -->
-        <article class="pt-card" draggable="true" data-storage-key="pt-civic">
-          <h2 class="pt-card-title">Civic</h2>
-          <p class="pt-card-text">
-            WayLight, WOSWOS, local missions, public-square work.
-          </p>
-          <button class="pt-card-open" type="button">
-            Open Civic
-          </button>
-        </article>
-
-        <!-- CREATIVE -->
-        <article class="pt-card" draggable="true" data-storage-key="pt-creative">
-          <h2 class="pt-card-title">Creative</h2>
-          <p class="pt-card-text">
-            Writing, music, design, websites, experiments.
-          </p>
-          <button class="pt-card-open" type="button">
-            Open Creative
-          </button>
-        </article>
-
-        <!-- SYSTEMS -->
-        <article class="pt-card" draggable="true" data-storage-key="pt-systems">
-          <h2 class="pt-card-title">Systems Centre</h2>
-          <p class="pt-card-text">
-            Playtrix, data lakes, backups, devices, finances.
-          </p>
-          <button class="pt-card-open" type="button">
-            Open Systems
-          </button>
-        </article>
-
-        <!-- CALENDAR -->
-        <article class="pt-card" draggable="true" data-storage-key="pt-calendar">
-          <h2 class="pt-card-title">Calendar</h2>
-          <p class="pt-card-text">
-            Link to Outlook / master diary.
-          </p>
-          <button class="pt-card-open" type="button">
-            Open Calendar
-          </button>
-        </article>
-
-        <!-- TOOLS -->
-        <article class="pt-card" draggable="true" data-storage-key="pt-tools">
-          <h2 class="pt-card-title">Tool Deck</h2>
-          <p class="pt-card-text">
-            MS / Google / coding / messaging / banking.
-          </p>
-          <button class="pt-card-open" type="button">
-            Open Tools
-          </button>
-        </article>
-
-        <!-- LIBRARY -->
-        <article class="pt-card" draggable="true" data-storage-key="pt-library">
-          <h2 class="pt-card-title">LibraryCard</h2>
-          <p class="pt-card-text">
-            ServiceNow-lite / Kanban / WOSWOS missions.
-          </p>
-          <button class="pt-card-open" type="button">
-            Open Library
-          </button>
-        </article>
-
-        <!-- METHODS -->
-        <article class="pt-card" draggable="true" data-storage-key="pt-methods">
-          <h2 class="pt-card-title">Methods</h2>
-          <p class="pt-card-text">
-            WOSWOS · Agile · Kaizen · Lean · Benedictine rhythm.
-          </p>
-          <button class="pt-card-open" type="button">
-            Open Methods
-          </button>
-        </article>
-
-      </section>
-    </main>
-
-    <!-- GLOBAL FOOTER + CLOCK -->
-    
-
-  </div>
-
-  <!-- Scripts -->
-  <script src="Assets/Scripts/playtrix.js"></script>
-  <script src="assets/js/wl-core.js" defer></script>
-<footer class="wl-footer">
-  <div class="wl-footer__grid">
-    <div class="wl-footer__left">
-      <div class="wl-footer__line">
-        <span><strong>Dies</strong>: <span data-date></span></span>
-        <a class="wl-footer__info" href="https://alanwpgallagher.com/information.html" aria-label="About Dies">i</a>
-      </div>
-      <div class="wl-footer__meta">
-        <span>&copy; <span id="year" data-year></span> Bristol, UK &amp; Letterkenny, Ireland</span>
-        <span>&middot;</span>
-        <a href="privacy.html">Privacy</a>
-      </div>
+      <nav id="mainNav">
+        <a class="nav-btn" href="index.html">Day Ahead</a>
+        <a class="nav-btn" href="tools.html">Tools</a>
+        <a class="nav-btn" href="contacts.html">Contacts</a>
+        <button class="nav-btn active" data-page="overview">Overview</button>
+        <button class="nav-btn" data-page="workboard">Workboard</button>
+        <button class="nav-btn" data-page="sales">Sales</button>
+        <button class="nav-btn" data-page="governance">Governance</button>
+        <button class="nav-btn" data-page="finance">Finance</button>
+        <button class="nav-btn" data-page="sustainability">Sustainability</button>
+        <button class="nav-btn" data-page="learning">Learning</button>
+        <button class="nav-btn" data-page="docs">Client Docs</button>
+      </nav>
     </div>
-    <div class="wl-footer__center">
-      <em>Ora et labora.</em>
-    </div>
-    <div class="wl-footer__right">
-      <div class="wl-footer__line">
-        <span><strong>Hora</strong>: <span data-hora></span></span>
-        <a class="wl-footer__info" href="https://alanwpgallagher.com/information.html" aria-label="About Hora">i</a>
+  </header>
+
+  <main class="wrap">
+    <section class="page active" id="page-overview">
+      <div class="hero">
+        <article class="card hero-card">
+          <p class="eyebrow">Command Deck</p>
+          <h2>Run the business like a calm, competent office.</h2>
+          <p>Keep the operating rhythm, the pipeline, the documents, and the next responsibilities in one place. The point is not more noise. It is cleaner control.</p>
+          <div class="metrics">
+            <div class="metric"><span>Day</span><strong id="metricDay">-</strong></div>
+            <div class="metric"><span>Date</span><strong id="metricDate">-</strong></div>
+            <div class="metric"><span>Time</span><strong id="metricTime">-</strong></div>
+            <div class="metric"><span>Current Block</span><strong id="metricShift">-</strong></div>
+          </div>
+        </article>
+        <div class="grid">
+          <article class="card">
+            <p class="eyebrow">Today</p>
+            <h2 class="section">Operating position</h2>
+            <div class="mini"><strong>Current focus</strong><p class="muted" id="currentBlock">-</p></div>
+            <div class="mini" style="margin-top:.8rem;"><strong>Next focus</strong><p class="muted" id="nextBlock">-</p></div>
+            <div class="mini" style="margin-top:.8rem;"><strong>Theme</strong><p class="muted" id="todayTheme">-</p></div>
+          </article>
+          <article class="card">
+            <p class="eyebrow">Tomorrow</p>
+            <h2 class="section">Day-ahead view</h2>
+            <p class="muted" id="tomorrowHeadline">Loading tomorrow's work pattern...</p>
+            <div class="tags" id="tomorrowTags" style="margin-top:.9rem;"></div>
+            <div id="tomorrowPrep" class="grid" style="margin-top:.9rem;"></div>
+          </article>
+        </div>
       </div>
-      <div class="wl-footer__actions">
-        <button class="wl-footer__share" type="button" data-share>Share</button>
-        <span class="wl-footer__hint" data-share-hint aria-live="polite"></span>
+
+      <div class="cols2" style="margin-top:1rem;">
+        <article class="card">
+          <p class="eyebrow">Execution</p>
+          <h2 class="section">Today's checklist</h2>
+          <div class="progress">
+            <div class="progress-row"><span>Completion</span><span id="todayProgressText">0%</span></div>
+            <div class="bar"><div class="fill" id="todayProgressFill"></div></div>
+          </div>
+          <div id="todayChecklist" class="grid" style="margin-top:1rem;"></div>
+          <div class="resource-bank" data-resource-bank="today" style="margin-top:1rem;"></div>
+        </article>
+        <article class="card">
+          <p class="eyebrow">Field Notes</p>
+          <h2 class="section">Command note</h2>
+          <p class="muted">Use this for today's judgement call, risk, follow-up, or reminder.</p>
+          <textarea id="commandNote" placeholder="Example: convert the current build into a case-study proof piece and send the parish follow-up tomorrow."></textarea>
+        </article>
       </div>
-    </div>
-  </div>
-</footer>
+
+      <div class="cols3" style="margin-top:1rem;">
+        <article class="card">
+          <p class="eyebrow">Business Snapshot</p>
+          <h2 class="section">Current pressure</h2>
+          <div class="line"><span class="bullet"></span><div><strong>Active build work</strong><br />3 live projects</div></div>
+          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div><strong>Warm opportunities</strong><br />6 leads needing next actions</div></div>
+          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div><strong>Maintenance target</strong><br />5 recurring clients</div></div>
+        </article>
+        <article class="card">
+          <p class="eyebrow">Offer Stack</p>
+          <h2 class="section">Commercial shape</h2>
+          <div class="tags">
+            <span class="tag sea">Tailored basic website</span>
+            <span class="tag mist">Tailored standard website</span>
+            <span class="tag grass">Monthly maintenance</span>
+            <span class="tag sand">Digital cleanup</span>
+          </div>
+          <p class="muted" style="margin-top:1rem;">You are not selling code. You are selling clarity, delivery, and steady digital stewardship.</p>
+        </article>
+        <article class="card">
+          <p class="eyebrow">Formation</p>
+          <h2 class="section">Learning checkpoint</h2>
+          <div class="progress">
+            <div class="progress-row"><span>Year one complete</span><span id="learningTotalText">0%</span></div>
+            <div class="bar"><div class="fill" id="learningTotalFill"></div></div>
+          </div>
+          <div id="learningSummary" class="grid" style="margin-top:1rem;"></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="page" id="page-workboard">
+      <div class="cols2">
+        <article class="card">
+          <p class="eyebrow">Workboard</p>
+          <h2 class="section">Daily flow and controlled execution</h2>
+          <p class="muted">Use the board to move one thing at a time from capture to completion. It stays separate from the governance rhythm so the cadence remains stable while the workload moves.</p>
+          <div class="kanban-summary" id="kanbanSummary"></div>
+        </article>
+        <article class="card">
+          <p class="eyebrow">Card Editor</p>
+          <h2 class="section">Add or refine a work item</h2>
+          <form id="kanbanForm" class="kanban-form">
+            <input type="hidden" id="kanbanCardId" />
+            <div class="kanban-field">
+              <label for="kanbanTitle">Title</label>
+              <input id="kanbanTitle" name="title" type="text" maxlength="120" placeholder="Example: Finish parish homepage revision" required />
+            </div>
+            <div class="kanban-field">
+              <label for="kanbanNote">Note</label>
+              <textarea id="kanbanNote" name="note" rows="4" placeholder="What matters, what is waiting, or what must not be forgotten."></textarea>
+            </div>
+            <div class="kanban-form-grid">
+              <div class="kanban-field">
+                <label for="kanbanCategory">Category</label>
+                <input id="kanbanCategory" name="category" type="text" maxlength="50" placeholder="Client, sales, admin, maintenance" />
+              </div>
+              <div class="kanban-field">
+                <label for="kanbanDueDate">Due date</label>
+                <input id="kanbanDueDate" name="dueDate" type="date" />
+              </div>
+              <div class="kanban-field">
+                <label for="kanbanPriority">Priority</label>
+                <select id="kanbanPriority" name="priority">
+                  <option value="steady">Steady</option>
+                  <option value="important">Important</option>
+                  <option value="urgent">Urgent</option>
+                </select>
+              </div>
+              <div class="kanban-field">
+                <label for="kanbanColumn">Column</label>
+                <select id="kanbanColumn" name="column">
+                  <option value="inbox">Inbox</option>
+                  <option value="today">Today</option>
+                  <option value="this-week">This Week</option>
+                  <option value="waiting">Waiting</option>
+                  <option value="done">Done</option>
+                </select>
+              </div>
+            </div>
+            <div class="kanban-actions">
+              <button type="submit" class="kanban-btn kanban-btn-primary">Save card</button>
+              <button type="button" class="kanban-btn" id="kanbanFormReset">Clear form</button>
+            </div>
+          </form>
+        </article>
+      </div>
+
+      <article class="card" style="margin-top:1rem;">
+        <div class="kanban-board-header">
+          <div>
+            <p class="eyebrow">Drag and Drop</p>
+            <h2 class="section">Current workboard</h2>
+          </div>
+          <p class="muted">Columns: Inbox, Today, This Week, Waiting, Done.</p>
+        </div>
+        <div id="kanbanBoard" class="wl-kanban-board" aria-label="Waylight workboard"></div>
+      </article>
+    </section>
+    <section class="page" id="page-sales">
+      <article class="card">
+        <p class="eyebrow">Sales Plan</p>
+        <h2 class="section">Create a predictable pipeline</h2>
+        <div class="cols2" style="margin-top:1rem;">
+          <div class="mini">
+            <strong>Monthly targets</strong>
+            <table style="margin-top:.7rem;">
+              <tr><th>Measure</th><th>Target</th><th>Why</th></tr>
+              <tr><td>New outreach conversations</td><td>20</td><td>Enough flow to create opportunities</td></tr>
+              <tr><td>Qualified leads</td><td>6</td><td>Protect time by filtering early</td></tr>
+              <tr><td>Proposals sent</td><td>3</td><td>Commercial clarity needs a written offer</td></tr>
+              <tr><td>New maintenance clients</td><td>1</td><td>Recurring steadiness matters more than spikes</td></tr>
+            </table>
+          </div>
+          <div class="mini">
+            <strong>Offer ladder</strong>
+            <div class="line" style="margin-top:.8rem;"><span class="bullet"></span><div>Entry: tailored basic website for straightforward service organisations.</div></div>
+            <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Core: tailored standard website with deeper structure and governance pages.</div></div>
+            <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Recurring: monthly maintenance, monitoring, backups, and advice.</div></div>
+            <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Advisory: digital cleanup, process documentation, and systems clarity.</div></div>
+          </div>
+        </div>
+      </article>
+      <div class="cols2" style="margin-top:1rem;">
+        <article class="card">
+          <p class="eyebrow">Weekly Cadence</p>
+          <h2 class="section">Sales checklist</h2>
+          <div class="progress">
+            <div class="progress-row"><span>Cadence complete</span><span id="salesProgressText">0%</span></div>
+            <div class="bar"><div class="fill" id="salesProgressFill"></div></div>
+          </div>
+          <div id="salesChecklist" class="grid" style="margin-top:1rem;"></div>
+          <div class="resource-bank" data-resource-bank="sales" style="margin-top:1rem;"></div>
+        </article>
+        <article class="card">
+          <p class="eyebrow">Pipeline</p>
+          <h2 class="section">Current board</h2>
+          <div class="funnel">
+            <div class="col"><h4>Prospecting</h4><div class="deal"><strong>Parish network list</strong><span>Prepare examples and a short message sequence.</span></div></div>
+            <div class="col"><h4>Qualified</h4><div class="deal"><strong>Charity enquiry</strong><span>Simple public-facing site with clearer contact flow.</span></div></div>
+            <div class="col"><h4>Proposal</h4><div class="deal"><strong>Parish refresh</strong><span>Need decision on content ownership and domain setup.</span></div></div>
+            <div class="col"><h4>Retained</h4><div class="deal"><strong>Maintenance anchor</strong><span>Convert one completed build into monthly support.</span></div></div>
+          </div>
+        </article>
+      </div>
+    </section>
+    <section class="page" id="page-governance">
+      <div class="cols2">
+        <article class="card">
+          <p class="eyebrow">Governance Dashboard</p>
+          <h2 class="section">Policies, controls, and future HR structure</h2>
+          <div class="line"><span class="bullet"></span><div><strong>Policy register</strong><br />Privacy, data handling, accessibility, content standards, maintenance policy, and document retention.</div></div>
+          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div><strong>Governance calendar</strong><br />Weekly control points, monthly reviews, quarterly policy refresh, and annual housekeeping.</div></div>
+          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div><strong>Future HR area</strong><br />Recruitment notes, onboarding, role descriptions, training logs, grievance and discipline placeholders for later growth.</div></div>
+          <div class="resource-bank" data-resource-bank="governance" style="margin-top:1rem;"></div>
+        </article>
+        <article class="card">
+          <p class="eyebrow">SOP and Control Library</p>
+          <h2 class="section">What should exist</h2>
+          <div class="line"><span class="bullet"></span><div>Client onboarding SOP</div></div>
+          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Website build SOP</div></div>
+          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Maintenance SOP</div></div>
+          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Free-site intake SOP</div></div>
+          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Incident, complaint, and decision-log procedures</div></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="page" id="page-finance">
+      <div class="cols2">
+        <article class="card">
+          <p class="eyebrow">Finance Dashboard</p>
+          <h2 class="section">Small enterprise placeholders</h2>
+          <table>
+            <tr><th>Area</th><th>Placeholder</th></tr>
+            <tr><td>Monthly income</td><td>Build revenue, maintenance revenue, advisory revenue</td></tr>
+            <tr><td>Monthly costs</td><td>Hosting, domains, software, subscriptions, insurance, banking</td></tr>
+            <tr><td>Cash flow</td><td>Expected receipts, outstanding invoices, bills due</td></tr>
+            <tr><td>Tax and reporting</td><td>Tax reserve, Universal Credit notes, VAT future placeholder</td></tr>
+            <tr><td>Payroll future</td><td>Employer costs, pension placeholder, salary placeholder</td></tr>
+            <tr><td>Reserves</td><td>Operating reserve, emergency reserve, tools replacement reserve</td></tr>
+          </table>
+        </article>
+        <article class="card">
+          <p class="eyebrow">Finance Controls</p>
+          <h2 class="section">Registers and records</h2>
+          <div class="line"><span class="bullet"></span><div>Income and expense register</div></div>
+          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Invoice tracker and aged debtors</div></div>
+          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Recurring cost register</div></div>
+          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Asset register and device replacement notes</div></div>
+          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Tax, reporting, and grant or support notes</div></div>
+          <div class="resource-bank" data-resource-bank="finance" style="margin-top:1rem;"></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="page" id="page-sustainability">
+      <div class="cols2">
+        <article class="card">
+          <p class="eyebrow">Sustainability Dashboard</p>
+          <h2 class="section">Keep the business sustainable to run</h2>
+          <div class="progress">
+            <div class="progress-row"><span>Weekly sustainability actions</span><span id="sustainabilityProgressText">0%</span></div>
+            <div class="bar"><div class="fill" id="sustainabilityProgressFill"></div></div>
+          </div>
+          <div id="sustainabilityChecklist" class="grid" style="margin-top:1rem;"></div>
+          <div class="resource-bank" data-resource-bank="sustainability" style="margin-top:1rem;"></div>
+        </article>
+        <article class="card">
+          <p class="eyebrow">Sustainability Lenses</p>
+          <h2 class="section">Four kinds of sustainability</h2>
+          <div class="line"><span class="bullet"></span><div><strong>Operational</strong><br />Can the business keep running without panic, overload, or hidden work?</div></div>
+          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div><strong>Digital</strong><br />Are hosting, backups, domains, and document systems manageable?</div></div>
+          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div><strong>Financial</strong><br />Are you building steadiness rather than only chasing sporadic project wins?</div></div>
+          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div><strong>Personal</strong><br />Is the workload compatible with Mass, rest, family life, and long-term service?</div></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="page" id="page-learning">
+      <article class="card">
+        <p class="eyebrow">Year One Formation Plan</p>
+        <h2 class="section">Learning plan for a competent, credible micro-consultancy</h2>
+        <p class="muted">Use the plan as checklist-driven capability building, not just time-tracking. Each quarter can carry supporting documents, links, or notes.</p>
+      </article>
+      <div id="learningGrid" class="cols2" style="margin-top:1rem;"></div>
+    </section>
+
+    <section class="page" id="page-docs">
+      <div class="cols2">
+        <article class="card">
+          <p class="eyebrow">Client Documents</p>
+          <h2 class="section">Questionnaires, checklists, contracts, and agreements</h2>
+          <div class="line"><span class="bullet"></span><div><strong>Client questionnaires</strong><br />Discovery forms, content questionnaires, maintenance review questionnaires.</div></div>
+          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div><strong>Client checklists</strong><br />Onboarding checklist, launch checklist, maintenance checklist, handover checklist.</div></div>
+          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div><strong>Contracts and agreements</strong><br />Proposal terms, service agreements, maintenance agreement, data-processing notes, change requests.</div></div>
+          <div class="resource-bank" data-resource-bank="client-docs" style="margin-top:1rem;"></div>
+        </article>
+        <article class="card">
+          <p class="eyebrow">SOP Attachments</p>
+          <h2 class="section">Places to attach operating material</h2>
+          <div class="line"><span class="bullet"></span><div>SOP library links and file paths</div></div>
+          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Template pack for proposals and contracts</div></div>
+          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Governance files, policy drafts, and registers</div></div>
+          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Client questionnaire bank and version history</div></div>
+          <div class="resource-bank" data-resource-bank="sop-library" style="margin-top:1rem;"></div>
+        </article>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <nav class="footer-nav" aria-label="Footer links">
+          <a href="index.html" class="footer-btn">Day Ahead</a>
+          <a href="playtrix-console.html" class="footer-btn">Console</a>
+          <a href="tools.html" class="footer-btn">Tools</a><a href="contacts.html" class="footer-btn">Contacts</a>
+        </nav>
+        <p class="footer-tagline">Simple systems for a digital world.</p>
+        <div class="waylight-legal-block" data-waylight-legal>
+          <p class="footer-meta"><span data-datetime>Loading date and time...</span></p>
+          <p class="waylight-legal-links"><a href="gdpr.html">GDPR</a> | <a href="privacy.html">Privacy</a> | <a href="terms.html">Terms</a></p>
+          <p class="waylight-legal-location">Bristol, United Kingdom</p>
+          <p class="waylight-legal-copyright">&#169; 2026 <a href="index.html">Waylight-Playtrix</a></p>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    const schedule = {
+      Monday: { primary: 'Client Builds', primaryWindow: '06:00-09:00', secondary: 'Planning and Client Communication', secondaryWindow: '16:00-19:00', secondStart: 16, secondEnd: 19, theme: 'Build and plan', tasks: ['Build the highest-value page or feature.', 'Check accessibility and mobile basics.', 'Reply to open client threads.', 'Tighten the week plan.'], prep: ['Choose the most commercially important build first.', 'List all open client replies.', 'Decide what visible progress matters most.'] },
+      Tuesday: { primary: 'Client Project Work', primaryWindow: '06:00-09:00', secondary: 'Outreach and Business Development', secondaryWindow: '15:00-18:00', secondStart: 15, secondEnd: 18, theme: 'Project progress and outreach', tasks: ['Implement live project changes.', 'Handle hosting or forms.', 'Send practical outreach messages.', 'Follow up warm leads.'], prep: ['Prepare one proof piece worth sending.', 'Keep one clear offer ready.', 'Do not leave warm leads without a next action.'] },
+      Wednesday: { primary: 'Technical Development', primaryWindow: '06:00-09:00', secondary: 'Maintenance and Reliability Checks', secondaryWindow: '12:00-15:00', secondStart: 12, secondEnd: 15, theme: 'Technical stability', tasks: ['Improve reusable components.', 'Check backups and uptime.', 'Review forms, links, and speed.', 'Check domains and certificates.'], prep: ['Choose one technical friction to remove.', 'Note what can become a maintenance standard.', 'Keep recurring service ideas visible.'] },
+      Thursday: { primary: 'Systems and Documentation', primaryWindow: '06:00-09:00', secondary: 'Governance and Finance', secondaryWindow: '15:00-18:00', secondStart: 15, secondEnd: 18, theme: 'Systems and control', tasks: ['Improve SOPs and templates.', 'Update income and expense records.', 'Review subscriptions and admin.', 'Capture business decisions.'], prep: ['Pick the one system to simplify.', 'Make finance updates while details are fresh.', 'Decide what procedure should be written next.'] },
+      Friday: { primary: 'Client Delivery Work', primaryWindow: '06:00-09:00', secondary: 'Visibility and Publishing', secondaryWindow: '12:00-15:00', secondStart: 12, secondEnd: 15, theme: 'Delivery and visibility', tasks: ['Finalise build work and QA.', 'Prepare launch or handover.', 'Publish one trust-building proof piece.', 'Refresh a portfolio or article asset.'], prep: ['Choose what can be finished and shown.', 'Publish proof of competence.', 'Leave fewer loose ends for next week.'] },
+      Saturday: { primary: 'Learning and Skill Development', primaryWindow: '06:00-09:00', secondary: 'Weekly Review and Preparation', secondaryWindow: '15:00-18:00', secondStart: 15, secondEnd: 18, theme: 'Learning and review', tasks: ['Study a service-relevant skill.', 'Review business objectives.', 'Tidy loose files and notes.', 'Prepare next week.'], prep: ['Choose one capability gap.', 'Translate learning into a business improvement.', 'Enter Sunday with a lighter next week.'] },
+      Sunday: { primary: 'Rest', primaryWindow: 'Day of rest', secondary: 'Rest', secondaryWindow: 'Day of rest', secondStart: 0, secondEnd: 0, theme: 'Mass, rest, and recovery', tasks: ['Mass and prayer.', 'Family life and rest.', 'No business activity unless genuinely urgent.'], prep: ['Let the day recover you.', 'Keep Monday visible without working all day.', 'A calm Sunday is part of discipline.'] }
+    };
+
+    const salesItems = [
+      'Review all warm and qualified leads.',
+      'Send at least three outbound messages with a practical angle.',
+      'Follow up every live enquiry with a named next action.',
+      'Prepare one example or case-study worth sending.',
+      'Draft or refine one proposal or offer summary.'
+    ];
+
+    const sustainabilityItems = [
+      'Review workload and recovery before adding more commitments.',
+      'Check backups, domains, and hosting for avoidable waste or risk.',
+      'Prefer reusable templates and simpler processes over duplicated work.',
+      'Note one community, charitable, or mission-aligned contribution.',
+      'Track one change that makes the business more sustainable to run.'
+    ];
+
+    const learningPlan = [
+      { id: 'q1', title: 'Quarter 1', subtitle: 'Foundation and commercial readiness', output: '4 to 6 portfolio sites, repeatable build process, and clear packages.', checklist: ['Semantic HTML', 'Accessibility basics and QA routine', 'Performance basics', 'SEO fundamentals', 'Website policy and compliance basics', 'Domains, DNS, hosting, and Git deployment'] },
+      { id: 'q2', title: 'Quarter 2', subtitle: 'Digital stewardship skills', output: 'Offer website build, maintenance, and digital cleanup.', checklist: ['Backups, uptime, and monitoring', 'Maintenance checklist design', 'Microsoft 365 folder governance', 'Process mapping and documentation', 'Basic business analysis', 'Write the maintenance and cleanup offer'] },
+      { id: 'q3', title: 'Quarter 3', subtitle: 'Consulting discipline', output: '5 to 10 projects, repeatable maintenance offers, clearer pricing.', checklist: ['Structured problem solving', 'Lean and systems thinking', 'Discovery meetings and recommendations', 'Proposal writing', 'Pricing logic', 'Recommendation notes after client conversations'] },
+      { id: 'q4', title: 'Quarter 4', subtitle: 'Operational maturity', output: 'Internal system supports tracking, onboarding, reminders, and visibility.', checklist: ['Extend Playtrix for project tracking', 'Add reminder logic', 'Learn contracts, data protection, and record keeping basics', 'Use ICO guidance', 'Build trust assets through portfolio and articles', 'Make the site itself proof of competence'] }
+    ];
+
+    const storeKey = 'playtrixFolifaxChecks';
+    const noteKey = 'playtrixFolifaxNote';
+    const pageKey = 'playtrixFolifaxPage';
+    const linkKey = 'playtrixFolifaxLinks';
+
+    function getStore() { try { return JSON.parse(localStorage.getItem(storeKey)) || {}; } catch { return {}; } }
+    function setStore(state) { localStorage.setItem(storeKey, JSON.stringify(state)); }
+    function getLinks() { try { return JSON.parse(localStorage.getItem(linkKey)) || {}; } catch { return {}; } }
+    function setLinks(state) { localStorage.setItem(linkKey, JSON.stringify(state)); }
+    function dayName(date) { return date.toLocaleDateString('en-GB', { weekday: 'long' }); }
+    function tomorrow(date) { const d = new Date(date); d.setDate(d.getDate() + 1); return d; }
+
+    function footerDateTime() {
+      const now = new Date();
+      const weekday = now.toLocaleDateString('en-GB', { weekday: 'long' });
+      const month = now.toLocaleDateString('en-GB', { month: 'long' });
+      const day = now.getDate();
+      const suffix = (day % 100 >= 11 && day % 100 <= 13) ? 'th' : ({ 1: 'st', 2: 'nd', 3: 'rd' }[day % 10] || 'th');
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      document.querySelectorAll('[data-datetime]').forEach((node) => {
+        node.textContent = `${weekday} ${day}${suffix} ${month} ${now.getFullYear()} ${hours}:${minutes}`;
+      });
+    }
+
+    function getBlock(name, hours, minutes) {
+      const day = schedule[name];
+      if (!day) return { current: '-', next: '-' };
+      if (name === 'Sunday') return { current: 'Rest day', next: 'Monday � Client Builds (06:00-09:00)' };
+      const now = hours * 60 + minutes;
+      if (now >= 360 && now < 540) return { current: `${day.primary} (${day.primaryWindow})`, next: `${day.secondary} (${day.secondaryWindow})` };
+      if (now >= day.secondStart * 60 && now < day.secondEnd * 60) return { current: `${day.secondary} (${day.secondaryWindow})`, next: 'End of working blocks' };
+      if (now < 360) return { current: 'Before work blocks', next: `${day.primary} (${day.primaryWindow})` };
+      if (now >= 540 && now < day.secondStart * 60) return { current: 'Between blocks', next: `${day.secondary} (${day.secondaryWindow})` };
+      const nextName = dayName(tomorrow(new Date()));
+      return { current: 'After work blocks', next: nextName === 'Sunday' ? 'Sunday � Rest day' : `${nextName} � ${schedule[nextName].primary} (${schedule[nextName].primaryWindow})` };
+    }
+
+    function makeTask(text, key, checked) {
+      const el = document.createElement('label');
+      el.className = 'task';
+      el.innerHTML = `<input type="checkbox" ${checked ? 'checked' : ''} /><span>${text}</span>`;
+      el.querySelector('input').addEventListener('change', (event) => {
+        const state = getStore();
+        state[key] = event.target.checked;
+        setStore(state);
+        updateProgress();
+      });
+      return el;
+    }
+
+    function renderTaskList(containerId, items, prefix) {
+      const state = getStore();
+      const box = document.getElementById(containerId);
+      box.innerHTML = '';
+      items.forEach((item, index) => box.appendChild(makeTask(item, `${prefix}-${index}`, !!state[`${prefix}-${index}`])));
+    }
+
+    function renderToday(name) { renderTaskList('todayChecklist', schedule[name]?.tasks || [], `today-${name}`); }
+    function renderSales() { renderTaskList('salesChecklist', salesItems, 'sales'); }
+    function renderSustainability() { renderTaskList('sustainabilityChecklist', sustainabilityItems, 'sustainability'); }
+
+    function renderResourceBank(bankKey, title) {
+      const box = document.querySelector(`[data-resource-bank="${bankKey}"]`);
+      if (!box) return;
+      const links = getLinks();
+      box.innerHTML = `<h3>${title}</h3>`;
+      ['Reference link or file path', 'Supporting document', 'Working note or action link'].forEach((label, index) => {
+        const key = `${bankKey}-${index}`;
+        const field = document.createElement('label');
+        field.innerHTML = `${label}<input type="text" value="${(links[key] || '').replace(/"/g, '&quot;')}" placeholder="Paste a URL, local path, or note reference" />`;
+        const input = field.querySelector('input');
+        input.addEventListener('input', () => {
+          const state = getLinks();
+          state[key] = input.value;
+          setLinks(state);
+        });
+        box.appendChild(field);
+      });
+    }
+
+    function renderLearning() {
+      const state = getStore();
+      const grid = document.getElementById('learningGrid');
+      grid.innerHTML = '';
+      learningPlan.forEach((quarter) => {
+        const card = document.createElement('article');
+        card.className = 'card';
+        const listId = `${quarter.id}-list`;
+        const fillId = `${quarter.id}-fill`;
+        const textId = `${quarter.id}-text`;
+        const bankId = `${quarter.id}-bank`;
+        card.innerHTML = `
+          <p class="eyebrow">${quarter.title}</p>
+          <h2 class="section">${quarter.subtitle}</h2>
+          <p class="muted">${quarter.output}</p>
+          <div class="progress">
+            <div class="progress-row"><span>Quarter completion</span><span id="${textId}">0%</span></div>
+            <div class="bar"><div class="fill" id="${fillId}"></div></div>
+          </div>
+          <div id="${listId}" class="grid" style="margin-top:1rem;"></div>
+          <div class="resource-bank" data-resource-bank="${bankId}" style="margin-top:1rem;"></div>
+        `;
+        grid.appendChild(card);
+        const list = card.querySelector(`#${listId}`);
+        quarter.checklist.forEach((item, index) => list.appendChild(makeTask(item, `${quarter.id}-${index}`, !!state[`${quarter.id}-${index}`])));
+        renderResourceBank(bankId, `${quarter.title} links and documents`);
+      });
+    }
+
+    function setProgress(containerId, fillId, textId) {
+      const box = document.getElementById(containerId);
+      const checks = Array.from(box.querySelectorAll('input[type="checkbox"]'));
+      const done = checks.filter((item) => item.checked).length;
+      const total = checks.length || 1;
+      const percent = Math.round(done / total * 100);
+      document.getElementById(fillId).style.width = `${percent}%`;
+      document.getElementById(textId).textContent = `${percent}%`;
+      return { done, total };
+    }
+
+    function updateProgress() {
+      setProgress('todayChecklist', 'todayProgressFill', 'todayProgressText');
+      setProgress('salesChecklist', 'salesProgressFill', 'salesProgressText');
+      setProgress('sustainabilityChecklist', 'sustainabilityProgressFill', 'sustainabilityProgressText');
+      let done = 0;
+      let total = 0;
+      const summary = document.getElementById('learningSummary');
+      summary.innerHTML = '';
+      learningPlan.forEach((quarter) => {
+        const result = setProgress(`${quarter.id}-list`, `${quarter.id}-fill`, `${quarter.id}-text`);
+        done += result.done;
+        total += result.total;
+        const line = document.createElement('div');
+        line.className = 'line';
+        line.innerHTML = `<span class="bullet"></span><div><strong>${quarter.title}</strong><br />${result.done}/${result.total} checklist items complete.</div>`;
+        summary.appendChild(line);
+      });
+      const percent = Math.round(done / (total || 1) * 100);
+      document.getElementById('learningTotalFill').style.width = `${percent}%`;
+      document.getElementById('learningTotalText').textContent = `${percent}%`;
+    }
+
+    function updateClock() {
+      const now = new Date();
+      const name = dayName(now);
+      const block = getBlock(name, now.getHours(), now.getMinutes());
+      const today = schedule[name];
+      document.getElementById('metricDay').textContent = name;
+      document.getElementById('metricDate').textContent = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      document.getElementById('metricTime').textContent = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      document.getElementById('metricShift').textContent = block.current;
+      document.getElementById('currentBlock').textContent = block.current;
+      document.getElementById('nextBlock').textContent = block.next;
+      document.getElementById('todayTheme').textContent = today ? today.theme : '-';
+      document.getElementById('todayStamp').textContent = now.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+      document.getElementById('statusText').textContent = `${name} cadence � ${today ? today.theme : 'Operational'}`;
+      renderToday(name);
+      updateProgress();
+    }
+
+    function renderTomorrow() {
+      const next = tomorrow(new Date());
+      const name = dayName(next);
+      const plan = schedule[name];
+      document.getElementById('tomorrowHeadline').textContent = `${name} opens with ${plan.primary} (${plan.primaryWindow}) and continues with ${plan.secondary} (${plan.secondaryWindow}).`;
+      document.getElementById('tomorrowTags').innerHTML = `<span class="tag mist">${name}</span><span class="tag sea">${plan.theme}</span><span class="tag grass">${plan.primary}</span>`;
+      const box = document.getElementById('tomorrowPrep');
+      box.innerHTML = '';
+      plan.prep.forEach((item) => {
+        const line = document.createElement('div');
+        line.className = 'line';
+        line.innerHTML = `<span class="bullet"></span><div>${item}</div>`;
+        box.appendChild(line);
+      });
+    }
+
+    function initNav() {
+      const buttons = Array.from(document.querySelectorAll('button.nav-btn[data-page]'));
+      const pages = Array.from(document.querySelectorAll('.page'));
+      function activate(id) {
+        buttons.forEach((button) => button.classList.toggle('active', button.dataset.page === id));
+        pages.forEach((page) => page.classList.toggle('active', page.id === `page-${id}`));
+        localStorage.setItem(pageKey, id);
+      }
+      buttons.forEach((button) => button.addEventListener('click', () => activate(button.dataset.page)));
+      const saved = localStorage.getItem(pageKey);
+      if (saved && document.getElementById(`page-${saved}`)) activate(saved);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderSales();
+      renderSustainability();
+      renderLearning();
+      renderTomorrow();
+      renderResourceBank('today', 'Today attachments and links');
+      renderResourceBank('sales', 'Sales attachments and links');
+      renderResourceBank('governance', 'Governance files and policies');
+      renderResourceBank('finance', 'Finance sheets and registers');
+      renderResourceBank('sustainability', 'Sustainability references and plans');
+      renderResourceBank('client-docs', 'Client questionnaires, checklists, contracts');
+      renderResourceBank('sop-library', 'SOP links and template packs');
+      initNav();
+      document.getElementById('commandNote').value = localStorage.getItem(noteKey) || '';
+      document.getElementById('commandNote').addEventListener('input', (event) => localStorage.setItem(noteKey, event.target.value));
+      footerDateTime();
+      updateClock();
+      setInterval(updateClock, 1000);
+      setInterval(footerDateTime, 60000);
+    });
+  </script>
 </body>
 </html>

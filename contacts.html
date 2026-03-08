@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Waylight-Playtrix | Business Contacts</title>
+  <style>
+    :root {
+      --sky-top:#edf6fd;
+      --sky-mid:#d9ebfa;
+      --sky-low:#c8dff4;
+      --sea:#6da0d4;
+      --sea-deep:#2b5a9d;
+      --ink:#1f4278;
+      --ink-soft:#54739d;
+      --line:rgba(43,90,157,.16);
+      --panel:rgba(255,255,255,.78);
+      --panel-strong:rgba(255,255,255,.9);
+      --glow:0 24px 60px rgba(49,89,141,.12);
+      --grass:#b8cfa8;
+      --chalk:#f8fbfe;
+    }
+    * { box-sizing:border-box; }
+    body {
+      margin:0;
+      min-height:100vh;
+      color:var(--ink);
+      font-family:"Trebuchet MS","Gill Sans",Calibri,sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.72), transparent 24%),
+        radial-gradient(circle at top right, rgba(109,160,212,.18), transparent 28%),
+        linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 48%, var(--sky-low) 100%);
+    }
+    h1,h2,h3,strong,th { font-family:Georgia,"Times New Roman",serif; }
+    a { color:inherit; }
+    .wrap { width:min(1280px, calc(100% - 2rem)); margin:0 auto; }
+    .topbar {
+      position:sticky; top:0; z-index:10;
+      padding:1rem 0;
+      background:rgba(248,251,254,.7);
+      backdrop-filter:blur(16px);
+      border-bottom:1px solid rgba(43,90,157,.08);
+    }
+    .brand { display:flex; justify-content:space-between; gap:1rem; align-items:flex-start; flex-wrap:wrap; }
+    .eyebrow { margin:0; font-size:.78rem; letter-spacing:.22em; text-transform:uppercase; font-weight:800; color:var(--ink-soft); }
+    h1 { margin:.2rem 0; font-size:clamp(2rem,5vw,3.5rem); text-transform:uppercase; letter-spacing:.04em; color:var(--sea-deep); }
+    .sub { margin:0; max-width:52rem; color:var(--ink-soft); line-height:1.6; }
+    nav { display:flex; gap:.6rem; flex-wrap:wrap; margin-top:1rem; }
+    .nav-btn,.footer-btn,.action-btn {
+      display:inline-flex; align-items:center; justify-content:center; text-decoration:none; cursor:pointer;
+      border:1px solid rgba(43,90,157,.12); border-radius:16px; padding:.82rem 1rem;
+      background:rgba(255,255,255,.76); color:var(--ink); font-weight:800;
+      box-shadow:0 10px 24px rgba(49,89,141,.06);
+    }
+    .nav-btn.active,.nav-btn:hover,.action-btn.primary,.footer-btn:hover {
+      background:linear-gradient(135deg, var(--ink), var(--sea-deep)); color:#fff;
+    }
+    .stamp {
+      display:inline-flex; align-items:center; gap:.55rem; padding:.75rem .95rem; border-radius:999px;
+      background:rgba(255,255,255,.82); border:1px solid rgba(43,90,157,.12); box-shadow:0 12px 28px rgba(49,89,141,.08);
+      font-weight:700; color:var(--ink);
+    }
+    .dot { width:.72rem; height:.72rem; border-radius:50%; background:var(--sea-deep); box-shadow:0 0 0 6px rgba(109,160,212,.18); }
+    main.wrap { padding:1.6rem 0 3rem; }
+    .hero,.cols2,.footer-inner { display:grid; gap:1rem; }
+    .hero { grid-template-columns:1.25fr .95fr; }
+    .cols2 { grid-template-columns:repeat(2, minmax(0, 1fr)); margin-top:1rem; }
+    .card {
+      position:relative; overflow:hidden; border-radius:28px; padding:1.25rem;
+      background:var(--panel); border:1px solid var(--line); box-shadow:var(--glow);
+    }
+    .hero-card {
+      min-height:320px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.62), rgba(255,255,255,.3)),
+        linear-gradient(180deg, rgba(217,235,250,.88), rgba(200,223,244,.72));
+    }
+    .hero-card::before {
+      content:""; position:absolute; inset:auto -10% 0 -10%; height:48%;
+      background:linear-gradient(180deg, rgba(109,160,212,.08), rgba(184,207,168,.3));
+      clip-path:polygon(0 54%, 16% 46%, 34% 56%, 50% 44%, 66% 55%, 84% 42%, 100% 52%, 100% 100%, 0 100%);
+    }
+    .hero-card::after {
+      content:""; position:absolute; inset:auto -8% 8% -8%; height:28%;
+      background:linear-gradient(180deg, rgba(109,160,212,.3), rgba(43,90,157,.08));
+      clip-path:polygon(0 50%, 15% 61%, 31% 47%, 48% 63%, 66% 45%, 83% 56%, 100% 40%, 100% 100%, 0 100%);
+      opacity:.95;
+    }
+    .hero-inner { position:relative; z-index:1; display:flex; flex-direction:column; gap:1rem; justify-content:space-between; min-height:100%; }
+    h2 { margin:.15rem 0; font-size:clamp(1.4rem, 3vw, 2.35rem); color:var(--sea-deep); }
+    .panel-text { color:var(--ink-soft); line-height:1.6; }
+    .metrics { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:.75rem; }
+    .metric { border-radius:18px; padding:.95rem; background:rgba(255,255,255,.6); border:1px solid rgba(43,90,157,.1); }
+    .metric span { display:block; font-size:.76rem; letter-spacing:.14em; text-transform:uppercase; font-weight:800; color:var(--ink-soft); }
+    .metric strong { display:block; margin-top:.35rem; font-size:1.05rem; color:var(--ink); }
+    .section-title { margin:0 0 .25rem; color:var(--sea-deep); }
+    .mini-list,.contact-list { display:grid; gap:.75rem; margin-top:1rem; }
+    .mini-item,.contact-card {
+      display:flex; gap:.8rem; align-items:flex-start; border-radius:18px; padding:.95rem;
+      background:var(--panel-strong); border:1px solid rgba(43,90,157,.1);
+    }
+    .bullet { width:.78rem; height:.78rem; margin-top:.42rem; border-radius:50%; background:linear-gradient(180deg, var(--sea), var(--sea-deep)); box-shadow:0 0 0 6px rgba(109,160,212,.14); flex:0 0 auto; }
+    .tag-row { display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.8rem; }
+    .tag { display:inline-flex; align-items:center; padding:.45rem .7rem; border-radius:999px; background:rgba(43,90,157,.08); color:var(--sea-deep); font-size:.82rem; font-weight:800; }
+    table { width:100%; border-collapse:collapse; margin-top:.85rem; }
+    th,td { text-align:left; padding:.82rem .72rem; border-bottom:1px solid rgba(43,90,157,.08); vertical-align:top; }
+    th { font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft); }
+    td { color:var(--ink); }
+    .note-box {
+      width:100%; min-height:160px; resize:vertical; border-radius:18px; padding:1rem; font:inherit;
+      border:1px solid rgba(43,90,157,.14); background:rgba(255,255,255,.86); color:var(--ink);
+    }
+    .site-footer { margin-top:1.4rem; }
+    .footer-inner {
+      grid-template-columns:auto 1fr auto; align-items:end;
+      background:rgba(248,251,254,.84); border:1px solid rgba(43,90,157,.12); border-radius:24px; padding:1rem 1.1rem;
+      box-shadow:var(--glow);
+    }
+    .footer-nav { display:flex; gap:.55rem; flex-wrap:wrap; }
+    .footer-tagline { margin:0; color:var(--ink-soft); font-size:.92rem; text-align:center; }
+    .waylight-legal-block { text-align:right; }
+    .footer-meta,.waylight-legal-links,.waylight-legal-location,.waylight-legal-copyright { margin:.15rem 0; color:var(--ink-soft); font-size:.86rem; }
+    .waylight-legal-links a,.waylight-legal-copyright a { color:var(--ink); text-decoration:none; }
+    .waylight-legal-links a:hover,.waylight-legal-copyright a:hover { text-decoration:underline; }
+    @media (max-width:1100px) {
+      .hero,.cols2,.footer-inner { grid-template-columns:1fr; }
+      .metrics { grid-template-columns:1fr; }
+      .waylight-legal-block { text-align:left; }
+    }
+    @media (max-width:700px) {
+      .wrap { width:min(100% - 1rem, 1280px); }
+      .nav-btn,.footer-btn,.action-btn { width:100%; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <div class="brand">
+        <div>
+          <p class="eyebrow">Waylight-Playtrix</p>
+          <h1>Business Contacts</h1>
+          <p class="sub">A clean shell for the future contacts directory: clients, suppliers, advisers, partner organisations, and the key people around each project.</p>
+        </div>
+        <div class="stamp"><span class="dot"></span><span id="todayStamp">Loading date...</span></div>
+      </div>
+      <nav>
+        <a class="nav-btn" href="index.html">Day Ahead</a>
+        <a class="nav-btn" href="playtrix-console.html">Console</a>
+        <a class="nav-btn" href="tools.html">Tools</a>
+        <a class="nav-btn active" href="contacts.html">Contacts</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <article class="card hero-card">
+        <div class="hero-inner">
+          <div>
+            <p class="eyebrow">Directory Structure</p>
+            <h2>Keep the people around the business ordered and close at hand.</h2>
+            <p class="panel-text">This page is a proper placeholder rather than a dead link. It gives you a sensible shape for the contacts directory that can later become searchable, filterable, and tied into clients, questionnaires, contracts, and governance records.</p>
+          </div>
+          <div>
+            <div class="metrics">
+              <div class="metric"><span>Directory status</span><strong>Skeleton ready</strong></div>
+              <div class="metric"><span>Next build step</span><strong>Structured records</strong></div>
+              <div class="metric"><span>Target use</span><strong>Clients and suppliers</strong></div>
+            </div>
+            <div class="tag-row">
+              <span class="tag">Clients</span>
+              <span class="tag">Suppliers</span>
+              <span class="tag">Advisers</span>
+              <span class="tag">Partner Organisations</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <p class="eyebrow">Recommended Fields</p>
+        <h2 class="section-title">What each contact record should hold</h2>
+        <div class="mini-list">
+          <div class="mini-item"><span class="bullet"></span><div><strong>Name and organisation</strong><br />Primary contact, business name, role, and relationship type.</div></div>
+          <div class="mini-item"><span class="bullet"></span><div><strong>Practical contact details</strong><br />Email, phone, website, postal notes, and preferred communication route.</div></div>
+          <div class="mini-item"><span class="bullet"></span><div><strong>Operational context</strong><br />Current project, contract status, important dates, and what is waiting on whom.</div></div>
+          <div class="mini-item"><span class="bullet"></span><div><strong>Linked documents</strong><br />Questionnaires, agreements, proposals, notes, and any relevant SOP or policy.</div></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="cols2">
+      <article class="card">
+        <p class="eyebrow">Directory Preview</p>
+        <h2 class="section-title">Initial contact categories</h2>
+        <div class="contact-list">
+          <div class="contact-card"><span class="bullet"></span><div><strong>Clients and enquiries</strong><br />Live projects, warm leads, former clients, and prospects worth following up.</div></div>
+          <div class="contact-card"><span class="bullet"></span><div><strong>Technical suppliers</strong><br />Hosting, domains, software vendors, maintenance tools, and support accounts.</div></div>
+          <div class="contact-card"><span class="bullet"></span><div><strong>Professional advisers</strong><br />Accountant, legal support, insurers, and any specialist business help.</div></div>
+          <div class="contact-card"><span class="bullet"></span><div><strong>Community and referral links</strong><br />Parishes, charities, schools, local organisations, and referral routes.</div></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <p class="eyebrow">Capture Notes</p>
+        <h2 class="section-title">Directory planning notes</h2>
+        <p class="panel-text">Use this for the shape of the future directory: naming rules, categories, fields, and what should link into contracts or questionnaires later.</p>
+        <textarea class="note-box" id="contactNotes" placeholder="Example: Each client record should link to questionnaire, signed agreement, current website, hosting, renewal dates, and open actions."></textarea>
+      </article>
+    </section>
+
+    <section class="card" style="margin-top:1rem;">
+      <p class="eyebrow">Example Table</p>
+      <h2 class="section-title">Starter directory layout</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Record</th>
+            <th>Key fields</th>
+            <th>Linked material</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Client</td>
+            <td>Parish website contact</td>
+            <td>Name, organisation, email, phone, current status, last contact date</td>
+            <td>Questionnaire, proposal, agreement, content notes</td>
+          </tr>
+          <tr>
+            <td>Supplier</td>
+            <td>Hosting provider</td>
+            <td>Account owner, platform, renewal cycle, billing contact</td>
+            <td>Login notes, invoice link, SLA notes</td>
+          </tr>
+          <tr>
+            <td>Adviser</td>
+            <td>Accountant</td>
+            <td>Firm, named contact, response route, tax-year support notes</td>
+            <td>Engagement letter, reporting checklist</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <nav class="footer-nav" aria-label="Footer links">
+          <a href="index.html" class="footer-btn">Day Ahead</a>
+          <a href="playtrix-console.html" class="footer-btn">Console</a>
+          <a href="tools.html" class="footer-btn">Tools</a>
+          <a href="contacts.html" class="footer-btn">Contacts</a>
+        </nav>
+        <p class="footer-tagline">Solid systems for a digital world.</p>
+        <div class="waylight-legal-block" data-waylight-legal>
+          <p class="footer-meta"><span data-datetime>Loading date and time...</span></p>
+          <p class="waylight-legal-links"><a href="gdpr.html">GDPR</a> | <a href="privacy.html">Privacy</a> | <a href="terms.html">Terms</a></p>
+          <p class="waylight-legal-location">Bristol, United Kingdom</p>
+          <p class="waylight-legal-copyright">&#169; 2026 <a href="index.html">Waylight-Playtrix</a></p>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    function footerDateTime() {
+      const now = new Date();
+      const weekday = now.toLocaleDateString('en-GB', { weekday: 'long' });
+      const month = now.toLocaleDateString('en-GB', { month: 'long' });
+      const day = now.getDate();
+      const suffix = day % 100 >= 11 && day % 100 <= 13 ? 'th' : ({ 1: 'st', 2: 'nd', 3: 'rd' }[day % 10] || 'th');
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      document.querySelectorAll('[data-datetime], #todayStamp').forEach((node) => {
+        node.textContent = `${weekday} ${day}${suffix} ${month} ${now.getFullYear()} ${hours}:${minutes}`;
+      });
+    }
+
+    const notesKey = 'waylight-playtrix-contacts-notes';
+    const noteBox = document.getElementById('contactNotes');
+    noteBox.value = localStorage.getItem(notesKey) || '';
+    noteBox.addEventListener('input', () => {
+      localStorage.setItem(notesKey, noteBox.value);
+    });
+
+    footerDateTime();
+    setInterval(footerDateTime, 60000);
+  </script>
+</body>
+</html>

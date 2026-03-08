@@ -1,45 +1,133 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Playtrix · Tools Deck</title>
-
-    <link rel="stylesheet" href="assets/css/wl-core.css" />
-  <link rel="stylesheet" href="assets/css/site-theme.css" />
-  <link rel="stylesheet" href="Assets/Styles/playtrix.css" />
-  <link rel="icon" href="assets/img/irish-cross.svg" type="image/svg+xml" />
-  <link rel="apple-touch-icon" href="assets/img/irish-cross.svg" />
-  <link rel="stylesheet" href="assets/liturgy/liturgy-accent.css">
-  <script defer src="assets/liturgy/liturgy-accent.js"></script>
+  <title>Waylight-Playtrix | Tools Deck</title>
+  <link rel="icon" href="Assets/img/irish-cross.svg" type="image/svg+xml" />
+  <style>
+    :root {
+      --wa-sky:#dfeef8;
+      --wa-mist:#eef5fb;
+      --wa-sea:#8fb7df;
+      --wa-atlantic:#2d5fa8;
+      --wa-deep:#1f3f73;
+      --wa-cliff:#5f7ea6;
+      --wa-white:#f9fbfd;
+      --wa-grass:#9cb8a0;
+      --wa-sand:#e9e0cf;
+      --line:rgba(45,95,168,.18);
+      --panel:rgba(249,251,253,.9);
+      --shadow:0 24px 56px rgba(31,63,115,.14);
+    }
+    * { box-sizing:border-box; }
+    body {
+      margin:0;
+      min-height:100vh;
+      color:var(--wa-deep);
+      font-family:"Trebuchet MS","Gill Sans",Calibri,sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(143,183,223,.22), transparent 24%),
+        radial-gradient(circle at top right, rgba(45,95,168,.18), transparent 24%),
+        linear-gradient(180deg, var(--wa-mist), var(--wa-sky) 58%, var(--wa-white));
+    }
+    .topbar { position:sticky; top:0; z-index:10; padding:1rem 1.2rem; background:rgba(249,251,253,.84); backdrop-filter:blur(16px); border-bottom:1px solid rgba(45,95,168,.1); }
+    .wrap { width:min(1380px, calc(100% - 2rem)); margin:0 auto; }
+    .brand { display:flex; justify-content:space-between; gap:1rem; align-items:flex-start; flex-wrap:wrap; }
+    .eyebrow { margin:0; font-size:.78rem; letter-spacing:.2em; text-transform:uppercase; color:var(--wa-cliff); font-weight:800; }
+    h1,h2,h3 { font-family:Georgia,"Times New Roman",serif; }
+    h1 { margin:.2rem 0; font-size:clamp(2rem,5vw,3.2rem); text-transform:uppercase; letter-spacing:.04em; color:var(--wa-atlantic); }
+    .sub { margin:0; max-width:52rem; color:var(--wa-cliff); line-height:1.55; }
+    .stamp { display:flex; gap:.75rem; flex-wrap:wrap; }
+    .pill { display:inline-flex; align-items:center; gap:.5rem; padding:.72rem .92rem; border-radius:999px; background:rgba(255,255,255,.8); border:1px solid rgba(45,95,168,.12); box-shadow:0 10px 22px rgba(31,63,115,.08); font-weight:700; }
+    .dot { width:.72rem; height:.72rem; border-radius:50%; background:var(--wa-atlantic); box-shadow:0 0 0 6px rgba(45,95,168,.12); }
+    nav { display:flex; gap:.6rem; flex-wrap:wrap; margin-top:1rem; }
+    .nav-btn { display:inline-flex; align-items:center; justify-content:center; text-decoration:none; border:1px solid rgba(45,95,168,.14); background:rgba(255,255,255,.78); color:var(--wa-deep); padding:.8rem .95rem; border-radius:16px; font-weight:800; cursor:pointer; }
+    .nav-btn:hover { background:linear-gradient(135deg, var(--wa-deep), var(--wa-atlantic)); color:#fff; }
+    main.wrap { padding:1.4rem 0 3rem; }
+    .hero,.tool-grid { display:grid; gap:1rem; }
+    .hero { grid-template-columns:1.2fr .95fr; }
+    .tool-grid { grid-template-columns:repeat(2,minmax(0,1fr)); margin-top:1rem; }
+    .card,.pt-tools-row { background:var(--panel); border:1px solid var(--line); border-radius:26px; padding:1.2rem; box-shadow:var(--shadow); }
+    .hero-card { color:#fff; background:linear-gradient(145deg, rgba(31,63,115,.98), rgba(45,95,168,.94)); position:relative; overflow:hidden; }
+    .hero-card::after { content:""; position:absolute; inset:auto -10% -12% -10%; height:42%; background:linear-gradient(180deg, rgba(143,183,223,.24), rgba(156,184,160,.2)); clip-path:polygon(0 55%, 15% 46%, 31% 58%, 47% 42%, 62% 57%, 80% 44%, 100% 55%, 100% 100%, 0 100%); }
+    .hero-card > * { position:relative; z-index:1; }
+    .hero-card h2 { margin:.3rem 0 .8rem; font-size:clamp(1.9rem,4vw,2.8rem); max-width:14ch; line-height:.98; }
+    .hero-card p { color:rgba(245,248,252,.92); line-height:1.65; }
+    .quick-links { display:grid; gap:.7rem; }
+    .quick-link { display:flex; align-items:center; justify-content:space-between; gap:.7rem; padding:.85rem .95rem; border-radius:16px; background:rgba(255,255,255,.8); border:1px solid rgba(45,95,168,.14); text-decoration:none; color:var(--wa-deep); font-weight:800; }
+    .quick-link:hover { background:#fff; }
+    .pt-tools-row-header h2 { margin:0; font-size:1.4rem; color:var(--wa-atlantic); }
+    .pt-tools-row-header p { margin:.35rem 0 0; color:var(--wa-cliff); }
+    .pt-tools-chips { display:flex; flex-wrap:wrap; gap:.7rem; margin-top:1rem; }
+    .pt-tool-pill { border:1px solid rgba(45,95,168,.14); background:rgba(255,255,255,.86); color:var(--wa-deep); padding:.82rem .95rem; border-radius:999px; font:inherit; font-weight:800; cursor:pointer; box-shadow:0 8px 18px rgba(31,63,115,.06); }
+    .pt-tool-pill:hover,.pt-tool-pill.pt-tool-linked { background:linear-gradient(135deg, rgba(31,63,115,.98), rgba(45,95,168,.94)); color:#fff; }
+    .pt-tools-add { margin-top:.9rem; border:1px solid rgba(45,95,168,.14); background:rgba(143,183,223,.18); color:var(--wa-deep); padding:.7rem .9rem; border-radius:14px; font:inherit; font-weight:800; cursor:pointer; }
+    .info-list { display:grid; gap:.7rem; }
+    .line { display:flex; gap:.7rem; align-items:flex-start; padding:.82rem .9rem; border-radius:18px; background:rgba(255,255,255,.78); border:1px solid var(--line); }
+    .bullet { width:.72rem; height:.72rem; margin-top:.42rem; border-radius:50%; background:linear-gradient(180deg, var(--wa-sea), var(--wa-atlantic)); box-shadow:0 0 0 6px rgba(143,183,223,.14); flex:0 0 auto; }
+    .site-footer { margin-top:1.4rem; }
+    .footer-inner { display:grid; grid-template-columns:auto 1fr auto; gap:1rem; align-items:end; background:rgba(249,251,253,.84); border:1px solid rgba(45,95,168,.14); border-radius:24px; padding:1rem 1.1rem; box-shadow:var(--shadow); }
+    .footer-nav { display:flex; gap:.55rem; flex-wrap:wrap; }
+    .footer-btn { display:inline-flex; align-items:center; justify-content:center; padding:.7rem .9rem; border-radius:14px; text-decoration:none; font-weight:800; color:var(--wa-deep); background:rgba(255,255,255,.8); border:1px solid rgba(45,95,168,.14); }
+    .footer-tagline { margin:0; color:var(--wa-cliff); font-size:.92rem; text-align:center; }
+    .waylight-legal-block { text-align:right; }
+    .footer-meta,.waylight-legal-links,.waylight-legal-location,.waylight-legal-copyright { margin:.15rem 0; color:var(--wa-cliff); font-size:.86rem; }
+    .waylight-legal-links a,.waylight-legal-copyright a { color:var(--wa-deep); text-decoration:none; }
+    .waylight-legal-links a:hover,.waylight-legal-copyright a:hover { text-decoration:underline; }
+    @media (max-width:1100px) { .hero,.tool-grid,.footer-inner { grid-template-columns:1fr; } .waylight-legal-block { text-align:left; } }
+    @media (max-width:700px) { .wrap { width:min(100% - 1rem, 1380px); } .nav-btn,.footer-btn { width:100%; } }
+  </style>
 </head>
-
-<body class="playtrix-shell">
-  <div class="pt-shell">
-
-    <!-- Header -->
-    <header class="pt-shell-header">
-      <div class="pt-shell-title-block">
-        <h1 class="pt-shell-title">Playtrix Tools</h1>
-        <p class="pt-shell-subtitle">
-          Quick access deck for your everyday apps
-        </p>
-      </div>
-
-      <div class="pt-shell-status">
-        <span class="pt-status-pill">Tools · v1.0</span>
-      </div>
-    </header>
-
-    <!-- Main -->
-    <main class="pt-shell-main pt-tools-main">
-
-      <!-- MICROSOFT -->
-      <section class="pt-tools-row">
-        <div class="pt-tools-row-header">
-          <h2>Microsoft</h2>
-          <p>Work, files and productivity</p>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <div class="brand">
+        <div>
+          <p class="eyebrow">Waylight-Playtrix</p>
+          <h1>Waylight Tools Deck</h1>
+          <p class="sub">A common-look tool launcher for the day-ahead page and the business console, keeping everyday systems close at hand.</p>
         </div>
+        <div class="stamp">
+          <div class="pill"><span class="dot"></span><span>Tool access</span></div>
+          <div class="pill" id="todayStamp">Loading date...</div>
+        </div>
+      </div>
+      <nav>
+        <a class="nav-btn" href="index.html">Day Ahead</a>
+        <a class="nav-btn" href="playtrix-console.html">Console</a>
+        <a class="nav-btn" href="tools.html">Tools</a>
+        <a class="nav-btn" href="contacts.html">Contacts</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <article class="card hero-card">
+        <p class="eyebrow">Tool Access</p>
+        <h2>Keep the daily systems close, quiet, and usable.</h2>
+        <p>These buttons still support the existing local save-and-open behaviour. You can click to add a link, drag a link onto a pill, and reorder tool groups without losing the Waylight look and feel.</p>
+      </article>
+      <article class="card">
+        <p class="eyebrow">How to use it</p>
+        <h2>Quick rules</h2>
+        <div class="info-list" style="margin-top:1rem;">
+          <div class="line"><span class="bullet"></span><div>Click a tool to open its saved link or set one if none exists yet.</div></div>
+          <div class="line"><span class="bullet"></span><div>Drag links from the browser onto tool pills to store them quickly.</div></div>
+          <div class="line"><span class="bullet"></span><div>Right-click a user-added pill to remove it.</div></div>
+          <div class="line"><span class="bullet"></span><div>Use this as the operational shortcut layer beneath the console.</div></div>
+        </div>
+        <div class="quick-links" style="margin-top:1rem;">
+          <a class="quick-link" href="playtrix-console.html">Open command console <span>?</span></a>
+          <a class="quick-link" href="index.html">Back to day ahead <span>?</span></a>
+        </div>
+      </article>
+    </section>
+
+    <section class="tool-grid pt-tools-main">
+      <section class="pt-tools-row">
+        <div class="pt-tools-row-header"><h2>Microsoft</h2><p>Work, files and productivity</p></div>
         <div class="pt-tools-chips">
           <button class="pt-tool-pill" data-tool-key="ms-outlook">Outlook</button>
           <button class="pt-tool-pill" data-tool-key="ms-word">Word</button>
@@ -47,17 +135,11 @@
           <button class="pt-tool-pill" data-tool-key="ms-powerpoint">PowerPoint</button>
           <button class="pt-tool-pill" data-tool-key="ms-onedrive">OneDrive</button>
           <button class="pt-tool-pill" data-tool-key="ms-teams">Teams</button>
-          <button class="pt-tool-pill" data-tool-key="ms-todo">To&nbsp;Do</button>
+          <button class="pt-tool-pill" data-tool-key="ms-todo">To Do</button>
         </div>
-        <div class="pt-neon-divider"></div>
       </section>
-
-      <!-- GOOGLE -->
       <section class="pt-tools-row">
-        <div class="pt-tools-row-header">
-          <h2>Google</h2>
-          <p>Search, maps and cloud tools</p>
-        </div>
+        <div class="pt-tools-row-header"><h2>Google</h2><p>Search, maps and cloud tools</p></div>
         <div class="pt-tools-chips">
           <button class="pt-tool-pill" data-tool-key="google-gmail">Gmail</button>
           <button class="pt-tool-pill" data-tool-key="google-drive">Drive</button>
@@ -66,148 +148,90 @@
           <button class="pt-tool-pill" data-tool-key="google-calendar">Calendar</button>
           <button class="pt-tool-pill" data-tool-key="google-maps">Maps</button>
           <button class="pt-tool-pill" data-tool-key="google-youtube">YouTube</button>
-          <button class="pt-tool-pill" data-tool-key="google-home">Google&nbsp;Home</button>
         </div>
-        <div class="pt-neon-divider"></div>
       </section>
-
-      <!-- WORK & NHS -->
       <section class="pt-tools-row">
-        <div class="pt-tools-row-header">
-          <h2>Work &amp; NHS</h2>
-          <p>NBT, IPC/TV and professional tools</p>
-        </div>
+        <div class="pt-tools-row-header"><h2>Waylight and Work</h2><p>Business and client systems</p></div>
         <div class="pt-tools-chips">
-          <button class="pt-tool-pill" data-tool-key="work-nhsapp">NHS App</button>
-          <button class="pt-tool-pill" data-tool-key="work-folder">Work (folder)</button>
+          <button class="pt-tool-pill" data-tool-key="wl-console">Business Console</button>
+          <button class="pt-tool-pill" data-tool-key="wl-site">Waylight Site</button>
+          <button class="pt-tool-pill" data-tool-key="wl-workbench">Workbench</button>
+          <button class="pt-tool-pill" data-tool-key="work-email">Email</button>
+          <button class="pt-tool-pill" data-tool-key="work-onedrive">OneDrive</button>
           <button class="pt-tool-pill" data-tool-key="work-notion">Notion</button>
-          <button class="pt-tool-pill" data-tool-key="work-teams">Teams (Work)</button>
-          <button class="pt-tool-pill" data-tool-key="work-email">Email (Work)</button>
-          <button class="pt-tool-pill" data-tool-key="work-onedrive">OneDrive (Work)</button>
           <button class="pt-tool-pill" data-tool-key="work-librarieswest">LibrariesWest</button>
         </div>
-        <div class="pt-neon-divider"></div>
       </section>
-
-      <!-- COMMUNICATION & SOCIAL -->
       <section class="pt-tools-row">
-        <div class="pt-tools-row-header">
-          <h2>Communication &amp; Social</h2>
-          <p>People, messages and chat</p>
-        </div>
+        <div class="pt-tools-row-header"><h2>Communication</h2><p>People, messages and meetings</p></div>
         <div class="pt-tools-chips">
           <button class="pt-tool-pill" data-tool-key="comm-phone">Phone</button>
           <button class="pt-tool-pill" data-tool-key="comm-contacts">Contacts</button>
           <button class="pt-tool-pill" data-tool-key="comm-whatsapp">WhatsApp</button>
           <button class="pt-tool-pill" data-tool-key="comm-messenger">Messenger</button>
           <button class="pt-tool-pill" data-tool-key="comm-discord">Discord</button>
-          <button class="pt-tool-pill" data-tool-key="comm-facebook">Facebook</button>
           <button class="pt-tool-pill" data-tool-key="comm-chatgpt">ChatGPT</button>
         </div>
-        <div class="pt-neon-divider"></div>
       </section>
-
-      <!-- FINANCE & BILLS -->
       <section class="pt-tools-row">
-        <div class="pt-tools-row-header">
-          <h2>Finance &amp; Bills</h2>
-          <p>Money, accounts and utilities</p>
-        </div>
+        <div class="pt-tools-row-header"><h2>Finance and Bills</h2><p>Money, accounts and utilities</p></div>
         <div class="pt-tools-chips">
-          <button class="pt-tool-pill" data-tool-key="fin-banking">Banking (folder)</button>
-          <button class="pt-tool-pill" data-tool-key="fin-bills">Bills (folder)</button>
-          <button class="pt-tool-pill" data-tool-key="fin-tescomobile">Tesco&nbsp;Mobile</button>
+          <button class="pt-tool-pill" data-tool-key="fin-banking">Banking</button>
+          <button class="pt-tool-pill" data-tool-key="fin-bills">Bills</button>
+          <button class="pt-tool-pill" data-tool-key="fin-tescomobile">Tesco Mobile</button>
           <button class="pt-tool-pill" data-tool-key="fin-wallet">Wallet</button>
-          <button class="pt-tool-pill" data-tool-key="fin-pay-expenses">Pay &amp; Expenses</button>
+          <button class="pt-tool-pill" data-tool-key="fin-pay-expenses">Pay and Expenses</button>
         </div>
-        <div class="pt-neon-divider"></div>
       </section>
-
-      <!-- TRAVEL & OUT-AND-ABOUT -->
       <section class="pt-tools-row">
-        <div class="pt-tools-row-header">
-          <h2>Travel &amp; Out-and-About</h2>
-          <p>Getting there, food and errands</p>
-        </div>
-        <div class="pt-tools-chips">
-          <button class="pt-tool-pill" data-tool-key="travel-folder">Travel (folder)</button>
-          <button class="pt-tool-pill" data-tool-key="travel-deliveroo">Deliveroo</button>
-          <button class="pt-tool-pill" data-tool-key="travel-uber">Uber / Taxis</button>
-          <button class="pt-tool-pill" data-tool-key="travel-maps">Maps</button>
-        </div>
-        <div class="pt-neon-divider"></div>
-      </section>
-
-      <!-- MEDIA & LIFE -->
-      <section class="pt-tools-row">
-        <div class="pt-tools-row-header">
-          <h2>Media &amp; Everyday Life</h2>
-          <p>Photos, camera, reading and play</p>
-        </div>
-        <div class="pt-tools-chips">
-          <button class="pt-tool-pill" data-tool-key="life-camera">Camera</button>
-          <button class="pt-tool-pill" data-tool-key="life-gallery">Gallery</button>
-          <button class="pt-tool-pill" data-tool-key="life-calendar">Calendar</button>
-          <button class="pt-tool-pill" data-tool-key="life-clock">Clock</button>
-          <button class="pt-tool-pill" data-tool-key="life-scrabble">Scrabble&nbsp;GO</button>
-          <button class="pt-tool-pill" data-tool-key="life-librarieswest">LibrariesWest</button>
-        </div>
-        <div class="pt-neon-divider"></div>
-      </section>
-
-      <!-- SYSTEM & DEVICE -->
-      <section class="pt-tools-row">
-        <div class="pt-tools-row-header">
-          <h2>System &amp; Device</h2>
-          <p>Keeping the phone running smoothly</p>
-        </div>
+        <div class="pt-tools-row-header"><h2>System and Device</h2><p>Keep the machine stable</p></div>
         <div class="pt-tools-chips">
           <button class="pt-tool-pill" data-tool-key="sys-settings">Settings</button>
           <button class="pt-tool-pill" data-tool-key="sys-devicecare">Device care</button>
-          <button class="pt-tool-pill" data-tool-key="sys-msdefender">MS&nbsp;Defender</button>
-          <button class="pt-tool-pill" data-tool-key="sys-dolbyon">Dolby&nbsp;On</button>
-          <button class="pt-tool-pill" data-tool-key="sys-samsung-folder">Samsung (folder)</button>
-          <button class="pt-tool-pill" data-tool-key="sys-playstore">Play&nbsp;Store</button>
+          <button class="pt-tool-pill" data-tool-key="sys-msdefender">MS Defender</button>
+          <button class="pt-tool-pill" data-tool-key="sys-playstore">Play Store</button>
           <button class="pt-tool-pill" data-tool-key="sys-calculator">Calculator</button>
         </div>
       </section>
+    </section>
 
-    </main>
-
-    <!-- GLOBAL FOOTER + CLOCK -->
-    
-
-  </div>
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <nav class="footer-nav" aria-label="Footer links">
+          <a href="index.html" class="footer-btn">Day Ahead</a>
+          <a href="playtrix-console.html" class="footer-btn">Console</a>
+          <a href="tools.html" class="footer-btn">Tools</a><a href="contacts.html" class="footer-btn">Contacts</a>
+        </nav>
+        <p class="footer-tagline">Simple systems for a digital world.</p>
+        <div class="waylight-legal-block" data-waylight-legal>
+          <p class="footer-meta"><span data-datetime>Loading date and time...</span></p>
+          <p class="waylight-legal-links"><a href="gdpr.html">GDPR</a> | <a href="privacy.html">Privacy</a> | <a href="terms.html">Terms</a></p>
+          <p class="waylight-legal-location">Bristol, United Kingdom</p>
+          <p class="waylight-legal-copyright">&#169; 2026 <a href="index.html">Waylight-Playtrix</a></p>
+        </div>
+      </div>
+    </footer>
+  </main>
 
   <script src="Assets/Scripts/playtrix.js"></script>
-  <script src="assets/js/wl-core.js" defer></script>
-<footer class="wl-footer">
-  <div class="wl-footer__grid">
-    <div class="wl-footer__left">
-      <div class="wl-footer__line">
-        <span><strong>Dies</strong>: <span data-date></span></span>
-        <a class="wl-footer__info" href="https://alanwpgallagher.com/information.html" aria-label="About Dies">i</a>
-      </div>
-      <div class="wl-footer__meta">
-        <span>&copy; <span id="year" data-year></span> Bristol, UK &amp; Letterkenny, Ireland</span>
-        <span>&middot;</span>
-        <a href="privacy.html">Privacy</a>
-      </div>
-    </div>
-    <div class="wl-footer__center">
-      <em>Ora et labora.</em>
-    </div>
-    <div class="wl-footer__right">
-      <div class="wl-footer__line">
-        <span><strong>Hora</strong>: <span data-hora></span></span>
-        <a class="wl-footer__info" href="https://alanwpgallagher.com/information.html" aria-label="About Hora">i</a>
-      </div>
-      <div class="wl-footer__actions">
-        <button class="wl-footer__share" type="button" data-share>Share</button>
-        <span class="wl-footer__hint" data-share-hint aria-live="polite"></span>
-      </div>
-    </div>
-  </div>
-</footer>
+  <script>
+    function footerDateTime() {
+      const now = new Date();
+      const weekday = now.toLocaleDateString('en-GB', { weekday: 'long' });
+      const month = now.toLocaleDateString('en-GB', { month: 'long' });
+      const day = now.getDate();
+      const suffix = (day % 100 >= 11 && day % 100 <= 13) ? 'th' : ({ 1: 'st', 2: 'nd', 3: 'rd' }[day % 10] || 'th');
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      document.getElementById('todayStamp').textContent = `${weekday} ${day}${suffix} ${month} ${now.getFullYear()}`;
+      document.querySelectorAll('[data-datetime]').forEach((node) => {
+        node.textContent = `${weekday} ${day}${suffix} ${month} ${now.getFullYear()} ${hours}:${minutes}`;
+      });
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      footerDateTime();
+      setInterval(footerDateTime, 60000);
+    });
+  </script>
 </body>
 </html>

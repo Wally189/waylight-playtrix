@@ -1,129 +1,438 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Playtrix OS</title>
-
-  <!-- Core stylesheet -->
-    <link rel="stylesheet" href="assets/css/wl-core.css" />
-  <link rel="stylesheet" href="assets/css/site-theme.css" />
-  <link rel="stylesheet" href="Assets/Styles/playtrix.css" />
-  <link rel="icon" href="assets/img/irish-cross.svg" type="image/svg+xml" />
-  <link rel="apple-touch-icon" href="assets/img/irish-cross.svg" />
-  <link rel="stylesheet" href="assets/liturgy/liturgy-accent.css">
-  <script defer src="assets/liturgy/liturgy-accent.js"></script>
+  <title>Waylight-Playtrix | Workflow</title>
+  <link rel="icon" href="Assets/img/irish-cross.svg" type="image/svg+xml" />
+  <style>
+    :root {
+      --sky-top:#ebf5fd;
+      --sky-mid:#d7eafb;
+      --sky-low:#c4dcf3;
+      --sea-light:#88b8e8;
+      --sea-mid:#5c96d2;
+      --sea-deep:#2f67ad;
+      --cliff-light:#eef5fb;
+      --cliff-mid:#9fbfe0;
+      --cliff-deep:#5d87be;
+      --grass-light:#dce7bc;
+      --grass-mid:#9ec39b;
+      --grass-deep:#6e9f7f;
+      --ink:#224f94;
+      --ink-strong:#1f4a8a;
+      --ink-soft:#6489b8;
+      --line:rgba(53, 103, 173, 0.18);
+      --panel:rgba(248, 251, 255, 0.86);
+      --shadow:0 26px 60px rgba(31, 74, 138, 0.12);
+    }
+    * { box-sizing:border-box; }
+    body {
+      margin:0;
+      min-height:100vh;
+      color:var(--ink-strong);
+      font-family:"Trebuchet MS","Gill Sans",Calibri,sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.9), transparent 28%),
+        linear-gradient(180deg, #f4f9fe 0%, #deedf9 48%, #f7fbff 100%);
+    }
+    .wrap { width:min(1280px, calc(100% - 2rem)); margin:0 auto; padding:2rem 0 2.5rem; }
+    .hero,.cols2 { display:grid; gap:1rem; }
+    .hero { grid-template-columns:1.35fr .95fr; align-items:stretch; }
+    .cols2 { grid-template-columns:repeat(2,minmax(0,1fr)); margin-top:1rem; }
+    .card {
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:30px;
+      padding:1.3rem;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
+    }
+    .hero-card {
+      position:relative;
+      overflow:hidden;
+      min-height:440px;
+      background:
+        linear-gradient(180deg, var(--sky-top), var(--sky-mid) 42%, #bfd9f3 68%, #cbe0f4 100%);
+    }
+    .hero-card::before {
+      content:"";
+      position:absolute;
+      inset:auto -8% 22% -8%;
+      height:28%;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.45));
+      clip-path:polygon(0 58%, 13% 47%, 28% 57%, 41% 46%, 57% 60%, 73% 43%, 88% 57%, 100% 48%, 100% 100%, 0 100%);
+      opacity:.88;
+    }
+    .hero-card::after {
+      content:"";
+      position:absolute;
+      inset:auto -10% -2% -10%;
+      height:42%;
+      background:
+        linear-gradient(180deg, rgba(136,184,232,.5), rgba(47,103,173,.14));
+      clip-path:polygon(0 52%, 18% 48%, 34% 57%, 49% 44%, 67% 55%, 83% 40%, 100% 47%, 100% 100%, 0 100%);
+    }
+    .coast {
+      position:absolute;
+      left:-6%;
+      right:-6%;
+      bottom:-2%;
+      height:38%;
+      background:
+        linear-gradient(180deg, rgba(220,231,188,.96), rgba(158,195,155,.92));
+      clip-path:polygon(0 66%, 15% 60%, 28% 46%, 42% 57%, 59% 39%, 74% 52%, 89% 34%, 100% 43%, 100% 100%, 0 100%);
+      opacity:.94;
+    }
+    .coast::before {
+      content:"";
+      position:absolute;
+      inset:auto 6% 18% 32%;
+      height:35%;
+      background:linear-gradient(180deg, rgba(248,251,255,.92), rgba(111,146,197,.48));
+      clip-path:polygon(0 70%, 12% 40%, 25% 60%, 38% 33%, 50% 55%, 63% 27%, 78% 51%, 100% 35%, 100% 100%, 0 100%);
+    }
+    .hero-inner { position:relative; z-index:2; display:flex; flex-direction:column; justify-content:space-between; height:100%; }
+    .eyebrow {
+      margin:0;
+      font-size:.82rem;
+      letter-spacing:.24em;
+      text-transform:uppercase;
+      color:var(--ink-soft);
+      font-weight:800;
+    }
+    h1,h2,.metric strong { font-family:Georgia,"Times New Roman",serif; }
+    h1 {
+      margin:.35rem 0 .7rem;
+      font-size:clamp(3rem,7vw,5.2rem);
+      line-height:.9;
+      max-width:8ch;
+      color:var(--ink);
+      letter-spacing:.02em;
+    }
+    .rule {
+      width:min(28rem, 100%);
+      height:4px;
+      border-radius:999px;
+      background:linear-gradient(90deg, transparent, var(--ink), transparent);
+      margin:.25rem 0 1rem;
+    }
+    h2 { margin:0; font-size:1.42rem; color:var(--ink); }
+    .metrics { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.8rem; }
+    .metric {
+      padding:.95rem;
+      border-radius:20px;
+      background:rgba(255,255,255,.36);
+      border:1px solid rgba(53,103,173,.12);
+      box-shadow:0 12px 24px rgba(31,74,138,.07);
+    }
+    .metric span { display:block; font-size:.76rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); font-weight:700; }
+    .metric strong { display:block; margin-top:.35rem; font-size:1.08rem; color:var(--ink); }
+    .tags,.actions { display:flex; gap:.55rem; flex-wrap:wrap; }
+    .tags { margin-top:1rem; }
+    .tag-link {
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:.46rem .8rem; border-radius:999px;
+      background:rgba(255,255,255,.48); color:var(--ink); font-size:.8rem; font-weight:800;
+      text-decoration:none; border:1px solid rgba(53,103,173,.12);
+    }
+    .tag-link:hover { background:#fff; }
+    .actions { margin-top:1.2rem; }
+    .btn {
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:.92rem 1.12rem; border-radius:16px; text-decoration:none; font-weight:800;
+    }
+    .btn.primary { background:linear-gradient(135deg, var(--sea-deep), var(--ink)); color:#fff; }
+    .btn.secondary { background:rgba(255,255,255,.82); color:var(--ink); border:1px solid rgba(53,103,173,.14); }
+    .panel-text { margin:.35rem 0 0; color:var(--ink-soft); line-height:1.6; }
+    .line,.note-row {
+      display:flex; gap:.7rem; align-items:flex-start;
+      padding:.86rem .95rem; border-radius:18px;
+      background:rgba(255,255,255,.78); border:1px solid var(--line);
+    }
+    .bullet {
+      width:.72rem; height:.72rem; margin-top:.42rem; border-radius:50%;
+      background:linear-gradient(180deg, var(--sea-light), var(--sea-deep));
+      box-shadow:0 0 0 6px rgba(143,183,223,.14); flex:0 0 auto;
+    }
+    .scratch-form { display:flex; gap:.7rem; flex-wrap:wrap; margin-top:1rem; }
+    .scratch-form input {
+      flex:1 1 18rem; min-width:12rem; border:1px solid rgba(53,103,173,.18); border-radius:14px;
+      padding:.86rem .95rem; font:inherit; color:var(--ink); background:#fff;
+    }
+    .scratch-form button {
+      border:1px solid rgba(53,103,173,.14); background:var(--ink); color:#fff;
+      border-radius:14px; padding:.86rem 1rem; font:inherit; font-weight:800; cursor:pointer;
+    }
+    .note-list { display:grid; gap:.7rem; margin-top:1rem; }
+    .note-row { justify-content:space-between; }
+    .note-main { display:flex; gap:.7rem; align-items:flex-start; flex:1; }
+    .note-main input { margin-top:.18rem; accent-color:var(--sea-deep); transform:scale(1.12); }
+    .note-main span { line-height:1.55; }
+    .note-row.done .note-main span { text-decoration:line-through; color:var(--ink-soft); }
+    .note-delete { border:0; background:transparent; color:var(--ink-soft); font:inherit; font-weight:800; cursor:pointer; }
+    .site-footer { margin-top:1.4rem; }
+    .footer-inner {
+      display:grid; grid-template-columns:auto 1fr auto; gap:1rem; align-items:end;
+      background:rgba(248,251,255,.86); border:1px solid rgba(53,103,173,.14); border-radius:24px;
+      padding:1rem 1.1rem; box-shadow:var(--shadow);
+    }
+    .footer-nav { display:flex; gap:.55rem; flex-wrap:wrap; }
+    .footer-btn {
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:.7rem .9rem; border-radius:14px; text-decoration:none; font-weight:800;
+      color:var(--ink); background:rgba(255,255,255,.82); border:1px solid rgba(53,103,173,.14);
+    }
+    .footer-tagline { margin:0; color:var(--ink-soft); font-size:.92rem; text-align:center; }
+    .waylight-legal-block { text-align:right; }
+    .footer-meta,.waylight-legal-links,.waylight-legal-location,.waylight-legal-copyright { margin:.15rem 0; color:var(--ink-soft); font-size:.86rem; }
+    .waylight-legal-links a,.waylight-legal-copyright a { color:var(--ink); text-decoration:none; }
+    .waylight-legal-links a:hover,.waylight-legal-copyright a:hover { text-decoration:underline; }
+    @media (max-width:1100px) {
+      .hero,.cols2,.metrics,.footer-inner { grid-template-columns:1fr; }
+      .waylight-legal-block { text-align:left; }
+    }
+    @media (max-width:700px) {
+      .wrap { width:min(100% - 1rem, 1260px); }
+      .btn,.footer-btn,.scratch-form button { width:100%; }
+    }
+  </style>
 </head>
-
-<body class="playtrix-shell">
-
-  <!-- =============================================== -->
-  <!-- LANDING PAGE                                     -->
-  <!-- =============================================== -->
-  <header class="pt-home-header">
-    <h1 class="pt-home-title">PLAYTRIX OS</h1>
-    <p class="pt-home-tagline">A modern life-console for Alan Gallagher</p>
-  </header>
-
-  <main class="pt-home-main">
-    <section class="pt-home-section">
-      <p class="pt-home-lead">
-        Personal · Work · Civic · Creative · Systems
-        <br />
-        A unified method for life, work, mission, and order.
-      </p>
-
-      <button id="pt-enter-btn" class="pt-home-enter">
-        Enter Console
-      </button>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <article class="card hero-card">
+        <div class="hero-inner">
+          <div>
+            <p class="eyebrow">Waylight-Playtrix</p>
+            <h1>Workflow:</h1>
+            <div class="rule"></div>
+            <div class="metrics">
+              <div class="metric"><span id="dayLabel">Today</span><strong id="dayValue">-</strong></div>
+              <div class="metric"><span>Primary block</span><strong id="primaryBlock">-</strong></div>
+              <div class="metric"><span>Second block</span><strong id="secondBlock">-</strong></div>
+            </div>
+          </div>
+          <div>
+            <div class="tags">
+              <a class="tag-link" href="contacts.html">Business Contacts</a>
+              <a class="tag-link" href="https://www.waylight-atlantic.co.uk" target="_blank" rel="noopener">Waylight Atlantic</a>
+              <a class="tag-link" href="https://www.alanwpgallagher.info" target="_blank" rel="noopener">AlanWP Gallagher</a>
+            </div>
+            <div class="actions">
+              <a class="btn primary" href="playtrix-console.html">Open full console</a>
+              <a class="btn secondary" href="tools.html">Open tools deck</a>
+            </div>
+          </div>
+        </div>
+        <div class="coast" aria-hidden="true"></div>
+      </article>
+      <article class="card">
+        <p class="eyebrow" id="prepDayLabel" style="color:var(--ink-soft);">Today:</p>
+        <h2>Preparation checklist</h2>
+        <p class="panel-text" id="prepSummary">Loading today's working pattern...</p>
+        <form class="scratch-form" id="dailyForm">
+          <input id="dailyInput" type="text" placeholder="Add an item for today" />
+          <button type="submit">Add item</button>
+        </form>
+        <div id="dailyList" class="note-list"></div>
+      </article>
     </section>
+
+    <section class="cols2">
+      <article class="card">
+        <p class="eyebrow" style="color:var(--ink-soft);">Three Lanes</p>
+        <h2 id="lanesHeading">What today must serve</h2>
+        <div id="laneList" style="display:grid; gap:.7rem; margin-top:1rem;"></div>
+      </article>
+      <article class="card">
+        <p class="eyebrow" style="color:var(--ink-soft);">Position</p>
+        <h2>Longer-term notes</h2>
+        <p class="panel-text">This one stays put until you change it or remove it yourself.</p>
+        <form class="scratch-form" id="positionForm">
+          <input id="positionInput" type="text" placeholder="Add a longer-term note" />
+          <button type="submit">Add note</button>
+        </form>
+        <div id="positionList" class="note-list"></div>
+      </article>
+    </section>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <nav class="footer-nav" aria-label="Footer links">
+          <a href="index.html" class="footer-btn">Workflow</a>
+          <a href="playtrix-console.html" class="footer-btn">Console</a>
+          <a href="tools.html" class="footer-btn">Tools</a>
+        </nav>
+        <p class="footer-tagline">Simple systems for a digital world.</p>
+        <div class="waylight-legal-block" data-waylight-legal>
+          <p class="footer-meta"><span data-datetime>Loading date and time...</span></p>
+          <p class="waylight-legal-links"><a href="gdpr.html">GDPR</a> | <a href="privacy.html">Privacy</a> | <a href="terms.html">Terms</a></p>
+          <p class="waylight-legal-location">Bristol, United Kingdom</p>
+          <p class="waylight-legal-copyright">&#169; 2026 <a href="index.html">Waylight-Playtrix</a></p>
+        </div>
+      </div>
+    </footer>
   </main>
 
-  <!-- =============================================== -->
-  <!-- ACCESS PANEL (Hidden until Enter pressed)        -->
-  <!-- =============================================== -->
-  <div id="pt-lock" class="pt-lock-overlay hidden">
-    <div class="pt-lock-panel">
-      <h2 class="pt-lock-title">Access Required</h2>
-      <p class="pt-lock-text">
-        Enter your access code to open the Playtrix Console.
-      </p>
-
-      <form id="pt-lock-form" class="pt-lock-form">
-        <label for="pt-pass" class="pt-lock-label">Access code</label>
-        <input
-          id="pt-pass"
-          class="pt-lock-input"
-          type="password"
-          autocomplete="off"
-        />
-
-        <p id="pt-lock-error" class="pt-lock-error"></p>
-
-        <button type="submit" class="pt-lock-button">Unlock</button>
-      </form>
-
-      <p class="pt-lock-note">For your eyes only, Alan.</p>
-    </div>
-  </div>
-
-  <!-- =============================================== -->
-  <!-- GLOBAL FOOTER + CLOCK                            -->
-  <!-- =============================================== -->
-  
-
-  <!-- =============================================== -->
-  <!-- SCRIPTS                                          -->
-  <!-- =============================================== -->
-  <script src="Assets/Scripts/playtrix.js"></script>
-
-
   <script>
-    /* ==========================================================
-       INDEX PAGE INTERACTION
-    ========================================================== */
+    const schedule = {
+      Monday: { primary: 'Client Builds (06:00-09:00)', secondary: 'Planning and Client Communication (16:00-19:00)', summary: 'Client builds first, client communication and planning later.', lanes: ['Build the most important client work.', 'Answer client messages properly.', 'Keep control of the week.'] },
+      Tuesday: { primary: 'Client Project Work (06:00-09:00)', secondary: 'Outreach and Business Development (15:00-18:00)', summary: 'Project progress first, business development later.', lanes: ['Move live project work forward.', 'Do the day\'s outreach.', 'Keep proposals and follow-up moving.'] },
+      Wednesday: { primary: 'Technical Development (06:00-09:00)', secondary: 'Maintenance and Reliability Checks (12:00-15:00)', summary: 'Improve the technical side, then check reliability.', lanes: ['Improve the technical base.', 'Keep sites healthy and checked.', 'Reduce avoidable future problems.'] },
+      Thursday: { primary: 'Systems and Documentation (06:00-09:00)', secondary: 'Governance and Finance (15:00-18:00)', summary: 'System work first, then governance and finance.', lanes: ['Improve systems and procedures.', 'Keep records and finance current.', 'Reduce clutter and loose ends.'] },
+      Friday: { primary: 'Client Delivery Work (06:00-09:00)', secondary: 'Visibility and Publishing (12:00-15:00)', summary: 'Finish delivery work, then publish something useful.', lanes: ['Finish the week\'s delivery properly.', 'Put out visible proof of work.', 'Leave the week tidy.'] },
+      Saturday: { primary: 'Learning and Skill Development (06:00-09:00)', secondary: 'Weekly Review and Preparation (15:00-18:00)', summary: 'Learn something useful, then review and prepare.', lanes: ['Study what the business needs next.', 'Review the week honestly.', 'Prepare the coming week.'] },
+      Sunday: { primary: 'Rest', secondary: 'Rest', summary: 'Sunday points forward to Monday rather than today.', lanes: ['Mass and prayer.', 'Rest and family life.', 'Quiet preparation for Monday.'] }
+    };
 
-    const enterBtn = document.getElementById("pt-enter-btn");
-    const lockOverlay = document.getElementById("pt-lock");
+    const dailyKey = 'waylight-playtrix-daily-items';
+    const positionKey = 'waylight-playtrix-position-items';
 
-    // Show password overlay when Enter is pressed
-    enterBtn.addEventListener("click", () => {
-      lockOverlay.classList.remove("hidden");
-    });
+    function footerDateTime() {
+      const now = new Date();
+      const weekday = now.toLocaleDateString('en-GB', { weekday: 'long' });
+      const month = now.toLocaleDateString('en-GB', { month: 'long' });
+      const day = now.getDate();
+      const suffix = (day % 100 >= 11 && day % 100 <= 13) ? 'th' : ({ 1: 'st', 2: 'nd', 3: 'rd' }[day % 10] || 'th');
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      document.querySelectorAll('[data-datetime]').forEach((node) => {
+        node.textContent = `${weekday} ${day}${suffix} ${month} ${now.getFullYear()} ${hours}:${minutes}`;
+      });
+    }
 
-    // When unlocked successfully, redirect to console
-    document.addEventListener("playtrix-unlocked", () => {
-      window.location.href = "playtrix-console.html";
+    function dayName(date) {
+      return date.toLocaleDateString('en-GB', { weekday: 'long' });
+    }
+
+    function isoDay(date) {
+      return date.toISOString().slice(0, 10);
+    }
+
+    function getReferenceDate() {
+      const now = new Date();
+      if (dayName(now) === 'Sunday') {
+        const next = new Date(now);
+        next.setDate(now.getDate() + 1);
+        return { label: 'Tomorrow', date: next };
+      }
+      return { label: 'Today', date: now };
+    }
+
+    function loadDailyState(dayKey) {
+      try {
+        const all = JSON.parse(localStorage.getItem(dailyKey)) || {};
+        return all[dayKey] || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveDailyState(dayKey, items) {
+      localStorage.setItem(dailyKey, JSON.stringify({ [dayKey]: items }));
+    }
+
+    function loadPositionState() {
+      try { return JSON.parse(localStorage.getItem(positionKey)) || []; } catch { return []; }
+    }
+
+    function savePositionState(items) {
+      localStorage.setItem(positionKey, JSON.stringify(items));
+    }
+
+    function renderNoteList(containerId, items, onToggle, onDelete) {
+      const box = document.getElementById(containerId);
+      box.innerHTML = '';
+      items.forEach((item, index) => {
+        const row = document.createElement('div');
+        row.className = `note-row${item.done ? ' done' : ''}`;
+        row.innerHTML = `
+          <div class="note-main">
+            <input type="checkbox" ${item.done ? 'checked' : ''} />
+            <span>${item.text}</span>
+          </div>
+          <button class="note-delete" type="button">Delete</button>
+        `;
+        row.querySelector('input').addEventListener('change', (event) => onToggle(index, event.target.checked));
+        row.querySelector('button').addEventListener('click', () => onDelete(index));
+        box.appendChild(row);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const reference = getReferenceDate();
+      const workingDay = reference.label === 'Today';
+      const currentDayName = dayName(reference.date);
+      const plan = schedule[currentDayName];
+      const dayKey = isoDay(reference.date);
+
+      document.getElementById('dayLabel').textContent = reference.label;
+      document.getElementById('dayValue').textContent = currentDayName;
+      document.getElementById('primaryBlock').textContent = plan.primary;
+      document.getElementById('secondBlock').textContent = plan.secondary;
+      document.getElementById('prepDayLabel').textContent = `${reference.label}:`;
+      document.getElementById('prepSummary').textContent = `${reference.label}\'s working pattern: ${plan.summary}`;
+      document.getElementById('lanesHeading').textContent = workingDay ? 'What today must serve' : 'What tomorrow must serve';
+
+      plan.lanes.forEach((item) => {
+        const row = document.createElement('div');
+        row.className = 'line';
+        row.innerHTML = `<span class="bullet"></span><div>${item}</div>`;
+        document.getElementById('laneList').appendChild(row);
+      });
+
+      let dailyItems = loadDailyState(dayKey);
+      let positionItems = loadPositionState();
+
+      const renderDaily = () => renderNoteList('dailyList', dailyItems, (index, done) => {
+        dailyItems[index].done = done;
+        saveDailyState(dayKey, dailyItems);
+        renderDaily();
+      }, (index) => {
+        dailyItems.splice(index, 1);
+        saveDailyState(dayKey, dailyItems);
+        renderDaily();
+      });
+
+      const renderPosition = () => renderNoteList('positionList', positionItems, (index, done) => {
+        positionItems[index].done = done;
+        savePositionState(positionItems);
+        renderPosition();
+      }, (index) => {
+        positionItems.splice(index, 1);
+        savePositionState(positionItems);
+        renderPosition();
+      });
+
+      document.getElementById('dailyForm').addEventListener('submit', (event) => {
+        event.preventDefault();
+        const input = document.getElementById('dailyInput');
+        const text = input.value.trim();
+        if (!text) return;
+        dailyItems.push({ text, done: false });
+        saveDailyState(dayKey, dailyItems);
+        input.value = '';
+        renderDaily();
+      });
+
+      document.getElementById('positionForm').addEventListener('submit', (event) => {
+        event.preventDefault();
+        const input = document.getElementById('positionInput');
+        const text = input.value.trim();
+        if (!text) return;
+        positionItems.push({ text, done: false });
+        savePositionState(positionItems);
+        input.value = '';
+        renderPosition();
+      });
+
+      renderDaily();
+      renderPosition();
+      footerDateTime();
+      setInterval(footerDateTime, 60000);
     });
   </script>
-  <script src="assets/js/wl-core.js" defer></script>
-<footer class="wl-footer">
-  <div class="wl-footer__grid">
-    <div class="wl-footer__left">
-      <div class="wl-footer__line">
-        <span><strong>Dies</strong>: <span data-date></span></span>
-        <a class="wl-footer__info" href="https://alanwpgallagher.com/information.html" aria-label="About Dies">i</a>
-      </div>
-      <div class="wl-footer__meta">
-        <span>&copy; <span id="year" data-year></span> Bristol, UK &amp; Letterkenny, Ireland</span>
-        <span>&middot;</span>
-        <a href="privacy.html">Privacy</a>
-      </div>
-    </div>
-    <div class="wl-footer__center">
-      <em>Ora et labora.</em>
-    </div>
-    <div class="wl-footer__right">
-      <div class="wl-footer__line">
-        <span><strong>Hora</strong>: <span data-hora></span></span>
-        <a class="wl-footer__info" href="https://alanwpgallagher.com/information.html" aria-label="About Hora">i</a>
-      </div>
-      <div class="wl-footer__actions">
-        <button class="wl-footer__share" type="button" data-share>Share</button>
-        <span class="wl-footer__hint" data-share-hint aria-live="polite"></span>
-      </div>
-    </div>
-  </div>
-</footer>
 </body>
 </html>
