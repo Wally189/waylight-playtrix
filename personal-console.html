@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Waylight-Playtrix | Personal Console</title>
+  <link rel="icon" href="Assets/img/irish-cross.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="Assets/css/playtrix-filofax.css" />
+  <style>
+    body.personal-shell {
+      margin: 0;
+      min-height: 100vh;
+      --wf-primary: #456a4d;
+      --wf-primary-soft: rgba(69, 106, 77, 0.12);
+      --wf-accent: #6c825d;
+      --wf-accent-soft: rgba(108, 130, 93, 0.14);
+      --wf-danger-soft: rgba(160, 76, 76, 0.14);
+    }
+    main.wrap { padding: 1.4rem 0 3rem; }
+    .page { display: none; }
+    .page.active { display: block; }
+    .personal-hero,
+    .personal-grid,
+    .personal-diary-grid { display: grid; gap: 1rem; }
+    .personal-hero > *,
+    .personal-grid > *,
+    .personal-diary-grid > *,
+    .personal-metrics > * { min-width: 0; }
+    .personal-hero { grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.9fr); }
+    .personal-grid,
+    .personal-diary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .personal-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.8rem; margin-top: 1rem; }
+    .personal-metrics .metric { background: var(--wf-primary); border-color: var(--wf-primary); }
+    .personal-metrics .metric span,
+    .personal-metrics .metric strong { color: #fff !important; }
+    .personal-shell .hero-card {
+      background:
+        radial-gradient(circle at top right, rgba(69,106,77,.12), transparent 36%),
+        linear-gradient(180deg, rgba(255,255,255,.98), rgba(247,245,240,.96));
+    }
+    .personal-checklist,
+    .pillar-list { display: grid; gap: 0.8rem; }
+    .personal-task,
+    .pillar-row { display: flex; gap: 0.75rem; align-items: start; padding: 0.95rem 1rem; border: 1px solid rgba(164, 209, 245, 0.9); border-radius: 18px; background: rgba(255,255,255,0.92); min-width: 0; overflow-wrap: break-word; word-wrap: break-word; }
+    .personal-task input { margin-top: 0.2rem; accent-color: var(--wf-primary); }
+    textarea { width: 100%; min-height: 220px; resize: vertical; }
+    .personal-route-table td:last-child,
+    .personal-route-table th:last-child { width: 110px; }
+    @media (max-width: 980px) {
+      .personal-hero,
+      .personal-grid,
+      .personal-diary-grid,
+      .personal-metrics { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="personal-shell">
+  <header class="topbar">
+    <div class="wrap">
+      <div class="brand shell-brand">
+        <div class="brand-head">
+          <p class="eyebrow">Waylight-Playtrix</p>
+          <h1>Waylight Personal Console</h1>
+          <p class="sub">A simpler personal Filofax desk for vocation, formation, stewardship, relationships, renewal, and health notes.</p>
+        </div>
+        <div class="toggle-stack">
+          <a class="shell-toggle" href="playtrix-console.html#overview">Waylight Business Console</a>
+        </div>
+      </div>
+      <nav id="personalNav">
+        <button class="nav-btn active" data-page="front">Front Door</button>
+        <button class="nav-btn" data-page="diary">Diary</button>
+        <button class="nav-btn" data-page="pillars">Pillars</button>
+        <button class="nav-btn" data-page="tools">Tools</button>
+      </nav>
+      <div class="utility-links" aria-label="Public properties">
+        <a class="utility-link" href="https://www.waylight-atlantic.co.uk" target="_blank" rel="noopener">Waylight Atlantic</a>
+        <a class="utility-link" href="https://www.alanwpgallagher.info" target="_blank" rel="noopener">AlanWP Gallagher</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="page active" id="page-front">
+      <div class="personal-hero">
+        <article class="card hero-card">
+          <p class="eyebrow">Front Door</p>
+          <h2>Keep the personal day ordered and small.</h2>
+          <details class="help-card"><summary><span class="help-icon">i</span><span>Front Door help</span></summary><div class="help-card-content"><p>Use this to keep life in due proportion. Decide what matters today, note anything that must not be forgotten, and let the rest wait until its proper time.</p></div></details>
+          <div class="personal-metrics">
+            <div class="metric"><span>Day</span><strong id="personalDay">-</strong></div>
+            <div class="metric"><span>Date</span><strong id="personalDate">-</strong></div>
+            <div class="metric"><span>Mode</span><strong>Personal order</strong></div>
+          </div>
+        </article>
+        <article class="card">
+          <p class="eyebrow">Today</p>
+          <h2>Personal checklist</h2>
+          <div id="personalChecklist" class="personal-checklist"></div>
+        </article>
+      </div>
+
+      <div class="personal-grid" style="margin-top: 1rem;">
+        <article class="card">
+          <p class="eyebrow">Position</p>
+          <h2>One note to keep in view</h2>
+          <textarea id="personalNote" placeholder="What needs to be kept in view today?"></textarea>
+        </article>
+        <article class="card">
+          <p class="eyebrow">Pillars</p>
+          <h2>Personal structure</h2>
+          <div class="pillar-list">
+            <div class="pillar-row"><div><strong>01 Vocation and Work</strong><p class="muted">Work, calling, obligations, and right priorities.</p></div></div>
+            <div class="pillar-row"><div><strong>02 Formation</strong><p class="muted">Learning, prayer, reading, study, and personal development.</p></div></div>
+            <div class="pillar-row"><div><strong>03 Household and Stewardship</strong><p class="muted">Home, admin, money, maintenance, and practical order.</p></div></div>
+            <div class="pillar-row"><div><strong>04 Community and Relationship</strong><p class="muted">Family, friends, parish, service, and obligations to others.</p></div></div>
+            <div class="pillar-row"><div><strong>05 Rest and Renewal</strong><p class="muted">Recovery, leisure, hobbies, proper stopping, and renewal.</p></div></div>
+            <div class="pillar-row"><div><strong>06 Health and Personal Instructions</strong><p class="muted">Health details, routines, instructions, and essential personal information.</p></div></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="page" id="page-tools">
+      <article class="card">
+        <p class="eyebrow">Tools</p>
+        <h2>Open the right personal sheet</h2>
+        <details class="help-card"><summary><span class="help-icon">i</span><span>Tools help</span></summary><div class="help-card-content"><p>Use this page as a quiet launcher. Keep only the links you actually need in personal life, and move anything business-related back into the business console.</p></div></details>
+        <table class="site-table personal-route-table" style="margin-top: 1rem;">
+          <thead><tr><th>Tool</th><th>Use</th><th>Open</th></tr></thead>
+          <tbody>
+            <tr><td>Waylight Business Console</td><td>Return to business operations and the live front desk.</td><td><a href="playtrix-console.html#overview">Open</a></td></tr>
+            <tr><td>Tools Deck</td><td>Shared launcher for business and personal systems.</td><td><a href="tools.html">Open</a></td></tr>
+            <tr><td>Contacts</td><td>Open the shared contact register when needed.</td><td><a href="contacts.html">Open</a></td></tr>
+            <tr><td>OneDrive Personal</td><td>Link your personal folder system here later.</td><td><a href="#">Add link</a></td></tr>
+            <tr><td>Diary</td><td>Write what happened, what matters, and what needs doing next.</td><td><button class="planner-btn" type="button" data-open-page="diary">Open</button></td></tr>
+          </tbody>
+        </table>
+      </article>
+    </section>
+
+    <section class="page" id="page-diary">
+      <div class="personal-diary-grid">
+        <article class="card">
+          <p class="eyebrow">Diary</p>
+          <h2>Today</h2>
+          <textarea id="personalDiaryToday" placeholder="What happened today? What matters? What should be remembered?"></textarea>
+        </article>
+        <article class="card">
+          <p class="eyebrow">Review</p>
+          <h2>This week</h2>
+          <textarea id="personalDiaryWeek" placeholder="What is going well? What is out of order? What needs changing next week?"></textarea>
+        </article>
+      </div>
+    </section>
+
+    <section class="page" id="page-pillars">
+      <article class="card">
+        <p class="eyebrow">Pillars</p>
+        <h2>Folder-led personal structure</h2>
+        <details class="help-card"><summary><span class="help-icon">i</span><span>Why these divisions matter</span></summary><div class="help-card-content"><p>A Filofax works because life is divided into workable sections. These pillars mirror your folder structure so the digital system and the real files reinforce one another.</p></div></details>
+        <table class="site-table" style="margin-top: 1rem;">
+          <thead><tr><th>Section</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td>01 Vocation and Work</td><td>Personal relation to work, calling, boundaries, and obligations.</td></tr>
+            <tr><td>02 Formation</td><td>Study plans, reading, prayer notes, courses, and development.</td></tr>
+            <tr><td>03 Household and Stewardship</td><td>Admin, home routines, household maintenance, and money stewardship.</td></tr>
+            <tr><td>04 Community and Relationship</td><td>Friendship, family, parish, social obligations, and acts of service.</td></tr>
+            <tr><td>05 Rest and Renewal</td><td>Proper leisure, recovery, sleep, and deliberate renewal.</td></tr>
+            <tr><td>06 Health and Personal Instructions</td><td>Health details, routines, instructions, and essential personal information.</td></tr>
+          </tbody>
+        </table>
+      </article>
+    </section>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <nav class="footer-nav" aria-label="Footer links">
+          <a href="personal-console.html#front" class="footer-btn">Home</a>
+          <a href="sitemap.html" class="footer-btn">Sitemap</a>
+          <a href="playtrix-console.html#overview" class="footer-btn">Waylight Business Console</a>
+        </nav>
+        <p class="footer-tagline">Simple systems for a digital world.</p>
+        <div class="waylight-legal-block" data-waylight-legal>
+          <p class="footer-meta"><span data-datetime>Loading date and time...</span></p>
+          <p class="waylight-legal-links"><a href="gdpr.html">GDPR</a> | <a href="privacy.html">Privacy</a> | <a href="terms.html">Terms</a></p>
+          <p class="waylight-legal-location">Bristol, United Kingdom</p>
+          <p class="waylight-legal-copyright">&#169; 2026 <a href="https://www.waylight-atlantic.co.uk" target="_blank" rel="noopener">Waylight-Atlantic</a></p>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    const personalKeys = {
+      checklist: 'playtrix.personal.front.checklist',
+      note: 'playtrix.personal.front.note',
+      diaryToday: 'playtrix.personal.diary.today',
+      diaryWeek: 'playtrix.personal.diary.week'
+    };
+
+    const seedChecklist = [
+      { id: 'prayer', text: 'Keep prayer and principal duties in order first.', done: false },
+      { id: 'household', text: 'Do one household or stewardship task properly.', done: false },
+      { id: 'formation', text: 'Advance one formation or health responsibility.', done: false }
+    ];
+
+    function readKey(key, fallback) {
+      try {
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      } catch {
+        return fallback;
+      }
+    }
+
+    function writeKey(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function openPersonalPage(pageName, updateHash = true) {
+      document.querySelectorAll('#personalNav .nav-btn[data-page]').forEach((node) => {
+        node.classList.toggle('active', node.dataset.page === pageName);
+      });
+      document.querySelectorAll('.page').forEach((page) => page.classList.remove('active'));
+      const page = document.getElementById('page-' + pageName);
+      if (page) {
+        page.classList.add('active');
+      }
+      if (updateHash) {
+        history.replaceState(null, '', '#' + pageName);
+      }
+    }
+
+    function updateStamp() {
+      const now = new Date();
+      const day = now.toLocaleDateString('en-GB', { weekday: 'long' });
+      const date = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      const time = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+      document.getElementById('personalDay').textContent = day;
+      document.getElementById('personalDate').textContent = date;
+      document.querySelectorAll('[data-datetime]').forEach((node) => {
+        node.textContent = day + ', ' + date + ' ' + time;
+      });
+    }
+
+    function renderChecklist() {
+      const items = readKey(personalKeys.checklist, seedChecklist);
+      const wrap = document.getElementById('personalChecklist');
+      wrap.innerHTML = '';
+      items.forEach((item, index) => {
+        const row = document.createElement('label');
+        row.className = 'personal-task';
+        row.innerHTML = '<input type="checkbox" ' + (item.done ? 'checked' : '') + ' />' +
+          '<span style="' + (item.done ? 'text-decoration: line-through; color: var(--wf-muted);' : '') + '">' + item.text + '</span>';
+        row.querySelector('input').addEventListener('change', (event) => {
+          items[index].done = event.target.checked;
+          writeKey(personalKeys.checklist, items);
+          renderChecklist();
+        });
+        wrap.appendChild(row);
+      });
+    }
+
+    document.querySelectorAll('#personalNav .nav-btn[data-page]').forEach((btn) => {
+      btn.addEventListener('click', () => openPersonalPage(btn.dataset.page));
+    });
+
+    document.querySelectorAll('[data-open-page]').forEach((btn) => {
+      btn.addEventListener('click', () => openPersonalPage(btn.dataset.openPage));
+    });
+
+    const note = document.getElementById('personalNote');
+    note.value = readKey(personalKeys.note, '');
+    note.addEventListener('input', () => writeKey(personalKeys.note, note.value));
+
+    const diaryToday = document.getElementById('personalDiaryToday');
+    const diaryWeek = document.getElementById('personalDiaryWeek');
+    diaryToday.value = readKey(personalKeys.diaryToday, '');
+    diaryWeek.value = readKey(personalKeys.diaryWeek, '');
+    diaryToday.addEventListener('input', () => writeKey(personalKeys.diaryToday, diaryToday.value));
+    diaryWeek.addEventListener('input', () => writeKey(personalKeys.diaryWeek, diaryWeek.value));
+
+    function applyHashPage() {
+      const pageName = window.location.hash.replace('#', '');
+      if (['front', 'tools', 'diary', 'pillars'].includes(pageName)) {
+        openPersonalPage(pageName, false);
+      }
+    }
+
+    window.addEventListener('hashchange', applyHashPage);
+    applyHashPage();
+
+    renderChecklist();
+    updateStamp();
+    setInterval(updateStamp, 60000);
+  </script>
+</body>
+</html>

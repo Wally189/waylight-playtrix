@@ -66,13 +66,16 @@
     .page.active { display:block; }
     @keyframes fade { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
     .grid,.hero,.cols2,.cols3,.funnel,.kanban { display:grid; gap:1rem; }
+    .grid > *, .hero > *, .cols2 > *, .cols3 > *, .funnel > *, .kanban > * { min-width:0; }
     .hero { grid-template-columns:1.35fr .95fr; }
     .cols2 { grid-template-columns:repeat(2,minmax(0,1fr)); }
     .cols3 { grid-template-columns:repeat(3,minmax(0,1fr)); }
     .funnel { grid-template-columns:repeat(4,minmax(0,1fr)); }
     .kanban { grid-template-columns:repeat(3,minmax(0,1fr)); }
     .card {
-      background:var(--panel); border:1px solid var(--line); border-radius:26px; padding:1.2rem; box-shadow:var(--shadow); position:relative; overflow:hidden;
+      --wf-card-padding:1.2rem;
+      display:flex; flex-direction:column; gap:.85rem;
+      background:var(--panel); border:1px solid var(--line); border-radius:26px; box-shadow:var(--shadow); position:relative; overflow:clip; min-width:0; height:auto; overflow-wrap:break-word; word-wrap:break-word;
     }
     .hero-card {
       min-height:350px; color:#fff;
@@ -84,7 +87,7 @@
       clip-path:polygon(0 55%, 15% 46%, 31% 58%, 47% 42%, 62% 57%, 80% 44%, 100% 55%, 100% 100%, 0 100%);
     }
     .hero-card > * { position:relative; z-index:1; }
-    .hero-card h2 { margin:.3rem 0 .8rem; font-size:clamp(2rem,4vw,3rem); max-width:13ch; line-height:.98; }
+    .hero-card h2 { margin:.3rem 0 .8rem; font-size:clamp(2rem,4vw,3rem); max-width:13ch; line-height:1.06; overflow-wrap:anywhere; }
     .hero-card p { max-width:44rem; line-height:1.65; color:rgba(245,248,252,.92); }
     .metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.75rem; margin-top:1rem; }
     .metric { padding:.9rem; border-radius:18px; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.16); }
@@ -92,9 +95,10 @@
     .metric strong { display:block; margin-top:.35rem; font-size:1.08rem; color:#fff; }
     h2.section { margin:0 0 .3rem; font-size:1.55rem; color:var(--wa-atlantic); }
     p.muted { margin:.25rem 0 0; color:var(--wa-cliff); line-height:1.6; }
-    .mini,.line,.task,.deal,.col,.resource-bank { border:1px solid var(--line); border-radius:18px; background:rgba(255,255,255,.78); }
+    .mini,.line,.task,.deal,.col,.resource-bank { border:1px solid var(--line); border-radius:18px; background:rgba(255,255,255,.78); min-width:0; height:auto; overflow-wrap:break-word; word-wrap:break-word; }
+    .mini,.deal,.resource-bank { --wf-panel-padding:.9rem .95rem; }
     .mini,.line,.task,.deal,.resource-bank { padding:.9rem .95rem; }
-    .col { padding:1rem; border-radius:22px; }
+    .col { --wf-panel-padding:1rem; padding:1rem; border-radius:22px; }
     .line,.task { display:flex; gap:.7rem; align-items:flex-start; }
     .bullet { width:.72rem; height:.72rem; margin-top:.42rem; border-radius:50%; background:linear-gradient(180deg, var(--wa-sea), var(--wa-atlantic)); box-shadow:0 0 0 6px rgba(143,183,223,.14); flex:0 0 auto; }
     .task input { margin-top:.14rem; accent-color:var(--wa-atlantic); transform:scale(1.14); }
@@ -120,7 +124,7 @@
     th,td { padding:.8rem .7rem; text-align:left; border-bottom:1px solid rgba(45,95,168,.08); vertical-align:top; }
     th { font-size:.76rem; letter-spacing:.14em; text-transform:uppercase; color:var(--wa-cliff); }
     .site-footer { margin-top:1.4rem; }
-    .footer-inner { display:grid; grid-template-columns:auto 1fr auto; gap:1rem; align-items:end; background:rgba(249,251,253,.84); border:1px solid rgba(45,95,168,.14); border-radius:24px; padding:1rem 1.1rem; box-shadow:var(--shadow); }
+    .footer-inner { display:grid; grid-template-columns:auto 1fr auto; gap:1rem; align-items:start; background:rgba(249,251,253,.84); border:1px solid rgba(45,95,168,.14); border-radius:24px; padding:1rem 1.1rem; box-shadow:var(--shadow); }
     .footer-nav { display:flex; gap:.55rem; flex-wrap:wrap; }
     .footer-btn { display:inline-flex; align-items:center; justify-content:center; padding:.7rem .9rem; border-radius:14px; text-decoration:none; font-weight:800; color:var(--wa-deep); background:rgba(255,255,255,.8); border:1px solid rgba(45,95,168,.14); }
     .footer-tagline { margin:0; color:var(--wa-cliff); font-size:.92rem; text-align:center; }
@@ -131,71 +135,77 @@
     @media (max-width:1200px) { .hero,.cols2,.cols3,.funnel,.kanban,.footer-inner { grid-template-columns:1fr; } .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } .waylight-legal-block { text-align:left; } }
     @media (max-width:720px) { .wrap { width:min(100% - 1rem, 1440px); } .metrics { grid-template-columns:1fr; } .nav-btn,.footer-btn { width:100%; } }
   </style>
+  <link rel="stylesheet" href="Assets/css/playtrix-filofax.css" />
 </head>
 <body>
   <header class="topbar">
     <div class="wrap">
-      <div class="brand">
-        <div>
+      <div class="brand shell-brand">
+        <div class="brand-head">
           <p class="eyebrow">Waylight-Playtrix</p>
           <h1>Waylight Business Console</h1>
-          <p class="sub">A fuller internal console for sales, governance, finance, sustainability, learning, SOPs, and client documents.</p>
+          <p class="sub">A calmer working console for the business day, its tools, records, guidance, and control points.</p>
         </div>
-        <div class="stamp">
-          <div class="pill"><span class="dot"></span><span id="statusText">Waylight local mode</span></div>
-          <div class="pill" id="todayStamp">Loading date...</div>
+        <div class="toggle-stack">
+          <a class="shell-toggle" href="personal-console.html">Waylight Personal Console</a>
         </div>
       </div>
-      <nav id="mainNav">
-        <a class="nav-btn" href="index.html">Day Ahead</a>
-        <a class="nav-btn" href="tools.html">Tools</a>
-        <a class="nav-btn" href="contacts.html">Contacts</a>
-        <button class="nav-btn active" data-page="overview">Overview</button>
-        <button class="nav-btn" data-page="workboard">Workboard</button>
-        <button class="nav-btn" data-page="sales">Sales</button>
-        <button class="nav-btn" data-page="governance">Governance</button>
-        <button class="nav-btn" data-page="finance">Finance</button>
-        <button class="nav-btn" data-page="sustainability">Sustainability</button>
-        <button class="nav-btn" data-page="learning">Learning</button>
-        <button class="nav-btn" data-page="docs">Client Docs</button>
-      </nav>
+      <nav id="mainNav" data-shell-nav data-shell-page="overview" aria-label="Waylight-Playtrix sections"></nav>
+      <div class="utility-links" aria-label="Public properties">
+        <a class="utility-link" href="https://www.waylight-atlantic.co.uk" target="_blank" rel="noopener">Waylight Atlantic</a>
+        <a class="utility-link" href="https://www.alanwpgallagher.info" target="_blank" rel="noopener">AlanWP Gallagher</a>
+      </div>
     </div>
   </header>
 
   <main class="wrap">
     <section class="page active" id="page-overview">
-      <div class="hero">
-        <article class="card hero-card">
-          <p class="eyebrow">Command Deck</p>
-          <h2>Run the business like a calm, competent office.</h2>
-          <p>Keep the operating rhythm, the pipeline, the documents, and the next responsibilities in one place. The point is not more noise. It is cleaner control.</p>
-          <div class="metrics">
-            <div class="metric"><span>Day</span><strong id="metricDay">-</strong></div>
-            <div class="metric"><span>Date</span><strong id="metricDate">-</strong></div>
-            <div class="metric"><span>Time</span><strong id="metricTime">-</strong></div>
-            <div class="metric"><span>Current Block</span><strong id="metricShift">-</strong></div>
+      <article class="card hero-card front-desk-card" id="front-desk-workflow">
+        <div class="front-desk-grid">
+          <div class="front-desk-main">
+            <p class="eyebrow">Front Desk</p>
+            <h2>Business begins here...</h2>
+            <details class="help-card"><summary><span class="help-icon">i</span><span>Front Desk help</span></summary><div class="help-card-content"><p>Start here. Keep the day small, the next action visible, and let the governance rhythm tell you what the day is for.</p></div></details>
+            <div class="metrics front-desk-metrics">
+              <div class="metric"><span>Day</span><strong id="metricDay">-</strong></div>
+              <div class="metric"><span>Date</span><strong id="metricDate">-</strong></div>
+              <div class="metric"><span>Time</span><strong id="metricTime">-</strong></div>
+              <div class="metric"><span>Current Block</span><strong id="metricShift">-</strong></div>
+            </div>
+            <div class="front-desk-summary">
+              <div class="mini"><strong>Current focus</strong><p class="muted" id="currentBlock">-</p></div>
+              <div class="mini"><strong>Next focus</strong><p class="muted" id="nextBlock">-</p></div>
+              <div class="mini"><strong>Theme</strong><p class="muted" id="todayTheme">-</p></div>
+            </div>
           </div>
-        </article>
-        <div class="grid">
-          <article class="card">
-            <p class="eyebrow">Today</p>
-            <h2 class="section">Operating position</h2>
-            <div class="mini"><strong>Current focus</strong><p class="muted" id="currentBlock">-</p></div>
-            <div class="mini" style="margin-top:.8rem;"><strong>Next focus</strong><p class="muted" id="nextBlock">-</p></div>
-            <div class="mini" style="margin-top:.8rem;"><strong>Theme</strong><p class="muted" id="todayTheme">-</p></div>
-          </article>
-          <article class="card">
-            <p class="eyebrow">Tomorrow</p>
-            <h2 class="section">Day-ahead view</h2>
-            <p class="muted" id="tomorrowHeadline">Loading tomorrow's work pattern...</p>
-            <div class="tags" id="tomorrowTags" style="margin-top:.9rem;"></div>
-            <div id="tomorrowPrep" class="grid" style="margin-top:.9rem;"></div>
-          </article>
+          <div class="front-desk-side front-desk-aux" id="front-desk-dayahead">
+            <div class="mini">
+              <strong id="dayPreviewLabel">Today</strong>
+              <p class="muted" id="tomorrowHeadline">Loading today's work pattern...</p>
+              <div class="tags" id="tomorrowTags" style="margin-top:.9rem;"></div>
+            </div>
+            <div class="mini">
+              <strong id="prepLabel">Preparation</strong>
+              <details class="help-card" style="margin-top:.85rem;">
+                <summary><span class="help-icon">i</span><span>Preparation help</span></summary>
+                <div class="help-card-content" id="prepHelpText">
+                  <p>Use this as the dated scratch pad for what needs to be ready before the block moves on.</p>
+                </div>
+              </details>
+              <div id="tomorrowPrep" class="grid" style="margin-top:.9rem;"></div>
+              <form id="prepPlannerForm" class="planner-inline-form" style="margin-top:.9rem;">
+                <input id="dailyPrepText" type="text" maxlength="120" placeholder="Add one preparation item" />
+                <button type="submit" class="planner-btn primary">Add</button>
+              </form>
+              <p class="muted" id="prepPlannerHint" style="margin-top:.85rem;">This list clears with the date. Keep it practical and short.</p>
+            </div>
+          </div>
+          <div id="frontDeskClock" class="front-desk-clock-strip"></div>
         </div>
-      </div>
+      </article>
 
-      <div class="cols2" style="margin-top:1rem;">
-        <article class="card">
+      <div class="cols2 front-desk-lower" style="margin-top:1rem;">
+        <article class="card" id="front-desk-today">
           <p class="eyebrow">Execution</p>
           <h2 class="section">Today's checklist</h2>
           <div class="progress">
@@ -203,45 +213,29 @@
             <div class="bar"><div class="fill" id="todayProgressFill"></div></div>
           </div>
           <div id="todayChecklist" class="grid" style="margin-top:1rem;"></div>
-          <div class="resource-bank" data-resource-bank="today" style="margin-top:1rem;"></div>
+          <form id="todayPlannerForm" class="planner-inline-form" style="margin-top:1rem;">
+            <input id="dailyTaskText" type="text" maxlength="120" placeholder="Add one concrete item for today" />
+            <button type="submit" class="planner-btn primary">Add item</button>
+          </form>
+          <p class="muted" id="todayPlannerHint" style="margin-top:.85rem;">Keep this to six items. Add any link or file path to each item after you create it.</p>
         </article>
-        <article class="card">
-          <p class="eyebrow">Field Notes</p>
-          <h2 class="section">Command note</h2>
-          <p class="muted">Use this for today's judgement call, risk, follow-up, or reminder.</p>
-          <textarea id="commandNote" placeholder="Example: convert the current build into a case-study proof piece and send the parish follow-up tomorrow."></textarea>
+        <article class="card" id="front-desk-diary">
+          <div id="diary"></div>
+          <p class="eyebrow">Business Diary</p>
+          <h2 class="section">Dates, notes, and next actions</h2>
+          <p class="muted">If it belongs to a date or needs to be remembered, keep it in the business diary rather than letting it drift around the desk.</p>
+          <div class="section-stack">
+            <div id="businessDiaryLinks"></div>
+            <div id="diaryRegister"></div>
+            <div id="diaryNotesPanel"></div>
+          </div>
         </article>
       </div>
 
-      <div class="cols3" style="margin-top:1rem;">
-        <article class="card">
-          <p class="eyebrow">Business Snapshot</p>
-          <h2 class="section">Current pressure</h2>
-          <div class="line"><span class="bullet"></span><div><strong>Active build work</strong><br />3 live projects</div></div>
-          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div><strong>Warm opportunities</strong><br />6 leads needing next actions</div></div>
-          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div><strong>Maintenance target</strong><br />5 recurring clients</div></div>
-        </article>
-        <article class="card">
-          <p class="eyebrow">Offer Stack</p>
-          <h2 class="section">Commercial shape</h2>
-          <div class="tags">
-            <span class="tag sea">Tailored basic website</span>
-            <span class="tag mist">Tailored standard website</span>
-            <span class="tag grass">Monthly maintenance</span>
-            <span class="tag sand">Digital cleanup</span>
-          </div>
-          <p class="muted" style="margin-top:1rem;">You are not selling code. You are selling clarity, delivery, and steady digital stewardship.</p>
-        </article>
-        <article class="card">
-          <p class="eyebrow">Formation</p>
-          <h2 class="section">Learning checkpoint</h2>
-          <div class="progress">
-            <div class="progress-row"><span>Year one complete</span><span id="learningTotalText">0%</span></div>
-            <div class="bar"><div class="fill" id="learningTotalFill"></div></div>
-          </div>
-          <div id="learningSummary" class="grid" style="margin-top:1rem;"></div>
-        </article>
+      <div class="grid" id="front-desk-overview" style="margin-top:1rem;">
+        <div id="quickRoutes"></div>
       </div>
+
     </section>
 
     <section class="page" id="page-workboard">
@@ -249,55 +243,67 @@
         <article class="card">
           <p class="eyebrow">Workboard</p>
           <h2 class="section">Daily flow and controlled execution</h2>
-          <p class="muted">Use the board to move one thing at a time from capture to completion. It stays separate from the governance rhythm so the cadence remains stable while the workload moves.</p>
+          <details class="help-card"><summary><span class="help-icon">i</span><span>Workboard help</span></summary><div class="help-card-content"><p>Capture into Inbox, move only what truly matters into Today, and let Waiting hold items blocked by other people or dates.</p></div></details>
           <div class="kanban-summary" id="kanbanSummary"></div>
         </article>
-        <article class="card">
+        <article class="card workboard-editor-shell">
           <p class="eyebrow">Card Editor</p>
           <h2 class="section">Add or refine a work item</h2>
-          <form id="kanbanForm" class="kanban-form">
-            <input type="hidden" id="kanbanCardId" />
-            <div class="kanban-field">
-              <label for="kanbanTitle">Title</label>
-              <input id="kanbanTitle" name="title" type="text" maxlength="120" placeholder="Example: Finish parish homepage revision" required />
+          <div class="register-toolbar workboard-editor-toolbar">
+            <div class="register-toolbar-copy workboard-editor-copy">
+              <strong id="kanbanEditorStateTitle">Add a work item when you are ready</strong>
+              <span id="kanbanEditorStateText">Keep the board readable. Open the work card only when you want to add or edit something.</span>
             </div>
-            <div class="kanban-field">
-              <label for="kanbanNote">Note</label>
-              <textarea id="kanbanNote" name="note" rows="4" placeholder="What matters, what is waiting, or what must not be forgotten."></textarea>
+            <div class="register-toolbar-actions">
+              <button type="button" class="kanban-btn kanban-btn-primary" id="kanbanEditorToggle">Open work card</button>
             </div>
-            <div class="kanban-form-grid">
+          </div>
+          <div class="register-editor-card workboard-editor-card" id="kanbanEditorCard" hidden>
+            <form id="kanbanForm" class="kanban-form">
+              <input type="hidden" id="kanbanCardId" />
               <div class="kanban-field">
-                <label for="kanbanCategory">Category</label>
-                <input id="kanbanCategory" name="category" type="text" maxlength="50" placeholder="Client, sales, admin, maintenance" />
+                <label for="kanbanTitle">Title</label>
+                <input id="kanbanTitle" name="title" type="text" maxlength="120" placeholder="Example: Finish parish homepage revision" required />
               </div>
               <div class="kanban-field">
-                <label for="kanbanDueDate">Due date</label>
-                <input id="kanbanDueDate" name="dueDate" type="date" />
+                <label for="kanbanNote">Note</label>
+                <textarea id="kanbanNote" name="note" rows="4" placeholder="What matters, what is pending, or what must not be forgotten."></textarea>
               </div>
-              <div class="kanban-field">
-                <label for="kanbanPriority">Priority</label>
-                <select id="kanbanPriority" name="priority">
-                  <option value="steady">Steady</option>
-                  <option value="important">Important</option>
-                  <option value="urgent">Urgent</option>
-                </select>
+              <div class="kanban-form-grid">
+                <div class="kanban-field">
+                  <label for="kanbanCategory">Category</label>
+                  <input id="kanbanCategory" name="category" type="text" maxlength="50" placeholder="Client, sales, admin, maintenance" />
+                </div>
+                <div class="kanban-field">
+                  <label for="kanbanDueDate">Due date</label>
+                  <input id="kanbanDueDate" name="dueDate" type="date" />
+                </div>
+                <div class="kanban-field">
+                  <label for="kanbanPriority">Priority</label>
+                  <select id="kanbanPriority" name="priority">
+                    <option value="steady">Steady</option>
+                    <option value="important">Important</option>
+                    <option value="urgent">Urgent</option>
+                  </select>
+                </div>
+                <div class="kanban-field">
+                  <label for="kanbanColumn">Column</label>
+                  <select id="kanbanColumn" name="column">
+                    <option value="inbox">Inbox</option>
+                    <option value="today">Do Today</option>
+                    <option value="this-week">Do This Week</option>
+                    <option value="this-month">Do This Month</option>
+                    <option value="pending">Pending</option>
+                    <option value="done">Done</option>
+                  </select>
+                </div>
               </div>
-              <div class="kanban-field">
-                <label for="kanbanColumn">Column</label>
-                <select id="kanbanColumn" name="column">
-                  <option value="inbox">Inbox</option>
-                  <option value="today">Today</option>
-                  <option value="this-week">This Week</option>
-                  <option value="waiting">Waiting</option>
-                  <option value="done">Done</option>
-                </select>
+              <div class="kanban-actions">
+                <button type="submit" class="kanban-btn kanban-btn-primary">Save card</button>
+                <button type="button" class="kanban-btn" id="kanbanFormReset">Clear form</button>
               </div>
-            </div>
-            <div class="kanban-actions">
-              <button type="submit" class="kanban-btn kanban-btn-primary">Save card</button>
-              <button type="button" class="kanban-btn" id="kanbanFormReset">Clear form</button>
-            </div>
-          </form>
+            </form>
+          </div>
         </article>
       </div>
 
@@ -307,19 +313,106 @@
             <p class="eyebrow">Drag and Drop</p>
             <h2 class="section">Current workboard</h2>
           </div>
-          <p class="muted">Columns: Inbox, Today, This Week, Waiting, Done.</p>
+          <p class="muted">Move work cleanly, not all at once.</p>
         </div>
         <div id="kanbanBoard" class="wl-kanban-board" aria-label="Waylight workboard"></div>
       </article>
     </section>
+    <section class="page" id="page-projects">
+      <div id="projectRegister"></div>
+    </section>
     <section class="page" id="page-sales">
-      <article class="card">
-        <p class="eyebrow">Sales Plan</p>
-        <h2 class="section">Create a predictable pipeline</h2>
-        <div class="cols2" style="margin-top:1rem;">
-          <div class="mini">
+      <article class="planner-sheet sales-overview-sheet">
+        <p class="eyebrow">Workbench</p>
+        <h3>Clients &amp; Sales</h3>
+        <p>A single place to watch the live pipeline, active client relationships, weekly sales rhythm, and the next commercial move.</p>
+        <details class="help-card sales-help-card">
+          <summary><span class="help-icon">i</span><span>Sales playbook and examples</span></summary>
+          <div class="help-card-content">
+            <p><strong>Plain commercial flow:</strong> keep people and organisations in <strong>Contacts</strong>, keep pre-approval opportunities in the <strong>Lead pipeline</strong>, move approved work into <strong>Projects</strong>, and keep live delivery or maintenance relationships in <strong>Client relationships</strong>.</p>
+            <div class="sales-flow-strip">
+              <span>Capture contact</span>
+              <span>Reach out</span>
+              <span>Discuss or demo</span>
+              <span>Qualify</span>
+              <span>Proposal</span>
+              <span>Approve to project</span>
+              <span>Deliver or maintain</span>
+              <span>Close or archive</span>
+            </div>
+            <div class="sales-guide-grid">
+              <article class="sales-guide-card">
+                <h4>What lives where</h4>
+                <p><strong>Contacts</strong> is the directory. <strong>Lead pipeline</strong> is the commercial opportunity before yes. <strong>Projects</strong> begins when the work is approved. <strong>Client relationships</strong> is for the live relationship once delivery or maintenance is real.</p>
+              </article>
+              <article class="sales-guide-card">
+                <h4>How to move something forward</h4>
+                <p>Every lead needs a stage, a named next action, and a date in the business diary if the date matters. If there is no next action, it is not live. If the answer is no, close it plainly. If the answer is yes, approve it into Projects.</p>
+              </article>
+              <article class="sales-guide-card">
+                <h4>When to close something</h4>
+                <p>Close the lead if the fit is wrong, the budget is not there, the reply has gone cold after reasonable follow-up, or the work is not worth pursuing. Closure is better than a false pipeline.</p>
+              </article>
+              <article class="sales-guide-card">
+                <h4>Data retention and public information</h4>
+                <p>Even if you found a name or email on a public site, your notes about that person are still personal data if they identify them. Keep only what you need, record why you are keeping it, and review or delete stale leads after a sensible retention period.</p>
+                <p><a href="https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/personal-information-what-is-it/what-is-personal-data/" target="_blank" rel="noopener">ICO: what is personal data?</a> · <a href="https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/data-protection-principles/a-guide-to-the-data-protection-principles/storage-limitation/" target="_blank" rel="noopener">ICO: storage limitation</a> · <a href="https://ico.org.uk/for-organisations/direct-marketing-and-privacy-and-electronic-communications/guidance-on-direct-marketing-using-electronic-mail/what-are-the-rules-on-direct-marketing-using-electronic-mail/" target="_blank" rel="noopener">ICO: direct marketing by email</a></p>
+              </article>
+            </div>
+            <div class="sales-message-grid">
+              <article class="sales-message-card">
+                <h4>First outreach note</h4>
+                <pre>Subject: simple website support for [organisation name]
+
+Hello [name],
+
+I had a look at [organisation/site]. I think there may be a straightforward way to improve [clarity/contact flow/maintenance].
+
+I build calm, maintainable websites for small organisations and sole traders. If useful, I can send one short example and a plain outline of what I would suggest.
+
+Kind regards,
+Alan</pre>
+              </article>
+              <article class="sales-message-card">
+                <h4>After a call or demo</h4>
+                <pre>Subject: next steps after today
+
+Hello [name],
+
+Thank you for the conversation today. My understanding is:
+- the main problem is [problem]
+- the priority is [priority]
+- the next useful step is [next step]
+
+I will send [proposal/example/summary] by [date].
+
+Kind regards,
+Alan</pre>
+              </article>
+              <article class="sales-message-card">
+                <h4>Proposal cover note</h4>
+                <pre>Subject: proposal for [project name]
+
+Hello [name],
+
+Attached is the proposal for [project]. It covers:
+- what is being done
+- what is not included
+- the price and timing
+- the recommended next step
+
+If it looks right, I can open the project and begin with [first action].
+
+Kind regards,
+Alan</pre>
+              </article>
+            </div>
+          </div>
+        </details>
+        <div class="sales-overview-grid">
+          <div class="sales-overview-panel">
             <strong>Monthly targets</strong>
-            <table style="margin-top:.7rem;">
+            <table class="sales-target-table">
               <tr><th>Measure</th><th>Target</th><th>Why</th></tr>
               <tr><td>New outreach conversations</td><td>20</td><td>Enough flow to create opportunities</td></tr>
               <tr><td>Qualified leads</td><td>6</td><td>Protect time by filtering early</td></tr>
@@ -327,19 +420,23 @@
               <tr><td>New maintenance clients</td><td>1</td><td>Recurring steadiness matters more than spikes</td></tr>
             </table>
           </div>
-          <div class="mini">
+          <div class="sales-overview-panel">
             <strong>Offer ladder</strong>
             <div class="line" style="margin-top:.8rem;"><span class="bullet"></span><div>Entry: tailored basic website for straightforward service organisations.</div></div>
             <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Core: tailored standard website with deeper structure and governance pages.</div></div>
             <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Recurring: monthly maintenance, monitoring, backups, and advice.</div></div>
             <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Advisory: digital cleanup, process documentation, and systems clarity.</div></div>
+            <div style="margin-top:.9rem;">
+              <a class="planner-btn" href="https://www.waylight-atlantic.co.uk/pricing" target="_blank" rel="noopener">Open Services &amp; Pricing</a>
+            </div>
           </div>
         </div>
       </article>
-      <div class="cols2" style="margin-top:1rem;">
-        <article class="card">
+      <div class="section-stack">
+        <article class="planner-sheet">
           <p class="eyebrow">Weekly Cadence</p>
-          <h2 class="section">Sales checklist</h2>
+          <h3>Sales checklist</h3>
+          <p>Keep one practical weekly rhythm for prospecting, follow-up, examples, and offer clarity.</p>
           <div class="progress">
             <div class="progress-row"><span>Cadence complete</span><span id="salesProgressText">0%</span></div>
             <div class="bar"><div class="fill" id="salesProgressFill"></div></div>
@@ -347,64 +444,145 @@
           <div id="salesChecklist" class="grid" style="margin-top:1rem;"></div>
           <div class="resource-bank" data-resource-bank="sales" style="margin-top:1rem;"></div>
         </article>
-        <article class="card">
-          <p class="eyebrow">Pipeline</p>
-          <h2 class="section">Current board</h2>
-          <div class="funnel">
-            <div class="col"><h4>Prospecting</h4><div class="deal"><strong>Parish network list</strong><span>Prepare examples and a short message sequence.</span></div></div>
-            <div class="col"><h4>Qualified</h4><div class="deal"><strong>Charity enquiry</strong><span>Simple public-facing site with clearer contact flow.</span></div></div>
-            <div class="col"><h4>Proposal</h4><div class="deal"><strong>Parish refresh</strong><span>Need decision on content ownership and domain setup.</span></div></div>
-            <div class="col"><h4>Retained</h4><div class="deal"><strong>Maintenance anchor</strong><span>Convert one completed build into monthly support.</span></div></div>
-          </div>
+        <div id="salesPipelineBoard"></div>
+        <div id="clientRegister"></div>
+        <div id="leadRegister"></div>
+      </div>
+
+    </section>
+    <section class="page" id="page-marketing">
+      <article class="card">
+        <p class="eyebrow">Workbench</p>
+        <h2 class="section">Marketing, proof, and visibility</h2><details class="help-card"><summary><span class="help-icon">i</span><span>Marketing help</span></summary><div class="help-card-content"><p>Keep marketing practical. Use this page to track campaigns, proof pieces, core messages, and the next actions that help the business get found, trusted, and remembered. Put date-specific commitments in the business diary.</p></div></details>
+      </article>
+      <div class="section-stack">
+        <article class="planner-sheet">
+          <p class="eyebrow">Working Rules</p>
+          <h3>What marketing should actually do</h3>
+          <p>Keep visibility, proof, trust, and follow-up tied to a practical calendar rather than a pile of disconnected ideas.</p>
+          <div class="line"><span class="bullet"></span><div><strong>Visibility</strong><br />Make it easier for the right people to find Waylight.</div></div>
+          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div><strong>Proof</strong><br />Show real work, clear thinking, and practical results.</div></div>
+          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div><strong>Trust</strong><br />Use articles, examples, testimonials, and clarity to reduce doubt.</div></div>
+          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div><strong>Follow-up</strong><br />Turn attention into a next step rather than leaving it vague.</div></div>
         </article>
+        <div id="marketingCalendar"></div>
+        <div id="marketingCampaigns"></div>
+        <div id="marketingAssets"></div>
+        <div id="marketingChannels"></div>
+        <div id="marketingSupport"></div>
       </div>
     </section>
     <section class="page" id="page-governance">
-      <div class="cols2">
-        <article class="card">
-          <p class="eyebrow">Governance Dashboard</p>
-          <h2 class="section">Policies, controls, and future HR structure</h2>
-          <div class="line"><span class="bullet"></span><div><strong>Policy register</strong><br />Privacy, data handling, accessibility, content standards, maintenance policy, and document retention.</div></div>
-          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div><strong>Governance calendar</strong><br />Weekly control points, monthly reviews, quarterly policy refresh, and annual housekeeping.</div></div>
-          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div><strong>Future HR area</strong><br />Recruitment notes, onboarding, role descriptions, training logs, grievance and discipline placeholders for later growth.</div></div>
-          <div class="resource-bank" data-resource-bank="governance" style="margin-top:1rem;"></div>
+      <div class="section-stack governance-stack">
+        <article class="card governance-overview-card">
+          <p class="eyebrow">Governance</p>
+          <h2 class="section">Practical controls for a very small business</h2>
+          <p class="muted">Use Governance to keep the rules, repeatable methods, review dates, compliance checks, and people record index in one working layer. It only needs to answer three questions: what is the rule, what needs review next, and is the business compliant enough for its current size?</p>
+          <details class="help-card"><summary><span class="help-icon">i</span><span>How this area is split</span></summary><div class="help-card-content"><p>Policies hold rules and standards. SOPs hold formal repeatable procedures. Process Notes hold lighter guidance, exceptions, and reminders. People records here are the index and review surface only; sensitive files stay in the restricted secure location.</p></div></details>
+          <div class="governance-principles">
+            <div class="mini governance-definition-card"><strong>Policies</strong><span>Rules, standards, and control expectations.</span></div>
+            <div class="mini governance-definition-card"><strong>SOPs</strong><span>Formal repeatable procedures for delivery and operations.</span></div>
+            <div class="mini governance-definition-card"><strong>Process Notes</strong><span>Practical guidance, reminders, and known exceptions.</span></div>
+          </div>
         </article>
-        <article class="card">
-          <p class="eyebrow">SOP and Control Library</p>
-          <h2 class="section">What should exist</h2>
-          <div class="line"><span class="bullet"></span><div>Client onboarding SOP</div></div>
-          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Website build SOP</div></div>
-          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Maintenance SOP</div></div>
-          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Free-site intake SOP</div></div>
-          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Incident, complaint, and decision-log procedures</div></div>
-        </article>
+        <section class="governance-anchor-section" id="governance-calendar-section">
+          <div id="governanceCalendar"></div>
+        </section>
+        <section class="governance-anchor-section" id="governance-review-dashboard">
+          <div id="governanceReviewDashboard"></div>
+        </section>
+        <section class="governance-anchor-section" id="governance-policy-register">
+          <div id="governancePolicyRegister"></div>
+        </section>
+        <section class="governance-anchor-section" id="governance-sop-register">
+          <div id="governanceSopRegister"></div>
+        </section>
+        <section class="governance-anchor-section" id="governance-process-notes">
+          <div id="governanceProcessNotes"></div>
+        </section>
+        <section class="governance-anchor-section" id="governance-compliance">
+          <div id="governanceCompliance"></div>
+        </section>
+        <section class="governance-anchor-section" id="governance-people">
+          <div id="governancePeople"></div>
+        </section>
       </div>
     </section>
 
     <section class="page" id="page-finance">
-      <div class="cols2">
-        <article class="card">
-          <p class="eyebrow">Finance Dashboard</p>
-          <h2 class="section">Small enterprise placeholders</h2>
-          <table>
-            <tr><th>Area</th><th>Placeholder</th></tr>
-            <tr><td>Monthly income</td><td>Build revenue, maintenance revenue, advisory revenue</td></tr>
-            <tr><td>Monthly costs</td><td>Hosting, domains, software, subscriptions, insurance, banking</td></tr>
-            <tr><td>Cash flow</td><td>Expected receipts, outstanding invoices, bills due</td></tr>
-            <tr><td>Tax and reporting</td><td>Tax reserve, Universal Credit notes, VAT future placeholder</td></tr>
-            <tr><td>Payroll future</td><td>Employer costs, pension placeholder, salary placeholder</td></tr>
-            <tr><td>Reserves</td><td>Operating reserve, emergency reserve, tools replacement reserve</td></tr>
-          </table>
-        </article>
-        <article class="card">
-          <p class="eyebrow">Finance Controls</p>
-          <h2 class="section">Registers and records</h2>
-          <div class="line"><span class="bullet"></span><div>Income and expense register</div></div>
-          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Invoice tracker and aged debtors</div></div>
-          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Recurring cost register</div></div>
-          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Asset register and device replacement notes</div></div>
-          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Tax, reporting, and grant or support notes</div></div>
+      <div class="section-stack finance-stack">
+        <article class="card finance-overview-card">
+          <p class="eyebrow">Finance &amp; Treasury</p>
+          <h2 class="section">Practical money control for a sole-trader business</h2>
+          <p class="muted">Use Finance to see the current picture, keep the core money registers current, plan pricing and forecasts, track reserves, and stay organised for tax and reporting without turning Playtrix into accounting software.</p>
+          <details class="help-card"><summary><span class="help-icon">i</span><span>How this area is read</span></summary><div class="help-card-content"><p>Client revenue is money earned from clients. Owner Contribution is money introduced personally to fund the business and should stay visible, but separate from true client earnings. Forecasts, cash position, and reserves are planning controls, not formal accounts.</p></div></details>
+          <div class="finance-principles">
+            <div class="mini finance-definition-card"><strong>Client revenue</strong><span>Money earned from websites, maintenance, advisory work, and other client services.</span></div>
+            <div class="mini finance-definition-card"><strong>Owner Contribution</strong><span>Personal funding introduced to support business activity without inflating earned revenue.</span></div>
+            <div class="mini finance-definition-card"><strong>Reserves and reporting</strong><span>Cash discipline, tax set-aside, and the admin rhythm that keeps the business orderly.</span></div>
+          </div>
           <div class="resource-bank" data-resource-bank="finance" style="margin-top:1rem;"></div>
+        </article>
+        <section class="finance-anchor-section" id="finance-overview">
+          <div id="financeOverview"></div>
+        </section>
+        <section class="finance-anchor-section" id="finance-income-expense">
+          <div id="financeIncomeExpense"></div>
+        </section>
+        <section class="finance-anchor-section" id="finance-invoice-tracker">
+          <div id="financeInvoiceTracker"></div>
+        </section>
+        <section class="finance-anchor-section" id="finance-recurring-cost-register">
+          <div id="financeRecurringCosts"></div>
+        </section>
+        <section class="finance-anchor-section" id="finance-asset-register">
+          <div id="financeAssetRegister"></div>
+        </section>
+        <section class="finance-anchor-section" id="finance-client-revenue">
+          <div id="financeClientRevenue"></div>
+        </section>
+        <section class="finance-anchor-section" id="finance-pricing">
+          <div id="financePricing"></div>
+        </section>
+        <section class="finance-anchor-section" id="finance-forecasts">
+          <div id="financeForecasts"></div>
+        </section>
+        <section class="finance-anchor-section" id="finance-cash-position">
+          <div id="financeCashPosition"></div>
+        </section>
+        <section class="finance-anchor-section" id="finance-reserves">
+          <div id="financeReserves"></div>
+        </section>
+        <section class="finance-anchor-section" id="finance-tax-reporting">
+          <div id="financeTaxReporting"></div>
+          <div id="financeReportingRegister" style="margin-top:1rem;"></div>
+          <div id="financeSupportLinks" style="margin-top:1rem;"></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="page" id="page-assets">
+      <article class="card">
+        <p class="eyebrow">Assets</p>
+        <h2 class="section">Websites, folders, and business assets</h2>
+        <p class="muted">Keep the estate in one place: public sites, working folders, software, hardware, and anything else the business depends on.</p>
+      </article>
+      <div class="cols2" style="margin-top:1rem;">
+        <div id="assetWebsites"></div>
+        <div id="assetFolders"></div>
+      </div>
+      <div class="cols2" style="margin-top:1rem;">
+        <div id="assetInventory"></div>
+        <article class="card">
+          <p class="eyebrow">External Links</p>
+          <h2 class="section">Public-facing links</h2>
+          <table class="site-table">
+            <thead><tr><th>Site</th><th>Purpose</th><th>Open</th></tr></thead>
+            <tbody>
+              <tr><td>Waylight Atlantic</td><td>Main public business site.</td><td><a href="https://www.waylight-atlantic.co.uk" target="_blank" rel="noopener">Open</a></td></tr>
+              <tr><td>AlanWP Gallagher</td><td>Personal public profile and writing.</td><td><a href="https://www.alanwpgallagher.info" target="_blank" rel="noopener">Open</a></td></tr>
+            </tbody>
+          </table>
         </article>
       </div>
     </section>
@@ -434,8 +612,8 @@
 
     <section class="page" id="page-learning">
       <article class="card">
-        <p class="eyebrow">Year One Formation Plan</p>
-        <h2 class="section">Learning plan for a competent, credible micro-consultancy</h2>
+        <p class="eyebrow">Learning Plan</p>
+        <h2 class="section">Formation plan for a competent, credible micro-consultancy</h2>
         <p class="muted">Use the plan as checklist-driven capability building, not just time-tracking. Each quarter can carry supporting documents, links, or notes.</p>
       </article>
       <div id="learningGrid" class="cols2" style="margin-top:1rem;"></div>
@@ -444,53 +622,65 @@
     <section class="page" id="page-docs">
       <div class="cols2">
         <article class="card">
-          <p class="eyebrow">Client Documents</p>
-          <h2 class="section">Questionnaires, checklists, contracts, and agreements</h2>
+          <p class="eyebrow">Library &amp; Resources</p>
+          <h2 class="section">Documents, templates, and reference material</h2><details class="help-card"><summary><span class="help-icon">i</span><span>Documents help</span></summary><div class="help-card-content"><p>Keep the document register current and link active materials here: questionnaires, proposals, agreements, SOPs, templates, supporting reference notes, and the practical guidance for running the business well.</p></div></details>
           <div class="line"><span class="bullet"></span><div><strong>Client questionnaires</strong><br />Discovery forms, content questionnaires, maintenance review questionnaires.</div></div>
           <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div><strong>Client checklists</strong><br />Onboarding checklist, launch checklist, maintenance checklist, handover checklist.</div></div>
           <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div><strong>Contracts and agreements</strong><br />Proposal terms, service agreements, maintenance agreement, data-processing notes, change requests.</div></div>
           <div class="resource-bank" data-resource-bank="client-docs" style="margin-top:1rem;"></div>
         </article>
         <article class="card">
-          <p class="eyebrow">SOP Attachments</p>
-          <h2 class="section">Places to attach operating material</h2>
-          <div class="line"><span class="bullet"></span><div>SOP library links and file paths</div></div>
-          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Template pack for proposals and contracts</div></div>
-          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Governance files, policy drafts, and registers</div></div>
-          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Client questionnaire bank and version history</div></div>
+          <p class="eyebrow">SOP Library, Templates and Archive</p>
+          <h2 class="section">Places to attach supporting material</h2>
+          <div class="line"><span class="bullet"></span><div>Template pack for proposals, contracts, agreements, and reusable SOPs</div></div>
+          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Reference notes, standards, and support material</div></div>
+          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Governance files, policy drafts, registers, and review material</div></div>
+          <div class="line" style="margin-top:.7rem;"><span class="bullet"></span><div>Archive links for superseded questionnaires, packs, and historical material</div></div>
           <div class="resource-bank" data-resource-bank="sop-library" style="margin-top:1rem;"></div>
         </article>
       </div>
+      <div class="section-stack">
+        <div id="operatingGoals"></div>
+        <div id="operatingMethod"></div>
+        <div id="operatingSupport"></div>
+      </div>
+      <div class="register-grid">
+        <div id="documentRegister"></div>
+        <div id="documentSupport"></div>
+      </div>
+
     </section>
 
     <footer class="site-footer">
       <div class="footer-inner">
         <nav class="footer-nav" aria-label="Footer links">
-          <a href="index.html" class="footer-btn">Day Ahead</a>
-          <a href="playtrix-console.html" class="footer-btn">Console</a>
-          <a href="tools.html" class="footer-btn">Tools</a><a href="contacts.html" class="footer-btn">Contacts</a>
+          <a href="index.html" class="footer-btn">Home</a>
+          <a href="sitemap.html" class="footer-btn">Sitemap</a>
+          <a href="personal-console.html" class="footer-btn">Personal Console</a>
         </nav>
         <p class="footer-tagline">Simple systems for a digital world.</p>
         <div class="waylight-legal-block" data-waylight-legal>
           <p class="footer-meta"><span data-datetime>Loading date and time...</span></p>
           <p class="waylight-legal-links"><a href="gdpr.html">GDPR</a> | <a href="privacy.html">Privacy</a> | <a href="terms.html">Terms</a></p>
           <p class="waylight-legal-location">Bristol, United Kingdom</p>
-          <p class="waylight-legal-copyright">&#169; 2026 <a href="index.html">Waylight-Playtrix</a></p>
+          <p class="waylight-legal-copyright">&#169; 2026 <a href="https://www.waylight-atlantic.co.uk" target="_blank" rel="noopener">Waylight-Atlantic</a></p>
         </div>
       </div>
     </footer>
   </main>
 
+  <script src="Assets/js/playtrix-storage.js"></script>
+  <script src="Assets/js/playtrix-governance.js"></script>
+  <script src="Assets/js/playtrix-common.js"></script>
+  <script src="Assets/js/playtrix-shell.js"></script>
   <script>
-    const schedule = {
-      Monday: { primary: 'Client Builds', primaryWindow: '06:00-09:00', secondary: 'Planning and Client Communication', secondaryWindow: '16:00-19:00', secondStart: 16, secondEnd: 19, theme: 'Build and plan', tasks: ['Build the highest-value page or feature.', 'Check accessibility and mobile basics.', 'Reply to open client threads.', 'Tighten the week plan.'], prep: ['Choose the most commercially important build first.', 'List all open client replies.', 'Decide what visible progress matters most.'] },
-      Tuesday: { primary: 'Client Project Work', primaryWindow: '06:00-09:00', secondary: 'Outreach and Business Development', secondaryWindow: '15:00-18:00', secondStart: 15, secondEnd: 18, theme: 'Project progress and outreach', tasks: ['Implement live project changes.', 'Handle hosting or forms.', 'Send practical outreach messages.', 'Follow up warm leads.'], prep: ['Prepare one proof piece worth sending.', 'Keep one clear offer ready.', 'Do not leave warm leads without a next action.'] },
-      Wednesday: { primary: 'Technical Development', primaryWindow: '06:00-09:00', secondary: 'Maintenance and Reliability Checks', secondaryWindow: '12:00-15:00', secondStart: 12, secondEnd: 15, theme: 'Technical stability', tasks: ['Improve reusable components.', 'Check backups and uptime.', 'Review forms, links, and speed.', 'Check domains and certificates.'], prep: ['Choose one technical friction to remove.', 'Note what can become a maintenance standard.', 'Keep recurring service ideas visible.'] },
-      Thursday: { primary: 'Systems and Documentation', primaryWindow: '06:00-09:00', secondary: 'Governance and Finance', secondaryWindow: '15:00-18:00', secondStart: 15, secondEnd: 18, theme: 'Systems and control', tasks: ['Improve SOPs and templates.', 'Update income and expense records.', 'Review subscriptions and admin.', 'Capture business decisions.'], prep: ['Pick the one system to simplify.', 'Make finance updates while details are fresh.', 'Decide what procedure should be written next.'] },
-      Friday: { primary: 'Client Delivery Work', primaryWindow: '06:00-09:00', secondary: 'Visibility and Publishing', secondaryWindow: '12:00-15:00', secondStart: 12, secondEnd: 15, theme: 'Delivery and visibility', tasks: ['Finalise build work and QA.', 'Prepare launch or handover.', 'Publish one trust-building proof piece.', 'Refresh a portfolio or article asset.'], prep: ['Choose what can be finished and shown.', 'Publish proof of competence.', 'Leave fewer loose ends for next week.'] },
-      Saturday: { primary: 'Learning and Skill Development', primaryWindow: '06:00-09:00', secondary: 'Weekly Review and Preparation', secondaryWindow: '15:00-18:00', secondStart: 15, secondEnd: 18, theme: 'Learning and review', tasks: ['Study a service-relevant skill.', 'Review business objectives.', 'Tidy loose files and notes.', 'Prepare next week.'], prep: ['Choose one capability gap.', 'Translate learning into a business improvement.', 'Enter Sunday with a lighter next week.'] },
-      Sunday: { primary: 'Rest', primaryWindow: 'Day of rest', secondary: 'Rest', secondaryWindow: 'Day of rest', secondStart: 0, secondEnd: 0, theme: 'Mass, rest, and recovery', tasks: ['Mass and prayer.', 'Family life and rest.', 'No business activity unless genuinely urgent.'], prep: ['Let the day recover you.', 'Keep Monday visible without working all day.', 'A calm Sunday is part of discipline.'] }
-    };
+    const Storage = window.PlaytrixStorage;
+    const Common = window.PlaytrixCommon || {};
+    const Governance = window.PlaytrixGovernance;
+    const schedule = Governance.schedule;
+    const dayName = Governance.dayName;
+    const tomorrow = Governance.tomorrow;
+    const getBlock = Governance.getBlock;
 
     const salesItems = [
       'Review all warm and qualified leads.',
@@ -514,66 +704,389 @@
       { id: 'q3', title: 'Quarter 3', subtitle: 'Consulting discipline', output: '5 to 10 projects, repeatable maintenance offers, clearer pricing.', checklist: ['Structured problem solving', 'Lean and systems thinking', 'Discovery meetings and recommendations', 'Proposal writing', 'Pricing logic', 'Recommendation notes after client conversations'] },
       { id: 'q4', title: 'Quarter 4', subtitle: 'Operational maturity', output: 'Internal system supports tracking, onboarding, reminders, and visibility.', checklist: ['Extend Playtrix for project tracking', 'Add reminder logic', 'Learn contracts, data protection, and record keeping basics', 'Use ICO guidance', 'Build trust assets through portfolio and articles', 'Make the site itself proof of competence'] }
     ];
+    const taskHelpLookup = {
+      'Build the highest-value page or feature.': 'Choose the build task that most improves delivery or moves the client closest to a visible result. Do not start with low-value polishing.',
+      'Check accessibility and mobile basics.': 'Make sure the work is usable on phones, readable, and not obviously excluding people through poor structure or contrast.',
+      'Reply to open client threads.': 'Close loops. Every live client conversation should either be answered or have a clear next response planned.',
+      'Tighten the week plan.': 'Reduce drift. Decide what this week is actually for and what can wait.',
+      'Implement live project changes.': 'Ship real work on a live client job rather than reorganising around it.',
+      'Handle hosting or forms.': 'Deal with practical delivery work such as hosting settings, contact forms, or basic technical tasks that affect a live site.',
+      'Send practical outreach messages.': 'Make contact with real prospects in a direct, useful way instead of vague networking.',
+      'Follow up warm leads.': 'Do not leave interested people sitting. Give each warm lead a next step.',
+      'Improve reusable components.': 'Work on templates, layout patterns, snippets, or systems that make future delivery faster and cleaner.',
+      'Check backups and uptime.': 'Verify that sites are recoverable and available, not just assumed to be safe.',
+      'Review forms, links, and speed.': 'Check real user-facing reliability: can people submit, navigate, and load the site without friction.',
+      'Check domains and certificates.': 'Prevent avoidable failures by keeping an eye on renewals and SSL health.',
+      'Improve SOPs and templates.': 'Write down how recurring work should be done so the business becomes easier to run.',
+      'Update income and expense records.': 'Keep money records current while details are fresh, rather than reconstructing them later under pressure.',
+      'Review subscriptions and admin.': 'Check recurring tools, bills, and admin burdens so waste and duplication do not creep in.',
+      'Capture business decisions.': 'Record important choices so you can remember why something was decided and what follows from it.',
+      'Finalise build work and QA.': 'Bring work to a finish properly and test it, rather than leaving a nearly-done job messy.',
+      'Prepare launch or handover.': 'Get the site or deliverable ready to leave your desk in a competent state.',
+      'Publish one trust-building proof piece.': 'Share evidence of competence: case-study material, a useful article, or visible proof of work.',
+      'Refresh a portfolio or article asset.': 'Keep public proof of capability current so selling is easier later.',
+      'Study a service-relevant skill.': 'Learn something that will make the business more useful or more efficient to run.',
+      'Review business objectives.': 'Check whether current effort still lines up with what the business is trying to become.',
+      'Tidy loose files and notes.': 'Reduce clutter that will otherwise slow you down next week.',
+      'Prepare next week.': 'End the week with a lighter Monday by deciding what comes next before you stop.',
+      'Mass and prayer.': 'Keep Sunday ordered around worship and recovery, not business activity.',
+      'Family life and rest.': 'Rest is part of long-term sustainability, not a failure of discipline.',
+      'No business activity unless genuinely urgent.': 'Do not turn Sunday into disguised work. Only act if something truly cannot wait.',
+      'Review all warm and qualified leads.': 'Look at the real sales opportunities, not every contact you have ever made.',
+      'Send at least three outbound messages with a practical angle.': 'Make three clear, useful approaches to prospects, each with a genuine reason to contact them.',
+      'Follow up every live enquiry with a named next action.': 'Every enquiry should end with a specific next step, not just a vague hope of hearing back.',
+      'Prepare one example or case-study worth sending.': 'Keep one proof piece ready so selling is backed by evidence, not only promises.',
+      'Draft or refine one proposal or offer summary.': 'Improve the written offer so pricing and scope are easier to explain.',
+      'Review workload and recovery before adding more commitments.': 'Check whether the business can actually absorb more work without damaging delivery or health.',
+      'Check backups, domains, and hosting for avoidable waste or risk.': 'Reduce operational fragility and recurring waste by spotting issues early.',
+      'Prefer reusable templates and simpler processes over duplicated work.': 'Choose system improvement over reinventing the wheel each time.',
+      'Note one community, charitable, or mission-aligned contribution.': 'Remember that the business should serve something beyond immediate revenue.',
+      'Track one change that makes the business more sustainable to run.': 'Capture a concrete improvement that reduces friction, risk, or overload.',
+      'Semantic HTML': 'Learn to structure pages properly so they are clearer to browsers, assistive technologies, and future maintenance.',
+      'Accessibility basics and QA routine': 'Understand the minimum checks that stop you delivering work that excludes users.',
+      'Performance basics': 'Know how to keep pages fast enough to feel competent and trustworthy.',
+      'SEO fundamentals': 'Learn the basics that help a site be found and understood without resorting to gimmicks.',
+      'Website policy and compliance basics': 'Understand the standard pages and compliance considerations that real client sites often need.',
+      'Domains, DNS, hosting, and Git deployment': 'Become confident with the technical path from local build to live site.',
+      'Backups, uptime, and monitoring': 'Learn how to keep sites dependable after launch, which is where long-term trust is built.',
+      'Maintenance checklist design': 'Turn good maintenance habits into a repeatable service, not something improvised each month.',
+      'Microsoft 365 folder governance': 'Learn how to keep shared files orderly, named properly, and easy to find.',
+      'Process mapping and documentation': 'Get better at seeing how work actually flows and where it breaks down.',
+      'Basic business analysis': 'Learn how to identify needs, document them, and propose useful improvements.',
+      'Write the maintenance and cleanup offer': 'Turn the skill into a clear service someone can actually buy.',
+      'Structured problem solving': 'Learn to diagnose messy situations instead of reacting to symptoms only.',
+      'Lean and systems thinking': 'Understand how waste, bottlenecks, and poor flow damage the work.',
+      'Discovery meetings and recommendations': 'Learn how to listen properly, define the problem, and respond with something practical.',
+      'Proposal writing': 'Write offers that are clear about scope, value, and next steps.',
+      'Pricing logic': 'Know why something costs what it costs and how to explain it with confidence.',
+      'Recommendation notes after client conversations': 'Capture conclusions while they are fresh so client work stays coherent.',
+      'Extend Playtrix for project tracking': 'Use the internal system to reduce mental load and create dependable working routines.',
+      'Add reminder logic': 'Make the system prompt you before important things are late or forgotten.',
+      'Learn contracts, data protection, and record keeping basics': 'Understand the basic legal and administrative ground under the business.',
+      'Use ICO guidance': 'Use official data-protection guidance rather than guessing.',
+      'Build trust assets through portfolio and articles': 'Create visible proof that the business is competent and serious.',
+      'Make the site itself proof of competence': 'The business site should demonstrate the quality and order you are selling to others.'
+    };
 
     const storeKey = 'playtrixFolifaxChecks';
-    const noteKey = 'playtrixFolifaxNote';
     const pageKey = 'playtrixFolifaxPage';
     const linkKey = 'playtrixFolifaxLinks';
+    const dayPlanKey = 'playtrix.today.plan';
+    const prepPlanKey = 'playtrix.today.prep';
+    const routeUsageKey = 'playtrix.routeUsage';
+    const routeRegistry = [
+      { key: 'overview', title: 'Front Desk', note: 'Open the main desk and start from the live rhythm.', url: 'playtrix-console.html#overview', seed: 10 },
+      { key: 'current-pressure', title: 'Current Pressure', note: 'Review live pressure, escalations, and handling without crowding the desk.', url: 'playtrix-focus.html?topic=current-pressure', seed: 7 },
+      { key: 'analytics', title: 'Analytics', note: 'See the simple business snapshot and the fuller analytics page.', url: 'analytics.html', seed: 5 },
+      { key: 'workboard', title: 'Workboard', note: 'Move active tasks through the day without clutter.', url: 'playtrix-focus.html?topic=workboard', seed: 9 },
+      { key: 'projects', title: 'Projects', note: 'See the end-to-end project record in its own focused view.', url: 'playtrix-focus.html?topic=projects', seed: 8 },
+      { key: 'sales', title: 'Clients and Sales', note: 'Review client status, live leads, and next commercial actions.', url: 'playtrix-focus.html?topic=sales', seed: 8 },
+      { key: 'marketing', title: 'Marketing', note: 'Keep campaigns, proof assets, and message work in one visible place.', url: 'playtrix-focus.html?topic=marketing', seed: 5 },
+      { key: 'diary', title: 'Business Diary', note: 'Keep dated commitments, notes, and follow-up visible.', url: 'playtrix-console.html#diary', seed: 7 },
+      { key: 'tools', title: 'Tools Deck', note: 'Open the working systems and linked tools quickly.', url: 'tools.html', seed: 6 },
+      { key: 'contacts', title: 'Contacts', note: 'Update the people register and keep practical details close.', url: 'contacts.html', seed: 5 },
+      { key: 'governance-calendar', title: 'Governance Calendar', note: 'Open the timing spine for recurring governance work.', url: 'playtrix-focus.html?topic=governance-calendar', seed: 4 },
+      { key: 'finance-overview', title: 'Finance & Treasury', note: 'Review the current money picture without opening the full register stack.', url: 'playtrix-focus.html?topic=finance-overview', seed: 6 },
+      { key: 'asset-register', title: 'Asset Register', note: 'Open the merged asset register, websites, folders, and inventory page.', url: 'playtrix-focus.html?topic=asset-register', seed: 4 },
+      { key: 'documents', title: 'Documents', note: 'Open the main documents and library view.', url: 'playtrix-focus.html?topic=documents', seed: 4 }
+    ];
 
-    function getStore() { try { return JSON.parse(localStorage.getItem(storeKey)) || {}; } catch { return {}; } }
-    function setStore(state) { localStorage.setItem(storeKey, JSON.stringify(state)); }
-    function getLinks() { try { return JSON.parse(localStorage.getItem(linkKey)) || {}; } catch { return {}; } }
-    function setLinks(state) { localStorage.setItem(linkKey, JSON.stringify(state)); }
-    function dayName(date) { return date.toLocaleDateString('en-GB', { weekday: 'long' }); }
-    function tomorrow(date) { const d = new Date(date); d.setDate(d.getDate() + 1); return d; }
+    function getStore() { return Storage.readJson(storeKey, {}); }
+    function setStore(state) { Storage.writeJson(storeKey, state); }
+    function getLinks() { return Storage.readJson(linkKey, {}); }
+    function setLinks(state) { Storage.writeJson(linkKey, state); }
+    function getDayPlans() { return Storage.readJson(dayPlanKey, {}); }
+    function setDayPlans(state) { Storage.writeJson(dayPlanKey, state); }
+    function getPrepPlans() { return Storage.readJson(prepPlanKey, {}); }
+    function setPrepPlans(state) { Storage.writeJson(prepPlanKey, state); }
 
-    function footerDateTime() {
-      const now = new Date();
-      const weekday = now.toLocaleDateString('en-GB', { weekday: 'long' });
-      const month = now.toLocaleDateString('en-GB', { month: 'long' });
-      const day = now.getDate();
-      const suffix = (day % 100 >= 11 && day % 100 <= 13) ? 'th' : ({ 1: 'st', 2: 'nd', 3: 'rd' }[day % 10] || 'th');
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      document.querySelectorAll('[data-datetime]').forEach((node) => {
-        node.textContent = `${weekday} ${day}${suffix} ${month} ${now.getFullYear()} ${hours}:${minutes}`;
+    function resolvePageFromTarget(target) {
+      const cleanTarget = (target || '').replace('#', '');
+      if (!cleanTarget) return '';
+      if (document.getElementById(`page-${cleanTarget}`)) {
+        return cleanTarget;
+      }
+      const section = document.getElementById(cleanTarget);
+      const page = section ? section.closest('.page') : null;
+      return page && page.id.indexOf('page-') === 0 ? page.id.replace('page-', '') : '';
+    }
+
+    function scrollToTargetId(target) {
+      const cleanTarget = (target || '').replace('#', '');
+      if (!cleanTarget) return;
+      const targetNode = document.getElementById(cleanTarget);
+      if (!targetNode) return;
+      window.setTimeout(() => {
+        targetNode.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 90);
+    }
+    function isoDate(date) { return date.toISOString().slice(0, 10); }
+    function pruneDayPlans(state, keepKey) {
+      const next = {};
+      Object.keys(state || {}).forEach((key) => {
+        if (key === keepKey) next[key] = state[key];
+      });
+      return next;
+    }
+    function normaliseLink(value) {
+      if (Common && typeof Common.normaliseActionLink === 'function') {
+        return Common.normaliseActionLink(value);
+      }
+      const link = String(value || '').trim();
+      if (!link) return '';
+      return link.replace(/\\/g, '/');
+    }
+
+
+    function getRouteUsage() { return Storage.readJson(routeUsageKey, {}); }
+    function setRouteUsage(state) { Storage.writeJson(routeUsageKey, state); }
+    function bumpRoute(key) {
+      if (!key) return;
+      const usage = getRouteUsage();
+      usage[key] = (usage[key] || 0) + 1;
+      setRouteUsage(usage);
+      renderQuickRoutes();
+    }
+    function renderQuickRoutes() {
+      const container = document.getElementById('quickRoutes');
+      if (!container) return;
+      const usage = getRouteUsage();
+      const currentPage = (window.PlaytrixCurrentPage || (location.hash || '#overview').replace('#', '') || 'overview');
+      const topRoutes = routeRegistry
+        .filter((route) => !(currentPage === 'overview' && route.key === 'overview'))
+        .map((route) => ({ ...route, score: (usage[route.key] || 0) + (route.seed || 0) }))
+        .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
+        .slice(0, 5);
+      container.innerHTML = ['<article class=\"card\">','  <p class=\"eyebrow\">Quick Routes</p>','  <p class=\"muted\">Playtrix most visited:</p>','  <div class=\"route-list\">', topRoutes.map((route) => ['<div class=\"route-item\">','  <div class=\"route-item-main\">','    <strong>' + route.title + '</strong>','    <span>' + route.note + '</span>','    <a href=\"' + route.url + '\" data-route-key=\"' + route.key + '\">Open</a>','  </div>','</div>'].join('')).join(''),'  </div>','</article>'].join('');
+      container.querySelectorAll('[data-route-key]').forEach((link) => {
+        link.addEventListener('click', () => bumpRoute(link.dataset.routeKey));
       });
     }
-
-    function getBlock(name, hours, minutes) {
-      const day = schedule[name];
-      if (!day) return { current: '-', next: '-' };
-      if (name === 'Sunday') return { current: 'Rest day', next: 'Monday � Client Builds (06:00-09:00)' };
-      const now = hours * 60 + minutes;
-      if (now >= 360 && now < 540) return { current: `${day.primary} (${day.primaryWindow})`, next: `${day.secondary} (${day.secondaryWindow})` };
-      if (now >= day.secondStart * 60 && now < day.secondEnd * 60) return { current: `${day.secondary} (${day.secondaryWindow})`, next: 'End of working blocks' };
-      if (now < 360) return { current: 'Before work blocks', next: `${day.primary} (${day.primaryWindow})` };
-      if (now >= 540 && now < day.secondStart * 60) return { current: 'Between blocks', next: `${day.secondary} (${day.secondaryWindow})` };
-      const nextName = dayName(tomorrow(new Date()));
-      return { current: 'After work blocks', next: nextName === 'Sunday' ? 'Sunday � Rest day' : `${nextName} � ${schedule[nextName].primary} (${schedule[nextName].primaryWindow})` };
+    function createHelp(helpText) {
+      const details = document.createElement('details');
+      details.className = 'task-help';
+      details.innerHTML = `<summary><span class="help-icon">i</span></summary><div class="task-help-panel">${helpText}</div>`;
+      return details;
     }
 
-    function makeTask(text, key, checked) {
-      const el = document.createElement('label');
-      el.className = 'task';
-      el.innerHTML = `<input type="checkbox" ${checked ? 'checked' : ''} /><span>${text}</span>`;
-      el.querySelector('input').addEventListener('change', (event) => {
-        const state = getStore();
-        state[key] = event.target.checked;
-        setStore(state);
+    function createTask(config) {
+      const row = document.createElement('div');
+      row.className = 'task';
+      const label = document.createElement('label');
+      label.className = 'task-main';
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.checked = !!config.checked;
+      const body = document.createElement('div');
+      body.className = 'task-body';
+      const text = document.createElement('span');
+      text.textContent = config.text;
+      if (config.checked) {
+        text.style.textDecoration = 'line-through';
+        text.style.color = 'var(--wf-muted)';
+      }
+      body.appendChild(text);
+      if (config.link) {
+        const anchor = document.createElement('a');
+        anchor.className = 'task-link';
+        anchor.href = normaliseLink(config.link);
+        anchor.target = '_blank';
+        anchor.rel = 'noopener';
+        anchor.textContent = 'Open link';
+        body.appendChild(anchor);
+      }
+      label.appendChild(checkbox);
+      label.appendChild(body);
+      row.appendChild(label);
+      const actions = document.createElement('div');
+      actions.className = 'task-actions';
+      if (typeof config.onAttach === 'function') {
+        const attachButton = document.createElement('button');
+        attachButton.type = 'button';
+        attachButton.className = 'task-attach';
+        attachButton.textContent = config.link ? 'Edit link' : 'Add link';
+        attachButton.addEventListener('click', config.onAttach);
+        actions.appendChild(attachButton);
+      }
+      if (typeof config.onDelete === 'function') {
+        const deleteButton = document.createElement('button');
+        deleteButton.type = 'button';
+        deleteButton.className = 'task-delete';
+        deleteButton.textContent = 'Delete';
+        deleteButton.addEventListener('click', config.onDelete);
+        actions.appendChild(deleteButton);
+      }
+      actions.appendChild(createHelp(config.helpText || taskHelpLookup[config.text] || 'This task matters because it supports delivery, control, learning, or the long-term health of the business.'));
+      row.appendChild(actions);
+      checkbox.addEventListener('change', () => {
+        if (typeof config.onToggle === 'function') {
+          config.onToggle(checkbox.checked);
+        }
         updateProgress();
       });
-      return el;
+      return row;
     }
 
     function renderTaskList(containerId, items, prefix) {
       const state = getStore();
       const box = document.getElementById(containerId);
+      if (!box) return;
       box.innerHTML = '';
-      items.forEach((item, index) => box.appendChild(makeTask(item, `${prefix}-${index}`, !!state[`${prefix}-${index}`])));
+      items.forEach((item, index) => {
+        box.appendChild(createTask({
+          text: item,
+          checked: !!state[`${prefix}-${index}`],
+          onToggle: (checked) => {
+            const next = getStore();
+            next[`${prefix}-${index}`] = checked;
+            setStore(next);
+          }
+        }));
+      });
     }
 
-    function renderToday(name) { renderTaskList('todayChecklist', schedule[name]?.tasks || [], `today-${name}`); }
+    function renderWorkingDayPlan(date) {
+      const form = document.getElementById('todayPlannerForm');
+      const hint = document.getElementById('todayPlannerHint');
+      const box = document.getElementById('todayChecklist');
+      const dateKey = isoDate(date);
+      const state = pruneDayPlans(getDayPlans(), dateKey);
+      const items = Array.isArray(state[dateKey]) ? state[dateKey] : [];
+      state[dateKey] = items;
+      setDayPlans(state);
+      form.hidden = false;
+      Array.from(form.elements).forEach((field) => { field.disabled = false; });
+      hint.textContent = 'Keep this to six items. Add any link or file path to each item after you create it.';
+      box.innerHTML = '';
+      if (!items.length) {
+        const empty = document.createElement('div');
+        empty.className = 'line';
+        empty.innerHTML = '<span class="bullet"></span><div>No items added yet. Keep the day tight and concrete.</div>';
+        box.appendChild(empty);
+        return;
+      }
+      items.slice(0, 6).forEach((item, index) => {
+        box.appendChild(createTask({
+          text: item.text,
+          link: item.link,
+          checked: !!item.done,
+          helpText: item.helpText || 'Write the task plainly enough that you can act on it without thinking twice.',
+          onToggle: (checked) => {
+            const next = getDayPlans();
+            const list = Array.isArray(next[dateKey]) ? next[dateKey] : [];
+            if (!list[index]) return;
+            list[index].done = checked;
+            next[dateKey] = list;
+            setDayPlans(next);
+            renderWorkingDayPlan(date);
+          },
+          onAttach: () => {
+            const next = getDayPlans();
+            const list = Array.isArray(next[dateKey]) ? next[dateKey] : [];
+            if (!list[index]) return;
+            const current = list[index].link || '';
+            const value = window.prompt('Add or edit a link or file path for this item:', current);
+            if (value === null) return;
+            list[index].link = value.trim();
+            next[dateKey] = list;
+            setDayPlans(next);
+            renderWorkingDayPlan(date);
+          },
+          onDelete: () => {
+            const next = getDayPlans();
+            const list = Array.isArray(next[dateKey]) ? next[dateKey] : [];
+            list.splice(index, 1);
+            next[dateKey] = list;
+            setDayPlans(next);
+            renderWorkingDayPlan(date);
+            updateProgress();
+          }
+        }));
+      });
+    }
+
+    function getPrepTargetDate(referenceDate) {
+      const now = referenceDate || new Date();
+      return dayName(now) === 'Sunday' ? tomorrow(now) : now;
+    }
+
+    function renderPrepPlan(referenceDate, plan, useTomorrow) {
+      const form = document.getElementById('prepPlannerForm');
+      const hint = document.getElementById('prepPlannerHint');
+      const help = document.getElementById('prepHelpText');
+      const box = document.getElementById('tomorrowPrep');
+      if (!form || !hint || !help || !box) return;
+      const targetDate = getPrepTargetDate(referenceDate);
+      const dateKey = isoDate(targetDate);
+      const state = pruneDayPlans(getPrepPlans(), dateKey);
+      const items = Array.isArray(state[dateKey]) ? state[dateKey] : [];
+      state[dateKey] = items;
+      setPrepPlans(state);
+      form.hidden = false;
+      Array.from(form.elements).forEach((field) => { field.disabled = false; });
+      hint.textContent = useTomorrow ? 'This is tomorrow\'s preparation list. It clears when the target date changes.' : 'This is today\'s preparation list. It clears when the date changes.';
+      help.innerHTML = '<p>' + (useTomorrow ? 'Use this to prepare the next working day without turning Sunday into a full work session.' : 'Use this as the short prep scratch pad for today: what needs to be ready, gathered, sent, or kept visible.') + '</p><p><strong>Governance prompts:</strong> ' + plan.prep.join(' ') + '</p>';
+      box.innerHTML = '';
+      if (!items.length) {
+        const empty = document.createElement('div');
+        empty.className = 'line';
+        empty.innerHTML = '<span class="bullet"></span><div>No preparation items added yet. Keep it to what actually supports the next block.</div>';
+        box.appendChild(empty);
+        return;
+      }
+      items.forEach((item, index) => {
+        box.appendChild(createTask({
+          text: item.text,
+          link: item.link,
+          checked: !!item.done,
+          helpText: item.helpText || 'Use preparation items for things that need to be ready, found, sent, or decided before the work moves on.',
+          onToggle: (checked) => {
+            const next = getPrepPlans();
+            const list = Array.isArray(next[dateKey]) ? next[dateKey] : [];
+            if (!list[index]) return;
+            list[index].done = checked;
+            next[dateKey] = list;
+            setPrepPlans(next);
+            renderPrepPlan(referenceDate, plan, useTomorrow);
+          },
+          onAttach: () => {
+            const next = getPrepPlans();
+            const list = Array.isArray(next[dateKey]) ? next[dateKey] : [];
+            if (!list[index]) return;
+            const current = list[index].link || '';
+            const value = window.prompt('Add or edit a link or file path for this preparation item:', current);
+            if (value === null) return;
+            list[index].link = value.trim();
+            next[dateKey] = list;
+            setPrepPlans(next);
+            renderPrepPlan(referenceDate, plan, useTomorrow);
+          },
+          onDelete: () => {
+            const next = getPrepPlans();
+            const list = Array.isArray(next[dateKey]) ? next[dateKey] : [];
+            list.splice(index, 1);
+            next[dateKey] = list;
+            setPrepPlans(next);
+            renderPrepPlan(referenceDate, plan, useTomorrow);
+          }
+        }));
+      });
+    }
+
+    function renderToday(name, date) {
+      const now = date || new Date();
+      if (name === 'Sunday') {
+        const form = document.getElementById('todayPlannerForm');
+        const hint = document.getElementById('todayPlannerHint');
+        form.hidden = true;
+        Array.from(form.elements).forEach((field) => { field.disabled = true; });
+        hint.textContent = 'Sunday stays schedule-led. Keep business activity genuinely exceptional.';
+        renderTaskList('todayChecklist', schedule[name]?.tasks || [], `today-${name}`);
+        return;
+      }
+      renderWorkingDayPlan(now);
+    }
+
     function renderSales() { renderTaskList('salesChecklist', salesItems, 'sales'); }
     function renderSustainability() { renderTaskList('sustainabilityChecklist', sustainabilityItems, 'sustainability'); }
 
@@ -582,6 +1095,38 @@
       if (!box) return;
       const links = getLinks();
       box.innerHTML = `<h3>${title}</h3>`;
+      if (bankKey === 'sales') {
+        const key = `${bankKey}-folder`;
+        const value = links[key] || links[`${bankKey}-0`] || '';
+        const field = document.createElement('label');
+        field.innerHTML = `OneDrive sales folder link<input type="text" value="${value.replace(/"/g, '&quot;')}" placeholder="Paste the OneDrive sales folder URL" />`;
+        const input = field.querySelector('input');
+        const hint = document.createElement('p');
+        hint.className = 'muted';
+        hint.textContent = 'Keep one direct route to the live sales folder instead of a stack of separate attachments.';
+        const actions = document.createElement('div');
+        actions.className = 'sales-folder-actions';
+        function redrawAction(linkValue) {
+          const href = normaliseLink(linkValue);
+          actions.innerHTML = href
+            ? `<a href="${href.replace(/"/g, '&quot;')}" target="_blank" rel="noopener">Open sales folder</a>`
+            : '<span class="muted">Add the folder link when ready.</span>';
+        }
+        input.addEventListener('input', () => {
+          const state = getLinks();
+          state[key] = input.value;
+          delete state[`${bankKey}-0`];
+          delete state[`${bankKey}-1`];
+          delete state[`${bankKey}-2`];
+          setLinks(state);
+          redrawAction(input.value);
+        });
+        box.appendChild(hint);
+        box.appendChild(field);
+        box.appendChild(actions);
+        redrawAction(value);
+        return;
+      }
       ['Reference link or file path', 'Supporting document', 'Working note or action link'].forEach((label, index) => {
         const key = `${bankKey}-${index}`;
         const field = document.createElement('label');
@@ -599,6 +1144,7 @@
     function renderLearning() {
       const state = getStore();
       const grid = document.getElementById('learningGrid');
+      if (!grid) return;
       grid.innerHTML = '';
       learningPlan.forEach((quarter) => {
         const card = document.createElement('article');
@@ -620,19 +1166,32 @@
         `;
         grid.appendChild(card);
         const list = card.querySelector(`#${listId}`);
-        quarter.checklist.forEach((item, index) => list.appendChild(makeTask(item, `${quarter.id}-${index}`, !!state[`${quarter.id}-${index}`])));
+        quarter.checklist.forEach((item, index) => {
+          list.appendChild(createTask({
+            text: item,
+            checked: !!state[`${quarter.id}-${index}`],
+            onToggle: (checked) => {
+              const next = getStore();
+              next[`${quarter.id}-${index}`] = checked;
+              setStore(next);
+            }
+          }));
+        });
         renderResourceBank(bankId, `${quarter.title} links and documents`);
       });
     }
 
     function setProgress(containerId, fillId, textId) {
       const box = document.getElementById(containerId);
+      if (!box) return { done: 0, total: 0 };
       const checks = Array.from(box.querySelectorAll('input[type="checkbox"]'));
       const done = checks.filter((item) => item.checked).length;
       const total = checks.length || 1;
       const percent = Math.round(done / total * 100);
-      document.getElementById(fillId).style.width = `${percent}%`;
-      document.getElementById(textId).textContent = `${percent}%`;
+      const fill = document.getElementById(fillId);
+      const text = document.getElementById(textId);
+      if (fill) fill.style.width = `${percent}%`;
+      if (text) text.textContent = `${percent}%`;
       return { done, total };
     }
 
@@ -643,6 +1202,7 @@
       let done = 0;
       let total = 0;
       const summary = document.getElementById('learningSummary');
+      if (!summary) return;
       summary.innerHTML = '';
       learningPlan.forEach((quarter) => {
         const result = setProgress(`${quarter.id}-list`, `${quarter.id}-fill`, `${quarter.id}-text`);
@@ -654,8 +1214,10 @@
         summary.appendChild(line);
       });
       const percent = Math.round(done / (total || 1) * 100);
-      document.getElementById('learningTotalFill').style.width = `${percent}%`;
-      document.getElementById('learningTotalText').textContent = `${percent}%`;
+      const totalFill = document.getElementById('learningTotalFill');
+      const totalText = document.getElementById('learningTotalText');
+      if (totalFill) totalFill.style.width = `${percent}%`;
+      if (totalText) totalText.textContent = `${percent}%`;
     }
 
     function updateClock() {
@@ -670,61 +1232,133 @@
       document.getElementById('currentBlock').textContent = block.current;
       document.getElementById('nextBlock').textContent = block.next;
       document.getElementById('todayTheme').textContent = today ? today.theme : '-';
-      document.getElementById('todayStamp').textContent = now.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-      document.getElementById('statusText').textContent = `${name} cadence � ${today ? today.theme : 'Operational'}`;
-      renderToday(name);
+      renderToday(name, now);
+      renderDayPreview(now);
       updateProgress();
     }
 
-    function renderTomorrow() {
-      const next = tomorrow(new Date());
-      const name = dayName(next);
-      const plan = schedule[name];
-      document.getElementById('tomorrowHeadline').textContent = `${name} opens with ${plan.primary} (${plan.primaryWindow}) and continues with ${plan.secondary} (${plan.secondaryWindow}).`;
-      document.getElementById('tomorrowTags').innerHTML = `<span class="tag mist">${name}</span><span class="tag sea">${plan.theme}</span><span class="tag grass">${plan.primary}</span>`;
-      const box = document.getElementById('tomorrowPrep');
-      box.innerHTML = '';
-      plan.prep.forEach((item) => {
-        const line = document.createElement('div');
-        line.className = 'line';
-        line.innerHTML = `<span class="bullet"></span><div>${item}</div>`;
-        box.appendChild(line);
-      });
+    function renderDayPreview(referenceDate) {
+      const now = referenceDate || new Date();
+      const currentName = dayName(now);
+      const useTomorrow = currentName === 'Sunday';
+      const targetDate = useTomorrow ? tomorrow(now) : now;
+      const targetName = dayName(targetDate);
+      const plan = schedule[targetName];
+      document.getElementById('dayPreviewLabel').textContent = useTomorrow ? 'Tomorrow' : 'Today';
+      document.getElementById('prepLabel').textContent = useTomorrow ? 'Next day preparation' : 'Preparation';
+      document.getElementById('tomorrowHeadline').textContent = useTomorrow ? targetName + ' opens with ' + plan.primary + ' (' + plan.primaryWindow + ') and continues with ' + plan.secondary + ' (' + plan.secondaryWindow + ').' : targetName + ' is for ' + plan.primary + ' (' + plan.primaryWindow + ') and later ' + plan.secondary + ' (' + plan.secondaryWindow + ').';
+      document.getElementById('tomorrowTags').innerHTML = '<span class="tag mist">' + targetName + '</span><span class="tag sea">' + plan.theme + '</span><span class="tag grass">' + plan.primary + '</span>';
+      renderPrepPlan(now, plan, useTomorrow);
     }
 
     function initNav() {
-      const buttons = Array.from(document.querySelectorAll('button.nav-btn[data-page]'));
       const pages = Array.from(document.querySelectorAll('.page'));
-      function activate(id) {
-        buttons.forEach((button) => button.classList.toggle('active', button.dataset.page === id));
+      function activate(id, updateHash = true) {
         pages.forEach((page) => page.classList.toggle('active', page.id === `page-${id}`));
         localStorage.setItem(pageKey, id);
+        window.PlaytrixCurrentPage = id;
+        if (updateHash) {
+          history.replaceState(null, '', `#${id}`);
+        }
+        window.dispatchEvent(new CustomEvent('playtrix:page-change', { detail: { page: id } }));
       }
-      buttons.forEach((button) => button.addEventListener('click', () => activate(button.dataset.page)));
-      const saved = localStorage.getItem(pageKey);
-      if (saved && document.getElementById(`page-${saved}`)) activate(saved);
+
+      function resolveTarget() {
+        const hashTarget = (location.hash || '').replace('#', '');
+        const sectionTarget = resolvePageFromTarget(hashTarget);
+        if (sectionTarget) {
+          if (hashTarget !== sectionTarget) {
+            scrollToTargetId(hashTarget);
+          }
+          return sectionTarget;
+        }
+        const legacyTarget = hashTarget === 'operating' ? 'workboard' : hashTarget;
+        if (legacyTarget && document.getElementById(`page-${legacyTarget}`)) {
+          return legacyTarget;
+        }
+        const saved = localStorage.getItem(pageKey);
+        const savedTarget = saved === 'operating' ? 'workboard' : saved;
+        if (savedTarget && document.getElementById(`page-${savedTarget}`)) {
+          return savedTarget;
+        }
+        return 'overview';
+      }
+
+      window.addEventListener('hashchange', () => activate(resolveTarget(), false));
+      activate(resolveTarget(), false);
+    }
+
+    function setupTodayPlanner() {
+      const form = document.getElementById('todayPlannerForm');
+      if (!form) return;
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const now = new Date();
+        const name = dayName(now);
+        if (name === 'Sunday') return;
+        const textInput = document.getElementById('dailyTaskText');
+        const text = textInput.value.trim();
+        if (!text) return;
+        const dateKey = isoDate(now);
+        const state = pruneDayPlans(getDayPlans(), dateKey);
+        const items = Array.isArray(state[dateKey]) ? state[dateKey] : [];
+        if (items.length >= 6) {
+          alert('Keep the daily list to six items. Put the rest on the workboard.');
+          return;
+        }
+        items.push({ text, link: '', done: false });
+        state[dateKey] = items;
+        setDayPlans(state);
+        textInput.value = '';
+        renderWorkingDayPlan(now);
+        updateProgress();
+      });
+    }
+
+    function setupPrepPlanner() {
+      const form = document.getElementById('prepPlannerForm');
+      if (!form) return;
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const now = new Date();
+        const targetDate = getPrepTargetDate(now);
+        const targetName = dayName(targetDate);
+        const plan = schedule[targetName];
+        const useTomorrow = dayName(now) === 'Sunday';
+        const textInput = document.getElementById('dailyPrepText');
+        const text = textInput.value.trim();
+        if (!text || !plan) return;
+        const dateKey = isoDate(targetDate);
+        const state = pruneDayPlans(getPrepPlans(), dateKey);
+        const items = Array.isArray(state[dateKey]) ? state[dateKey] : [];
+        items.push({ text, link: '', done: false });
+        state[dateKey] = items;
+        setPrepPlans(state);
+        textInput.value = '';
+        renderPrepPlan(now, plan, useTomorrow);
+      });
     }
 
     document.addEventListener('DOMContentLoaded', () => {
       renderSales();
       renderSustainability();
       renderLearning();
-      renderTomorrow();
-      renderResourceBank('today', 'Today attachments and links');
-      renderResourceBank('sales', 'Sales attachments and links');
-      renderResourceBank('governance', 'Governance files and policies');
+      renderResourceBank('sales', 'Sales folder');
       renderResourceBank('finance', 'Finance sheets and registers');
       renderResourceBank('sustainability', 'Sustainability references and plans');
       renderResourceBank('client-docs', 'Client questionnaires, checklists, contracts');
       renderResourceBank('sop-library', 'SOP links and template packs');
+      const initialRouteTarget = (location.hash || ('#' + (localStorage.getItem(pageKey) || 'overview'))).replace('#', '');
+      bumpRoute(resolvePageFromTarget(initialRouteTarget) || (initialRouteTarget === 'operating' ? 'workboard' : initialRouteTarget) || 'overview');
+      setupTodayPlanner();
+      setupPrepPlanner();
+      renderQuickRoutes();
       initNav();
-      document.getElementById('commandNote').value = localStorage.getItem(noteKey) || '';
-      document.getElementById('commandNote').addEventListener('input', (event) => localStorage.setItem(noteKey, event.target.value));
-      footerDateTime();
       updateClock();
       setInterval(updateClock, 1000);
-      setInterval(footerDateTime, 60000);
     });
   </script>
+  <script src="Assets/js/playtrix-kanban.js"></script>
+  <script src="Assets/js/playtrix-organiser.js"></script>
 </body>
 </html>

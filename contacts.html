@@ -3,290 +3,535 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Waylight-Playtrix | Business Contacts</title>
+  <title>Waylight-Playtrix | Contacts</title>
+  <link rel="icon" href="Assets/img/irish-cross.svg" type="image/svg+xml" />
   <style>
-    :root {
-      --sky-top:#edf6fd;
-      --sky-mid:#d9ebfa;
-      --sky-low:#c8dff4;
-      --sea:#6da0d4;
-      --sea-deep:#2b5a9d;
-      --ink:#1f4278;
-      --ink-soft:#54739d;
-      --line:rgba(43,90,157,.16);
-      --panel:rgba(255,255,255,.78);
-      --panel-strong:rgba(255,255,255,.9);
-      --glow:0 24px 60px rgba(49,89,141,.12);
-      --grass:#b8cfa8;
-      --chalk:#f8fbfe;
-    }
-    * { box-sizing:border-box; }
     body {
-      margin:0;
-      min-height:100vh;
-      color:var(--ink);
-      font-family:"Trebuchet MS","Gill Sans",Calibri,sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(255,255,255,.72), transparent 24%),
-        radial-gradient(circle at top right, rgba(109,160,212,.18), transparent 28%),
-        linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 48%, var(--sky-low) 100%);
+      margin: 0;
+      min-height: 100vh;
+      color: var(--wf-ink);
+      font-family: "Trebuchet MS", "Gill Sans", Calibri, sans-serif;
     }
-    h1,h2,h3,strong,th { font-family:Georgia,"Times New Roman",serif; }
-    a { color:inherit; }
-    .wrap { width:min(1280px, calc(100% - 2rem)); margin:0 auto; }
     .topbar {
-      position:sticky; top:0; z-index:10;
-      padding:1rem 0;
-      background:rgba(248,251,254,.7);
-      backdrop-filter:blur(16px);
-      border-bottom:1px solid rgba(43,90,157,.08);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 1rem 1.2rem;
     }
-    .brand { display:flex; justify-content:space-between; gap:1rem; align-items:flex-start; flex-wrap:wrap; }
-    .eyebrow { margin:0; font-size:.78rem; letter-spacing:.22em; text-transform:uppercase; font-weight:800; color:var(--ink-soft); }
-    h1 { margin:.2rem 0; font-size:clamp(2rem,5vw,3.5rem); text-transform:uppercase; letter-spacing:.04em; color:var(--sea-deep); }
-    .sub { margin:0; max-width:52rem; color:var(--ink-soft); line-height:1.6; }
-    nav { display:flex; gap:.6rem; flex-wrap:wrap; margin-top:1rem; }
-    .nav-btn,.footer-btn,.action-btn {
-      display:inline-flex; align-items:center; justify-content:center; text-decoration:none; cursor:pointer;
-      border:1px solid rgba(43,90,157,.12); border-radius:16px; padding:.82rem 1rem;
-      background:rgba(255,255,255,.76); color:var(--ink); font-weight:800;
-      box-shadow:0 10px 24px rgba(49,89,141,.06);
-    }
-    .nav-btn.active,.nav-btn:hover,.action-btn.primary,.footer-btn:hover {
-      background:linear-gradient(135deg, var(--ink), var(--sea-deep)); color:#fff;
-    }
-    .stamp {
-      display:inline-flex; align-items:center; gap:.55rem; padding:.75rem .95rem; border-radius:999px;
-      background:rgba(255,255,255,.82); border:1px solid rgba(43,90,157,.12); box-shadow:0 12px 28px rgba(49,89,141,.08);
-      font-weight:700; color:var(--ink);
-    }
-    .dot { width:.72rem; height:.72rem; border-radius:50%; background:var(--sea-deep); box-shadow:0 0 0 6px rgba(109,160,212,.18); }
-    main.wrap { padding:1.6rem 0 3rem; }
-    .hero,.cols2,.footer-inner { display:grid; gap:1rem; }
-    .hero { grid-template-columns:1.25fr .95fr; }
-    .cols2 { grid-template-columns:repeat(2, minmax(0, 1fr)); margin-top:1rem; }
-    .card {
-      position:relative; overflow:hidden; border-radius:28px; padding:1.25rem;
-      background:var(--panel); border:1px solid var(--line); box-shadow:var(--glow);
-    }
-    .hero-card {
-      min-height:320px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.62), rgba(255,255,255,.3)),
-        linear-gradient(180deg, rgba(217,235,250,.88), rgba(200,223,244,.72));
-    }
-    .hero-card::before {
-      content:""; position:absolute; inset:auto -10% 0 -10%; height:48%;
-      background:linear-gradient(180deg, rgba(109,160,212,.08), rgba(184,207,168,.3));
-      clip-path:polygon(0 54%, 16% 46%, 34% 56%, 50% 44%, 66% 55%, 84% 42%, 100% 52%, 100% 100%, 0 100%);
-    }
-    .hero-card::after {
-      content:""; position:absolute; inset:auto -8% 8% -8%; height:28%;
-      background:linear-gradient(180deg, rgba(109,160,212,.3), rgba(43,90,157,.08));
-      clip-path:polygon(0 50%, 15% 61%, 31% 47%, 48% 63%, 66% 45%, 83% 56%, 100% 40%, 100% 100%, 0 100%);
-      opacity:.95;
-    }
-    .hero-inner { position:relative; z-index:1; display:flex; flex-direction:column; gap:1rem; justify-content:space-between; min-height:100%; }
-    h2 { margin:.15rem 0; font-size:clamp(1.4rem, 3vw, 2.35rem); color:var(--sea-deep); }
-    .panel-text { color:var(--ink-soft); line-height:1.6; }
-    .metrics { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:.75rem; }
-    .metric { border-radius:18px; padding:.95rem; background:rgba(255,255,255,.6); border:1px solid rgba(43,90,157,.1); }
-    .metric span { display:block; font-size:.76rem; letter-spacing:.14em; text-transform:uppercase; font-weight:800; color:var(--ink-soft); }
-    .metric strong { display:block; margin-top:.35rem; font-size:1.05rem; color:var(--ink); }
-    .section-title { margin:0 0 .25rem; color:var(--sea-deep); }
-    .mini-list,.contact-list { display:grid; gap:.75rem; margin-top:1rem; }
-    .mini-item,.contact-card {
-      display:flex; gap:.8rem; align-items:flex-start; border-radius:18px; padding:.95rem;
-      background:var(--panel-strong); border:1px solid rgba(43,90,157,.1);
-    }
-    .bullet { width:.78rem; height:.78rem; margin-top:.42rem; border-radius:50%; background:linear-gradient(180deg, var(--sea), var(--sea-deep)); box-shadow:0 0 0 6px rgba(109,160,212,.14); flex:0 0 auto; }
-    .tag-row { display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.8rem; }
-    .tag { display:inline-flex; align-items:center; padding:.45rem .7rem; border-radius:999px; background:rgba(43,90,157,.08); color:var(--sea-deep); font-size:.82rem; font-weight:800; }
-    table { width:100%; border-collapse:collapse; margin-top:.85rem; }
-    th,td { text-align:left; padding:.82rem .72rem; border-bottom:1px solid rgba(43,90,157,.08); vertical-align:top; }
-    th { font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft); }
-    td { color:var(--ink); }
-    .note-box {
-      width:100%; min-height:160px; resize:vertical; border-radius:18px; padding:1rem; font:inherit;
-      border:1px solid rgba(43,90,157,.14); background:rgba(255,255,255,.86); color:var(--ink);
-    }
-    .site-footer { margin-top:1.4rem; }
-    .footer-inner {
-      grid-template-columns:auto 1fr auto; align-items:end;
-      background:rgba(248,251,254,.84); border:1px solid rgba(43,90,157,.12); border-radius:24px; padding:1rem 1.1rem;
-      box-shadow:var(--glow);
-    }
-    .footer-nav { display:flex; gap:.55rem; flex-wrap:wrap; }
-    .footer-tagline { margin:0; color:var(--ink-soft); font-size:.92rem; text-align:center; }
-    .waylight-legal-block { text-align:right; }
-    .footer-meta,.waylight-legal-links,.waylight-legal-location,.waylight-legal-copyright { margin:.15rem 0; color:var(--ink-soft); font-size:.86rem; }
-    .waylight-legal-links a,.waylight-legal-copyright a { color:var(--ink); text-decoration:none; }
-    .waylight-legal-links a:hover,.waylight-legal-copyright a:hover { text-decoration:underline; }
-    @media (max-width:1100px) {
-      .hero,.cols2,.footer-inner { grid-template-columns:1fr; }
-      .metrics { grid-template-columns:1fr; }
-      .waylight-legal-block { text-align:left; }
-    }
-    @media (max-width:700px) {
-      .wrap { width:min(100% - 1rem, 1280px); }
-      .nav-btn,.footer-btn,.action-btn { width:100%; }
-    }
+    .wrap { width: min(1380px, calc(100% - 2rem)); margin: 0 auto; }
+    .brand { display: flex; justify-content: space-between; gap: 1rem; align-items: start; flex-wrap: wrap; }
+    h1,h2,h3,strong { font-family: Georgia, "Times New Roman", serif; }
+    h1 { margin: .2rem 0; font-size: clamp(2rem, 5vw, 3.2rem); }
+    nav { display: flex; gap: .35rem; flex-wrap: wrap; margin-top: 1rem; }
+    .stamp { display: inline-flex; align-items: center; gap: .55rem; padding: .75rem .95rem; border-radius: 999px; background: rgba(255,255,255,.86); border: 1px solid var(--wf-rule); }
+    .dot { width: .72rem; height: .72rem; border-radius: 50%; background: var(--wf-primary); }
+    main.wrap { padding: 1.4rem 0 3rem; }
+    .hero { display: grid; grid-template-columns: 1.1fr .95fr; gap: 1rem; }
+    .hero > *, .metric-row > *, .contact-grid > *, .contact-toolbar > *, .contact-entry-toolbar > *, .footer-inner > * { min-width: 0; }
+    .card { --wf-card-padding: 1.2rem 1.2rem 1.25rem 1.95rem; display: flex; flex-direction: column; gap: .85rem; border: 1px solid var(--wf-rule); border-radius: 28px; box-shadow: var(--wf-shadow); position: relative; overflow: clip; background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(249,248,244,.96)); min-width: 0; height: auto; overflow-wrap: break-word; word-wrap: break-word; }
+    .card::before { content: ''; position: absolute; top: 0; bottom: 0; left: 1.1rem; width: 2px; background: rgba(163,107,107,.16); border-radius: 999px; }
+    .card > * { position: relative; z-index: 1; }
+    .metric-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; margin-top: 1rem; }
+    .metric { border: 1px solid var(--wf-rule); border-radius: 18px; padding: .9rem; background: rgba(255,255,255,.78); }
+    .metric span { display: block; font-size: .76rem; letter-spacing: .12em; text-transform: uppercase; color: var(--wf-muted); font-weight: 700; }
+    .metric strong { display: block; margin-top: .35rem; color: var(--wf-ink); }
+    .footer-inner { display: grid; grid-template-columns: auto 1fr auto; gap: 1rem; align-items: start; border: 1px solid var(--wf-rule); border-radius: 24px; padding: 1rem 1.1rem; margin-top: 1.4rem; background: rgba(255,255,255,.9); }
+    .footer-nav { display: flex; gap: .55rem; flex-wrap: wrap; }
+    .footer-btn,.nav-btn,.planner-btn { display: inline-flex; align-items: center; justify-content: center; padding: .75rem .95rem; border-radius: 14px; border: 1px solid var(--wf-rule); background: rgba(255,255,255,.9); color: var(--wf-ink); text-decoration: none; font-weight: 800; }
+    .nav-btn.active,.planner-btn.primary { background: var(--wf-primary); color: #fff; border-color: var(--wf-primary); }
+    .site-footer { margin-top: 1.4rem; }
+    .waylight-legal-block { text-align: right; }
+    .footer-meta,.waylight-legal-links,.waylight-legal-location,.waylight-legal-copyright,.footer-tagline { margin: .15rem 0; color: var(--wf-muted); }
+    .waylight-legal-links a,.waylight-legal-copyright a { color: var(--wf-ink); text-decoration: none; }
+    [hidden] { display: none !important; }
+    .contact-entry-toolbar { display: flex; align-items: start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .contact-entry-copy h2,
+    .contact-live-card h2,
+    .contact-register-card h2 { margin: .2rem 0 0; }
+    .contact-entry-copy p:last-child,
+    .contact-live-card p:last-child,
+    .contact-register-card p:last-child { margin-bottom: 0; }
+    .contact-editor-panel { margin-top: 1rem; }
+    .contact-live-card .contact-list { margin-top: 1rem; max-height: min(28rem, 52vh); overflow: auto; padding-right: .25rem; }
+    .contact-register-wrap { margin-top: 1rem; }
+    .contact-table-actions { display: flex; gap: .55rem; flex-wrap: wrap; }
+    .contact-live-card summary { list-style: none; cursor: pointer; }
+    .contact-live-card summary::-webkit-details-marker { display: none; }
+    .contact-live-card[open] summary { margin-bottom: 1rem; }
+    @media (max-width: 980px) { .hero,.footer-inner,.contact-grid,.contact-toolbar { grid-template-columns: 1fr; } .metric-row { grid-template-columns: 1fr; } .waylight-legal-block { text-align: left; } }
   </style>
+  <link rel="stylesheet" href="Assets/css/playtrix-filofax.css" />
 </head>
 <body>
   <header class="topbar">
     <div class="wrap">
-      <div class="brand">
-        <div>
+      <div class="brand shell-brand">
+        <div class="brand-head">
           <p class="eyebrow">Waylight-Playtrix</p>
-          <h1>Business Contacts</h1>
-          <p class="sub">A clean shell for the future contacts directory: clients, suppliers, advisers, partner organisations, and the key people around each project.</p>
+          <h1>Contacts</h1>
+          <p class="sub">People, organisations, and practical next actions.</p>
         </div>
-        <div class="stamp"><span class="dot"></span><span id="todayStamp">Loading date...</span></div>
+        <div class="toggle-stack">
+          <a class="shell-toggle" href="personal-console.html">Waylight Personal Console</a>
+        </div>
       </div>
-      <nav>
-        <a class="nav-btn" href="index.html">Day Ahead</a>
-        <a class="nav-btn" href="playtrix-console.html">Console</a>
-        <a class="nav-btn" href="tools.html">Tools</a>
-        <a class="nav-btn active" href="contacts.html">Contacts</a>
-      </nav>
+      <nav data-shell-nav data-shell-page="contacts" aria-label="Waylight-Playtrix sections"></nav>
+      <div class="utility-links" aria-label="Public properties">
+        <a class="utility-link" href="https://www.waylight-atlantic.co.uk" target="_blank" rel="noopener">Waylight Atlantic</a>
+        <a class="utility-link" href="https://www.alanwpgallagher.info" target="_blank" rel="noopener">AlanWP Gallagher</a>
+      </div>
     </div>
   </header>
 
   <main class="wrap">
     <section class="hero">
-      <article class="card hero-card">
-        <div class="hero-inner">
-          <div>
-            <p class="eyebrow">Directory Structure</p>
-            <h2>Keep the people around the business ordered and close at hand.</h2>
-            <p class="panel-text">This page is a proper placeholder rather than a dead link. It gives you a sensible shape for the contacts directory that can later become searchable, filterable, and tied into clients, questionnaires, contracts, and governance records.</p>
-          </div>
-          <div>
-            <div class="metrics">
-              <div class="metric"><span>Directory status</span><strong>Skeleton ready</strong></div>
-              <div class="metric"><span>Next build step</span><strong>Structured records</strong></div>
-              <div class="metric"><span>Target use</span><strong>Clients and suppliers</strong></div>
-            </div>
-            <div class="tag-row">
-              <span class="tag">Clients</span>
-              <span class="tag">Suppliers</span>
-              <span class="tag">Advisers</span>
-              <span class="tag">Partner Organisations</span>
-            </div>
-          </div>
+      <article class="card">
+        <p class="eyebrow">Directory</p>
+        <h2>Keep every important person close to hand.</h2>
+        <p class="muted">Add contacts, filter them quickly, and open the full record only when you need it.</p>
+        <div class="metric-row">
+          <div class="metric"><span>Total</span><strong id="contactTotal">0</strong></div>
+          <div class="metric"><span>Clients</span><strong id="contactClients">0</strong></div>
+          <div class="metric"><span>Needs action</span><strong id="contactAction">0</strong></div>
         </div>
+        <details class="help-card">
+          <summary><span class="help-icon">i</span><span>Help</span></summary>
+          <div class="help-card-content">
+            <p>Use one record per person or main contact. Keep the next action clear. Add links to folders, websites, signed agreements, or questionnaires where relevant.</p>
+          </div>
+        </details>
       </article>
 
       <article class="card">
-        <p class="eyebrow">Recommended Fields</p>
-        <h2 class="section-title">What each contact record should hold</h2>
-        <div class="mini-list">
-          <div class="mini-item"><span class="bullet"></span><div><strong>Name and organisation</strong><br />Primary contact, business name, role, and relationship type.</div></div>
-          <div class="mini-item"><span class="bullet"></span><div><strong>Practical contact details</strong><br />Email, phone, website, postal notes, and preferred communication route.</div></div>
-          <div class="mini-item"><span class="bullet"></span><div><strong>Operational context</strong><br />Current project, contract status, important dates, and what is waiting on whom.</div></div>
-          <div class="mini-item"><span class="bullet"></span><div><strong>Linked documents</strong><br />Questionnaires, agreements, proposals, notes, and any relevant SOP or policy.</div></div>
+        <p class="eyebrow">Find</p>
+        <h2>Filter the register</h2>
+        <div class="contact-toolbar">
+          <label>Search
+            <input id="contactSearch" type="text" placeholder="Search name, organisation, or note" />
+          </label>
+          <label>Type
+            <select id="contactTypeFilter">
+              <option value="all">All</option>
+              <option value="Client">Client</option>
+              <option value="Lead">Lead</option>
+              <option value="Supplier">Supplier</option>
+              <option value="Adviser">Adviser</option>
+              <option value="Partner">Partner</option>
+              <option value="Personal">Personal</option>
+            </select>
+          </label>
+          <label>Status
+            <select id="contactStatusFilter">
+              <option value="all">All</option>
+              <option value="Active">Active</option>
+              <option value="Waiting">Waiting</option>
+              <option value="Dormant">Dormant</option>
+              <option value="Closed">Closed</option>
+            </select>
+          </label>
         </div>
       </article>
     </section>
 
-    <section class="cols2">
+    <section class="contact-shell">
       <article class="card">
-        <p class="eyebrow">Directory Preview</p>
-        <h2 class="section-title">Initial contact categories</h2>
-        <div class="contact-list">
-          <div class="contact-card"><span class="bullet"></span><div><strong>Clients and enquiries</strong><br />Live projects, warm leads, former clients, and prospects worth following up.</div></div>
-          <div class="contact-card"><span class="bullet"></span><div><strong>Technical suppliers</strong><br />Hosting, domains, software vendors, maintenance tools, and support accounts.</div></div>
-          <div class="contact-card"><span class="bullet"></span><div><strong>Professional advisers</strong><br />Accountant, legal support, insurers, and any specialist business help.</div></div>
-          <div class="contact-card"><span class="bullet"></span><div><strong>Community and referral links</strong><br />Parishes, charities, schools, local organisations, and referral routes.</div></div>
+        <div class="contact-entry-toolbar">
+          <div class="contact-entry-copy">
+            <p class="eyebrow">Add Or Edit</p>
+            <h2>Contact card</h2>
+            <p class="muted">Keep the list tidy. Open the entry card only when you want to add or edit a contact.</p>
+          </div>
+          <div class="register-toolbar-actions">
+            <button type="button" class="planner-btn primary" id="contactToggle">Open entry card</button>
+          </div>
+        </div>
+        <div id="contactEditorPanel" class="contact-editor-panel" hidden>
+          <form id="contactForm" class="contact-form">
+            <input type="hidden" id="contactId" />
+            <div class="contact-form-grid">
+              <label>Name
+                <input id="contactName" type="text" maxlength="120" required placeholder="Main contact name" />
+              </label>
+              <label>Organisation
+                <input id="contactOrganisation" type="text" maxlength="120" placeholder="Organisation or business" />
+              </label>
+              <label>Type
+                <select id="contactType">
+                  <option>Client</option>
+                  <option>Lead</option>
+                  <option>Supplier</option>
+                  <option>Adviser</option>
+                  <option>Partner</option>
+                  <option>Personal</option>
+                </select>
+              </label>
+              <label>Status
+                <select id="contactStatus">
+                  <option>Active</option>
+                  <option>Waiting</option>
+                  <option>Dormant</option>
+                  <option>Closed</option>
+                </select>
+              </label>
+              <label>Email
+                <input id="contactEmail" type="email" placeholder="name@example.com" />
+              </label>
+              <label>Phone
+                <input id="contactPhone" type="text" placeholder="Phone number" />
+              </label>
+              <label>Website or folder link
+                <input id="contactLink" type="text" placeholder="Optional URL or folder link" />
+              </label>
+              <label>Next action
+                <input id="contactNextAction" type="text" maxlength="160" placeholder="What needs doing next?" />
+              </label>
+            </div>
+            <label>Notes
+              <textarea id="contactNotes" rows="5" placeholder="Context, relationship notes, document references, renewal notes, contract notes."></textarea>
+            </label>
+            <div class="planner-actions">
+              <button type="submit" class="planner-btn primary">Save contact</button>
+              <button type="button" class="planner-btn" id="contactReset">Clear</button>
+            </div>
+          </form>
         </div>
       </article>
 
-      <article class="card">
-        <p class="eyebrow">Capture Notes</p>
-        <h2 class="section-title">Directory planning notes</h2>
-        <p class="panel-text">Use this for the shape of the future directory: naming rules, categories, fields, and what should link into contracts or questionnaires later.</p>
-        <textarea class="note-box" id="contactNotes" placeholder="Example: Each client record should link to questionnaire, signed agreement, current website, hosting, renewal dates, and open actions."></textarea>
+      <article class="card contact-register-card">
+        <p class="eyebrow">Register</p>
+        <h2>Primary contact register</h2>
+        <p class="muted">Use the full register as the default scanning surface. Open the card view only when you want the fuller accordion detail.</p>
+        <div class="planner-table-wrap register-table-wrap contact-register-wrap">
+          <table class="planner-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Organisation</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Next action</th>
+                <th>Link</th>
+                <th>Notes</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="contactTableBody"></tbody>
+          </table>
+        </div>
       </article>
-    </section>
 
-    <section class="card" style="margin-top:1rem;">
-      <p class="eyebrow">Example Table</p>
-      <h2 class="section-title">Starter directory layout</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Category</th>
-            <th>Record</th>
-            <th>Key fields</th>
-            <th>Linked material</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Client</td>
-            <td>Parish website contact</td>
-            <td>Name, organisation, email, phone, current status, last contact date</td>
-            <td>Questionnaire, proposal, agreement, content notes</td>
-          </tr>
-          <tr>
-            <td>Supplier</td>
-            <td>Hosting provider</td>
-            <td>Account owner, platform, renewal cycle, billing contact</td>
-            <td>Login notes, invoice link, SLA notes</td>
-          </tr>
-          <tr>
-            <td>Adviser</td>
-            <td>Accountant</td>
-            <td>Firm, named contact, response route, tax-year support notes</td>
-            <td>Engagement letter, reporting checklist</td>
-          </tr>
-        </tbody>
-      </table>
+      <details class="card contact-live-card" id="contactLiveCards">
+        <summary>
+          <div>
+            <p class="eyebrow">Secondary View</p>
+            <h2>Expandable contact cards</h2>
+            <p class="muted">Open this only when the accordion-style card view is more useful than the table.</p>
+          </div>
+        </summary>
+        <div id="contactList" class="contact-list"></div>
+      </details>
     </section>
 
     <footer class="site-footer">
       <div class="footer-inner">
         <nav class="footer-nav" aria-label="Footer links">
-          <a href="index.html" class="footer-btn">Day Ahead</a>
-          <a href="playtrix-console.html" class="footer-btn">Console</a>
-          <a href="tools.html" class="footer-btn">Tools</a>
-          <a href="contacts.html" class="footer-btn">Contacts</a>
+          <a href="index.html" class="footer-btn">Home</a>
+          <a href="sitemap.html" class="footer-btn">Sitemap</a>
+          <a href="personal-console.html" class="footer-btn">Personal Console</a>
         </nav>
-        <p class="footer-tagline">Solid systems for a digital world.</p>
+        <p class="footer-tagline">Simple systems for a digital world.</p>
         <div class="waylight-legal-block" data-waylight-legal>
           <p class="footer-meta"><span data-datetime>Loading date and time...</span></p>
           <p class="waylight-legal-links"><a href="gdpr.html">GDPR</a> | <a href="privacy.html">Privacy</a> | <a href="terms.html">Terms</a></p>
           <p class="waylight-legal-location">Bristol, United Kingdom</p>
-          <p class="waylight-legal-copyright">&#169; 2026 <a href="index.html">Waylight-Playtrix</a></p>
+          <p class="waylight-legal-copyright">&#169; 2026 <a href="https://www.waylight-atlantic.co.uk" target="_blank" rel="noopener">Waylight-Atlantic</a></p>
         </div>
       </div>
     </footer>
   </main>
 
+  <script src="Assets/js/playtrix-storage.js"></script>
+  <script src="Assets/js/playtrix-common.js"></script>
+  <script src="Assets/js/playtrix-shell.js"></script>
   <script>
-    function footerDateTime() {
-      const now = new Date();
-      const weekday = now.toLocaleDateString('en-GB', { weekday: 'long' });
-      const month = now.toLocaleDateString('en-GB', { month: 'long' });
-      const day = now.getDate();
-      const suffix = day % 100 >= 11 && day % 100 <= 13 ? 'th' : ({ 1: 'st', 2: 'nd', 3: 'rd' }[day % 10] || 'th');
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      document.querySelectorAll('[data-datetime], #todayStamp').forEach((node) => {
-        node.textContent = `${weekday} ${day}${suffix} ${month} ${now.getFullYear()} ${hours}:${minutes}`;
+    (function () {
+      const Storage = window.PlaytrixStorage;
+      const Common = window.PlaytrixCommon || {};
+      const storageKey = 'playtrix.contacts.records';
+      const seed = [
+        {
+          id: crypto.randomUUID ? crypto.randomUUID() : 'contact-1',
+          name: 'Parish communications lead',
+          organisation: 'Local Parish',
+          type: 'Client',
+          status: 'Waiting',
+          email: '',
+          phone: '',
+          link: '',
+          nextAction: 'Chase content ownership decision',
+          notes: 'Potential website refresh. Link signed agreement and questionnaire here later.'
+        }
+      ];
+
+      function read() {
+        return Storage.readJson(storageKey, seed);
+      }
+
+      function write(records) {
+        Storage.writeJson(storageKey, records);
+      }
+
+      function escapeHtml(value) {
+        return String(value || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function normaliseLink(value) {
+        if (Common && typeof Common.normaliseActionLink === 'function') {
+          return Common.normaliseActionLink(value);
+        }
+        return String(value || '').trim();
+      }
+
+      function applyScrollCap(container, itemSelector, options) {
+        if (!container || !itemSelector || !container.getClientRects().length) return;
+        const settings = options || {};
+        const maxItems = Math.max(1, Number(settings.maxItems || 4));
+        const items = Array.from(container.querySelectorAll(itemSelector));
+        const header = settings.headerSelector ? container.querySelector(settings.headerSelector) : null;
+        const computed = window.getComputedStyle(container);
+        const gap = Number.parseFloat(computed.rowGap || computed.gap || '0') || 0;
+
+        container.style.overflowX = settings.allowHorizontal ? 'auto' : '';
+        container.style.overflowY = items.length > maxItems ? 'auto' : 'visible';
+        container.style.paddingRight = items.length > maxItems ? '0.25rem' : '';
+
+        if (items.length <= maxItems) {
+          container.style.removeProperty('max-height');
+          return;
+        }
+
+        let maxHeight = header ? Math.ceil(header.getBoundingClientRect().height) : 0;
+        items.slice(0, maxItems).forEach((item, index) => {
+          maxHeight += Math.ceil(item.getBoundingClientRect().height);
+          if (index < maxItems - 1) {
+            maxHeight += gap;
+          }
+        });
+
+        container.style.maxHeight = `${Math.ceil(maxHeight + (settings.extraOffset || 0))}px`;
+      }
+
+      const form = document.getElementById('contactForm');
+      const search = document.getElementById('contactSearch');
+      const typeFilter = document.getElementById('contactTypeFilter');
+      const statusFilter = document.getElementById('contactStatusFilter');
+      const list = document.getElementById('contactList');
+      const tableBody = document.getElementById('contactTableBody');
+      const registerWrap = document.querySelector('.contact-register-wrap');
+      const liveCardsDetails = document.getElementById('contactLiveCards');
+      const toggleButton = document.getElementById('contactToggle');
+      const editorPanel = document.getElementById('contactEditorPanel');
+      let editorOpen = false;
+
+      function getFormValue(id) {
+        return document.getElementById(id).value.trim();
+      }
+
+      function setForm(record) {
+        document.getElementById('contactId').value = record.id || '';
+        document.getElementById('contactName').value = record.name || '';
+        document.getElementById('contactOrganisation').value = record.organisation || '';
+        document.getElementById('contactType').value = record.type || 'Client';
+        document.getElementById('contactStatus').value = record.status || 'Active';
+        document.getElementById('contactEmail').value = record.email || '';
+        document.getElementById('contactPhone').value = record.phone || '';
+        document.getElementById('contactLink').value = record.link || '';
+        document.getElementById('contactNextAction').value = record.nextAction || '';
+        document.getElementById('contactNotes').value = record.notes || '';
+      }
+
+      function setEditorOpen(nextState) {
+        editorOpen = !!nextState;
+        editorPanel.hidden = !editorOpen;
+        toggleButton.textContent = editorOpen ? 'Hide entry card' : 'Open entry card';
+      }
+
+      function clearForm(options) {
+        const settings = options || {};
+        form.reset();
+        document.getElementById('contactId').value = '';
+        document.getElementById('contactType').value = 'Client';
+        document.getElementById('contactStatus').value = 'Active';
+        if (settings.close) {
+          setEditorOpen(false);
+        }
+      }
+
+      function openEditor(record) {
+        if (record) {
+          setForm(record);
+        } else {
+          clearForm({ close: false });
+        }
+        setEditorOpen(true);
+        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.getElementById('contactName').focus();
+      }
+
+      function syncScrollCaps() {
+        applyScrollCap(list, '.contact-accordion-item', { maxItems: 4, extraOffset: 4 });
+        applyScrollCap(registerWrap, 'tbody tr', { maxItems: 4, headerSelector: 'thead', allowHorizontal: true, extraOffset: 4 });
+      }
+
+      function render() {
+        const records = read();
+        const term = search.value.trim().toLowerCase();
+        const type = typeFilter.value;
+        const status = statusFilter.value;
+        const filtered = records.filter((record) => {
+          const hay = `${record.name} ${record.organisation} ${record.notes} ${record.nextAction}`.toLowerCase();
+          return (!term || hay.includes(term)) && (type === 'all' || record.type === type) && (status === 'all' || record.status === status);
+        });
+
+        document.getElementById('contactTotal').textContent = records.length;
+        document.getElementById('contactClients').textContent = records.filter((item) => item.type === 'Client').length;
+        document.getElementById('contactAction').textContent = records.filter((item) => item.nextAction).length;
+
+        if (!filtered.length) {
+          list.innerHTML = '<div class="contact-empty">No contacts match this filter.</div>';
+          tableBody.innerHTML = '<tr><td colspan="10">No contacts match this filter.</td></tr>';
+          syncScrollCaps();
+          return;
+        }
+
+        list.innerHTML = filtered.map((record) => {
+          const href = normaliseLink(record.link);
+          const linkHtml = href ? `<a class="action-link" href="${escapeHtml(href)}" target="_blank" rel="noopener">Open link</a>` : '<span></span>';
+          return `
+            <details class="contact-accordion-item">
+              <summary>
+                <div class="contact-summary">
+                  <div class="contact-summary-main">
+                    <strong>${escapeHtml(record.name)}</strong>
+                    <span>${escapeHtml(record.organisation || record.type)}</span>
+                    <span>${escapeHtml(record.nextAction || 'No next action recorded')}</span>
+                  </div>
+                  <div class="contact-summary-meta">
+                    <span class="planner-chip">${escapeHtml(record.type)}</span>
+                    <span class="planner-chip">${escapeHtml(record.status)}</span>
+                  </div>
+                </div>
+              </summary>
+              <div class="contact-detail-grid">
+                <div><strong>Organisation</strong>${escapeHtml(record.organisation || '-')}</div>
+                <div><strong>Status</strong>${escapeHtml(record.status || '-')}</div>
+                <div><strong>Email</strong>${escapeHtml(record.email || '-')}</div>
+                <div><strong>Phone</strong>${escapeHtml(record.phone || '-')}</div>
+                <div><strong>Next action</strong>${escapeHtml(record.nextAction || '-')}</div>
+                <div><strong>Type</strong>${escapeHtml(record.type || '-')}</div>
+                <div style="grid-column: 1 / -1;"><strong>Notes</strong>${escapeHtml(record.notes || '-')}</div>
+              </div>
+              <div class="contact-actions">
+                ${linkHtml}
+                <button type="button" class="planner-btn" data-edit="${record.id}">Edit</button>
+                <button type="button" class="planner-btn" data-delete="${record.id}">Delete</button>
+              </div>
+            </details>
+          `;
+        }).join('');
+
+        tableBody.innerHTML = filtered.map((record) => {
+          const href = normaliseLink(record.link);
+          return `
+            <tr>
+              <td>${escapeHtml(record.name || '-')}</td>
+              <td>${escapeHtml(record.organisation || '-')}</td>
+              <td>${escapeHtml(record.type || '-')}</td>
+              <td>${escapeHtml(record.status || '-')}</td>
+              <td>${escapeHtml(record.email || '-')}</td>
+              <td>${escapeHtml(record.phone || '-')}</td>
+              <td>${escapeHtml(record.nextAction || '-')}</td>
+              <td>${href ? `<a class="action-link" href="${escapeHtml(href)}" target="_blank" rel="noopener">Open</a>` : '-'}</td>
+              <td>${escapeHtml(record.notes || '-')}</td>
+              <td><div class="contact-table-actions"><button type="button" class="planner-btn" data-edit="${record.id}">Edit</button><button type="button" class="planner-btn" data-delete="${record.id}">Delete</button></div></td>
+            </tr>
+          `;
+        }).join('');
+
+        [list, tableBody].forEach((scope) => {
+          scope.querySelectorAll('[data-edit]').forEach((button) => {
+            button.addEventListener('click', () => {
+              const record = records.find((item) => item.id === button.dataset.edit);
+              if (record) {
+                openEditor(record);
+              }
+            });
+          });
+
+          scope.querySelectorAll('[data-delete]').forEach((button) => {
+            button.addEventListener('click', () => {
+              const next = records.filter((item) => item.id !== button.dataset.delete);
+              write(next);
+              render();
+            });
+          });
+        });
+
+        syncScrollCaps();
+      }
+
+      Storage.seedJson(storageKey, seed);
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const records = read();
+        const record = {
+          id: getFormValue('contactId') || (crypto.randomUUID ? crypto.randomUUID() : `contact-${Date.now()}`),
+          name: getFormValue('contactName'),
+          organisation: getFormValue('contactOrganisation'),
+          type: document.getElementById('contactType').value,
+          status: document.getElementById('contactStatus').value,
+          email: getFormValue('contactEmail'),
+          phone: getFormValue('contactPhone'),
+          link: getFormValue('contactLink'),
+          nextAction: getFormValue('contactNextAction'),
+          notes: document.getElementById('contactNotes').value.trim()
+        };
+        const existingIndex = records.findIndex((item) => item.id === record.id);
+        if (existingIndex >= 0) {
+          records[existingIndex] = record;
+        } else {
+          records.unshift(record);
+        }
+        write(records);
+        clearForm({ close: true });
+        render();
       });
-    }
 
-    const notesKey = 'waylight-playtrix-contacts-notes';
-    const noteBox = document.getElementById('contactNotes');
-    noteBox.value = localStorage.getItem(notesKey) || '';
-    noteBox.addEventListener('input', () => {
-      localStorage.setItem(notesKey, noteBox.value);
-    });
+      toggleButton.addEventListener('click', () => {
+        if (editorOpen) {
+          clearForm({ close: true });
+          return;
+        }
+        openEditor();
+      });
 
-    footerDateTime();
-    setInterval(footerDateTime, 60000);
+      document.getElementById('contactReset').addEventListener('click', () => clearForm({ close: false }));
+      [search, typeFilter, statusFilter].forEach((element) => element.addEventListener('input', render));
+      window.addEventListener('resize', syncScrollCaps);
+      if (liveCardsDetails) {
+        liveCardsDetails.addEventListener('toggle', () => window.setTimeout(syncScrollCaps, 80));
+      }
+      setEditorOpen(false);
+      render();
+    })();
   </script>
 </body>
 </html>
